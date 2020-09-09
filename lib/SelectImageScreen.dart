@@ -16,7 +16,7 @@ class _SelectImageState extends State<SelectImageScreen> {
   final picker = ImagePicker();
 
   Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    final pickedFile = await picker.getImage(source: ImageSource.gallery); // or ImageSource.camera to do a photo
 
     setState(() {
       _image = File(pickedFile.path);
@@ -30,9 +30,21 @@ class _SelectImageState extends State<SelectImageScreen> {
           title: new Text("Select an image"),
         ),
       body: Center(
-        child: _image == null
-            ? Text('No image selected.')
-            : Image.file(_image),
+        child: CircleAvatar(
+          radius: 100,
+          backgroundColor: Color(0xff476cfb),
+          child: ClipOval(
+            child: SizedBox(
+              width: 180,
+              height: 180,
+                child: _image == null
+                    ? Image.network("https://lh3.googleusercontent.com/proxy/OmGN2Zwo356GOtR3VG8QRmzV5DGyp2lyUSTi2PCIv6O_IQTTuigtfflNKqrKJSM3tnZ6_0M03ggCf5M93hO0zLro1xOUcw9r2BAswKdFtPaMDim60UIVmLQ",
+                    fit: BoxFit.fill
+                    )
+                    : Image.file(_image)
+            ),
+          ),
+        )
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: getImage,
