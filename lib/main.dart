@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'SelectImageScreen.dart';
 import 'SharedPreferences.dart';
 
 void main() {
@@ -56,6 +57,20 @@ class _MyHomePageState extends State<MyHomePage> {
                     );
                   },
                   child: Text('Shared Preferences',style: TextStyle(color: Colors.white),
+                  ),
+                )
+            ),
+            ButtonTheme(
+                buttonColor: Color(0xFF031e39),
+                child: FlatButton(
+                  color: Colors.blueGrey, //Color(0xFF81A483),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => SelectImageScreen()
+                    ),
+                    );
+                  },
+                  child: Text('Select an image',style: TextStyle(color: Colors.white),
                   ),
                 )
             )
