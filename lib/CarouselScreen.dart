@@ -5,7 +5,6 @@ class CarouselScreen extends StatefulWidget {
 
   @override
   _CarouselScreenState createState() => _CarouselScreenState();
-
 }
 
 
