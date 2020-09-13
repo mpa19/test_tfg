@@ -35,7 +35,9 @@ class _CarouselScreenState extends State<CarouselScreen> {
           ? Dashboard()
           : (currentIndex == 1)
             ? Dashboard()
-            : Dashboard()
+            : (currentIndex == 2)
+              ? Dashboard()
+              : Dashboard()
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'CarouselScreen.dart';
 import 'SelectImageScreen.dart';
 import 'SharedPreferences.dart';
 
@@ -80,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: Colors.blueGrey, //Color(0xFF81A483),
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => SelectImageScreen()
+                        builder: (context) => CarouselScreen()
                     ),
                     );
                   },

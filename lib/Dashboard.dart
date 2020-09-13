@@ -25,7 +25,7 @@ class Dashboard extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.0),
                 image: DecorationImage(
-                  image: AssetImage(''), // put image
+                  image: AssetImage('assets/images/146651.jpg'), // put image
                   fit: BoxFit.cover,
                 ),
               ),
@@ -61,7 +61,7 @@ class Dashboard extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.0),
                 image: DecorationImage(
-                  image: AssetImage(''), // put image
+                  image: AssetImage('assets/images/934713.jpg'), // put image
                   fit: BoxFit.cover,
                 ),
               ),
@@ -82,6 +82,42 @@ class Dashboard extends StatelessWidget {
                     padding: const EdgeInsets.all(15.0),
                     child: Text(
                       'Subtext2', // Subtext on the image
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15.0,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.all(5.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                image: DecorationImage(
+                  image: AssetImage('assets/images/929202.jpg'), // put image
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'Main Text3', // Main text on the image
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18.0,
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Text(
+                      'Subtext3', // Subtext on the image
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 15.0,
