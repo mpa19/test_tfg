@@ -18,7 +18,6 @@ class Dashboard extends StatelessWidget {
               enableInfiniteScroll: true,
               autoPlayAnimationDuration: Duration(milliseconds: 800),
               viewportFraction: 0.8),
-
           items: [
             Container(
               margin: EdgeInsets.all(5.0),
@@ -29,7 +28,7 @@ class Dashboard extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-              child: Column(
+              /*child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
@@ -54,7 +53,7 @@ class Dashboard extends StatelessWidget {
                     ),
                   ),
                 ],
-              ),
+              ),*/
             ),
             Container(
               margin: EdgeInsets.all(5.0),
@@ -65,7 +64,7 @@ class Dashboard extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-              child: Column(
+              /*child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
@@ -90,7 +89,7 @@ class Dashboard extends StatelessWidget {
                     ),
                   ),
                 ],
-              ),
+              ),*/
             ),
             Container(
               margin: EdgeInsets.all(5.0),
@@ -101,7 +100,7 @@ class Dashboard extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-              child: Column(
+              /*child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
@@ -126,10 +125,10 @@ class Dashboard extends StatelessWidget {
                     ),
                   ),
                 ],
-              ),
-            )
-          ],
-        ),
+              ),*/
+            ),
+           ],
+          ),
       ],
     );
   }
