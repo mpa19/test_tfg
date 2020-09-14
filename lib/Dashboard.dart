@@ -1,6 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
+import 'SharedPreferences.dart';
+
 
 class Dashboard extends StatelessWidget {
   @override
@@ -17,24 +19,34 @@ class Dashboard extends StatelessWidget {
               autoPlayCurve: Curves.fastOutSlowIn,
               enableInfiniteScroll: true,
               autoPlayAnimationDuration: Duration(milliseconds: 800),
-              viewportFraction: 0.8),
+              viewportFraction: 0.8,),
           items: [
-            Container(
-              margin: EdgeInsets.all(5.0),
-              decoration: BoxDecoration(
+            GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(
+                builder: (context) => SharedPreferencesScreen()
+                ),
+                );
+              },
+
+              child: Container(
+                margin: EdgeInsets.all(5.0),
+                decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.0),
                 image: DecorationImage(
-                  image: AssetImage('assets/images/146651.jpg'), // put image
-                  fit: BoxFit.cover,
+                image: AssetImage('assets/images/146651.jpg'), // put image
+                fit: BoxFit.cover,
                 ),
-              ),
-              /*child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+
                   Text(
-                    'Main Text', // Main text on the image
-                    style: TextStyle(
+                  'Main Text', // Main text on the image
+                  style:
+                   TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 18.0,
@@ -53,7 +65,8 @@ class Dashboard extends StatelessWidget {
                     ),
                   ),
                 ],
-              ),*/
+              ),
+            ),
             ),
             Container(
               margin: EdgeInsets.all(5.0),
