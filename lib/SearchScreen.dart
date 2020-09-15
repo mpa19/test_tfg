@@ -72,33 +72,36 @@ class Search extends SearchDelegate {
 
   SharedPreferences prefs;
 
-  initSharedPreference() async {
+  saveRecentPreferences(String name) async {
     prefs = await SharedPreferences.getInstance();
-  }
-
-  Future<bool> saveRecentPreferences(String name) async {
-
-    List<String> recent = getRecentPreferences();
+    List<String> recent = await getRecentPreferences();
     recent.add(name);
     prefs.setStringList("recent", recent);
-
-    return prefs.commit();
   }
 
 
-  List<String> getRecentPreferences()  {
-    List<String> name = prefs.getStringList("recent") ?? recentList;
+  Future<List<String>> getRecentPreferences()  async {
+    prefs = await SharedPreferences.getInstance();
+
+    List<String> name = prefs.getStringList("recent");
     return name;
   }
 
+
+  getRecent()  async {
+    prefs = await SharedPreferences.getInstance();
+
+    List<String> name = prefs.getStringList("recent");
+    suggestionList = name;
+  }
+
+  List<String> suggestionList;
+
   @override
   Widget buildSuggestions(BuildContext context) {
-    List<String> suggestionList = [];
-    initSharedPreference();
+    suggestionList = [];
     query.isEmpty
-        ? getRecentPreferences() == null //In the true case
-          ? suggestionList = recentList
-          : suggestionList = getRecentPreferences()
+        ? getRecent()
         : suggestionList.addAll(listExample.where( // In the false case
           (element) => element.contains(query),
     ));
@@ -113,7 +116,7 @@ class Search extends SearchDelegate {
           leading: query.isEmpty ? Icon(Icons.access_time) : SizedBox(),
           onTap: (){
             selectedResult = suggestionList[index];
-            if(!getRecentPreferences().contains(selectedResult))
+            //if(!(await getRecentPreferences()).contains(selectedResult))
               saveRecentPreferences(selectedResult);
             showResults(context);
           },
