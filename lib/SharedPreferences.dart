@@ -16,11 +16,10 @@ class _SharedPreferencesState extends State<SharedPreferencesScreen> {
   String _name = "";
 
 
-  Future<bool> saveNamePreferences(String name) async {
+  saveNamePreferences(String name) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("key", name);
     updateName(name);
-    return prefs.commit();
   }
 
   Future<String> getNamePreferences() async {
@@ -32,6 +31,7 @@ class _SharedPreferencesState extends State<SharedPreferencesScreen> {
 
   @override
   void initState() {
+    super.initState();
     getNamePreferences().then(updateName);
   }
 
