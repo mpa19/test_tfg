@@ -12,26 +12,23 @@ class SharedPreferencesScreen extends StatefulWidget {
 
 TextEditingController _controller;
 
-Future<bool> saveNamePreferences(String name) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setString("key", name);
-
-  return prefs.commit();
-}
-
-
-Future<String> getNamePreferences() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  String name = prefs.getString("key");
-
-  return name;
-}
-
-
-
 class _SharedPreferencesState extends State<SharedPreferencesScreen> {
   String _name = "";
 
+
+  Future<bool> saveNamePreferences(String name) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("key", name);
+    updateName(name);
+    return prefs.commit();
+  }
+
+  Future<String> getNamePreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String name = prefs.getString("key");
+
+    return name;
+  }
 
   @override
   void initState() {

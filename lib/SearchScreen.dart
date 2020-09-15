@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
+
 class SearchScreen extends StatefulWidget {
   final List<String> list = List.generate(10, (index) => "Text $index");
 
@@ -23,19 +26,12 @@ class _SearchScreenState extends State<SearchScreen> {
         centerTitle: true,
         title: Text('Search Bar'),
       ),
-      /*body: ListView.builder(
-        itemCount: widget.list.length,
-        itemBuilder: (context, index) => ListTile(
-          title: Text(
-            widget.list[index],
-          ),
-        ),
-      ),*/
     );
   }
 }
 
 class Search extends SearchDelegate {
+
   @override
   List<Widget> buildActions(BuildContext context) {
     return <Widget>[
@@ -72,15 +68,38 @@ class Search extends SearchDelegate {
   final List<String> listExample;
   Search(this.listExample);
 
-  List<String> recentList = ["Text 4", "Text 3"];
+  List<String> recentList = [];
+
+  SharedPreferences prefs;
+
+  initSharedPreference() async {
+    prefs = await SharedPreferences.getInstance();
+  }
+
+  Future<bool> saveRecentPreferences(String name) async {
+
+    List<String> recent = getRecentPreferences();
+    recent.add(name);
+    prefs.setStringList("recent", recent);
+
+    return prefs.commit();
+  }
+
+
+  List<String> getRecentPreferences()  {
+    List<String> name = prefs.getStringList("recent") ?? recentList;
+    return name;
+  }
 
   @override
   Widget buildSuggestions(BuildContext context) {
     List<String> suggestionList = [];
+    initSharedPreference();
     query.isEmpty
-        ? suggestionList = recentList //In the true case
-        : suggestionList.addAll(listExample.where(
-      // In the false case
+        ? getRecentPreferences() == null //In the true case
+          ? suggestionList = recentList
+          : suggestionList = getRecentPreferences()
+        : suggestionList.addAll(listExample.where( // In the false case
           (element) => element.contains(query),
     ));
 
@@ -94,6 +113,8 @@ class Search extends SearchDelegate {
           leading: query.isEmpty ? Icon(Icons.access_time) : SizedBox(),
           onTap: (){
             selectedResult = suggestionList[index];
+            if(!getRecentPreferences().contains(selectedResult))
+              saveRecentPreferences(selectedResult);
             showResults(context);
           },
         );
