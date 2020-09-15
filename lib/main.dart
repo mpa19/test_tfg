@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'CarouselScreen.dart';
+import 'SearchScreen.dart';
 import 'SelectImageScreen.dart';
 import 'SharedPreferences.dart';
 
@@ -86,6 +87,20 @@ class _MyHomePageState extends State<MyHomePage> {
                     );
                   },
                   child: Text('Carousel Images',style: TextStyle(color: Colors.white),
+                  ),
+                )
+            ),
+            ButtonTheme(
+                buttonColor: Color(0xFF031e39),
+                child: FlatButton(
+                  color: Colors.blueGrey, //Color(0xFF81A483),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => SearchScreen()
+                    ),
+                    );
+                  },
+                  child: Text('Search Bar',style: TextStyle(color: Colors.white),
                   ),
                 )
             )

@@ -24,8 +24,8 @@ class Dashboard extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(
-                builder: (context) => SharedPreferencesScreen()
-                ),
+                  builder: (context) => SharedPreferencesScreen()
+                  ),
                 );
               },
 
@@ -34,39 +34,38 @@ class Dashboard extends StatelessWidget {
                 decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.0),
                 image: DecorationImage(
-                image: AssetImage('assets/images/146651.jpg'), // put image
-                fit: BoxFit.cover,
-                ),
+                  image: AssetImage('assets/images/146651.jpg'), // put image
+                  fit: BoxFit.cover,
+                  ),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-
-                  Text(
-                  'Main Text', // Main text on the image
-                  style:
-                   TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18.0,
-                    ),
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Text(
-                      'Subtext', // Subtext on the image
-                      style: TextStyle(
+                    Text(
+                    'Main Text', // Main text on the image
+                    style:
+                     TextStyle(
                         color: Colors.white,
-                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.0,
                       ),
-                      textAlign: TextAlign.center,
                     ),
-                  ),
-                ],
+
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Text(
+                        'Subtext', // Subtext on the image
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15.0,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
             ),
             Container(
               margin: EdgeInsets.all(5.0),
