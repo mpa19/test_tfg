@@ -4,6 +4,7 @@ import 'CarouselScreen.dart';
 import 'SearchScreen.dart';
 import 'SelectImageScreen.dart';
 import 'SharedPreferences.dart';
+import 'TabMenuScreen.dart';
 
 void main() {
   runApp(MyApp());
@@ -101,6 +102,20 @@ class _MyHomePageState extends State<MyHomePage> {
                     );
                   },
                   child: Text('Search Bar',style: TextStyle(color: Colors.white),
+                  ),
+                )
+            ),
+            ButtonTheme(
+                buttonColor: Color(0xFF031e39),
+                child: FlatButton(
+                  color: Colors.blueGrey, //Color(0xFF81A483),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => TabMenuScreen()
+                    ),
+                    );
+                  },
+                  child: Text('Tab Menu with Firebase',style: TextStyle(color: Colors.white),
                   ),
                 )
             )
