@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "328168168512",
+    "firebase_url": "https://carparkfinder-edcaa.firebaseio.com",
+    "project_id": "carparkfinder-edcaa",
+    "storage_bucket": "carparkfinder-edcaa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:328168168512:android:755c8328ccab3729b053a5",
+        "android_client_info": {
+          "package_name": "com.example.flutter_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "328168168512-jqoe29dsat2qijmgj561ba65cu8nh0nl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSM_yNhLMzv0oca1N1Tr5auBpiLXFkcTI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "328168168512-jqoe29dsat2qijmgj561ba65cu8nh0nl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:328168168512:android:fd5575132dc1f8a2b053a5",
+        "android_client_info": {
+          "package_name": "com.example.marc.carparkfinder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "328168168512-jqoe29dsat2qijmgj561ba65cu8nh0nl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSM_yNhLMzv0oca1N1Tr5auBpiLXFkcTI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "328168168512-jqoe29dsat2qijmgj561ba65cu8nh0nl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

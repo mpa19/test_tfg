@@ -1,6 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 
 class TabMenuScreen extends StatefulWidget {
 
@@ -9,6 +10,14 @@ class TabMenuScreen extends StatefulWidget {
 }
 
 class _TabMenuScreenState extends State<TabMenuScreen>{
+
+  @override
+  void initState() {
+    super.initState();
+    Firebase.initializeApp().whenComplete(() {
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +45,42 @@ class _TabMenuScreenState extends State<TabMenuScreen>{
             Expanded(
               child: TabBarView(
                 children: [
-                  Icon(Icons.directions_car), // First Tab
-                  FlatButton(
-                    child: Text("Button"),
-                    onPressed: null,), // Second Tab
-                  Text('Input and selections',style: TextStyle(color: Colors.black87)), // Third Tab
+                  StreamBuilder(
+                    stream: FirebaseFirestore.instance.collection('Campus').snapshots(),
+                    builder: (context, snapshot) {
+                      if(!snapshot.hasData) return Text("Loading data...");
+                      return Column(
+                        children: [
+                          Text(snapshot.data.documents[0].get('DisponiblesC')),
+                          Text(snapshot.data.documents[0].get('DisponiblesM')),
+                        ],
+                      );
+                    },
+                  ),
+                  StreamBuilder(
+                    stream: FirebaseFirestore.instance.collection('Campus').snapshots(),
+                    builder: (context, snapshot) {
+                      if(!snapshot.hasData) return Text("Loading data...");
+                      return Column(
+                        children: [
+                          Text(snapshot.data.documents[1].get('DisponiblesC')),
+                          Text(snapshot.data.documents[1].get('DisponiblesM')),
+                        ],
+                      );
+                    },
+                  ),
+                  StreamBuilder(
+                    stream: FirebaseFirestore.instance.collection('Campus').snapshots(),
+                    builder: (context, snapshot) {
+                      if(!snapshot.hasData) return Text("Loading data...");
+                      return Column(
+                        children: [
+                          Text(snapshot.data.documents[0].get('DisponiblesC')),
+                          Text(snapshot.data.documents[0].get('DisponiblesM')),
+                        ],
+                      );
+                    },
+                  )
                 ],
               ),
             ),
