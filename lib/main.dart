@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/CarouselVerticalScreen.dart';
 
 import 'CarouselScreen.dart';
 import 'SearchScreen.dart';
@@ -116,6 +117,20 @@ class _MyHomePageState extends State<MyHomePage> {
                     );
                   },
                   child: Text('Tab Menu with Firebase',style: TextStyle(color: Colors.white),
+                  ),
+                )
+            ),
+            ButtonTheme(
+                buttonColor: Color(0xFF031e39),
+                child: FlatButton(
+                  color: Colors.blueGrey, //Color(0xFF81A483),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => CarouselVerticalScreen()
+                    ),
+                    );
+                  },
+                  child: Text('Carousel Vertical Images',style: TextStyle(color: Colors.white),
                   ),
                 )
             )
