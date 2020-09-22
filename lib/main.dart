@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/CarouselVerticalScreen.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'CarouselScreen.dart';
 import 'SearchScreen.dart';
 import 'SelectImageScreen.dart';
 import 'SharedPreferences.dart';
 import 'TabMenuScreen.dart';
+import 'generated/l10n.dart';
 
 void main() {
   runApp(MyApp());
@@ -39,102 +41,109 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    return MaterialApp(
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        S.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
 
-        title: Text(widget.title),
-      ),
-      body: Center(
-
-        child: Column(
-
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ButtonTheme(
-                buttonColor: Color(0xFF031e39),
-                child: FlatButton(
-                  color: Colors.blueGrey, //Color(0xFF81A483),
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => SharedPreferencesScreen()
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              ButtonTheme(
+                  buttonColor: Color(0xFF031e39),
+                  child: FlatButton(
+                    color: Colors.blueGrey, //Color(0xFF81A483),
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => SharedPreferencesScreen()
+                      ),
+                      );
+                    },
+                    child: Text('Shared Preferences',style: TextStyle(color: Colors.white),
                     ),
-                    );
-                  },
-                  child: Text('Shared Preferences',style: TextStyle(color: Colors.white),
-                  ),
-                )
-            ),
-            ButtonTheme(
-                buttonColor: Color(0xFF031e39),
-                child: FlatButton(
-                  color: Colors.blueGrey, //Color(0xFF81A483),
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => SelectImageScreen()
+                  )
+              ),
+              ButtonTheme(
+                  buttonColor: Color(0xFF031e39),
+                  child: FlatButton(
+                    color: Colors.blueGrey, //Color(0xFF81A483),
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => SelectImageScreen()
+                      ),
+                      );
+                    },
+                    child: Text('Select an image',style: TextStyle(color: Colors.white),
                     ),
-                    );
-                  },
-                  child: Text('Select an image',style: TextStyle(color: Colors.white),
-                  ),
-                )
-            ),
-            ButtonTheme(
-                buttonColor: Color(0xFF031e39),
-                child: FlatButton(
-                  color: Colors.blueGrey, //Color(0xFF81A483),
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => CarouselScreen()
+                  )
+              ),
+              ButtonTheme(
+                  buttonColor: Color(0xFF031e39),
+                  child: FlatButton(
+                    color: Colors.blueGrey, //Color(0xFF81A483),
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => CarouselScreen()
+                      ),
+                      );
+                    },
+                    child: Text('Carousel Images',style: TextStyle(color: Colors.white),
                     ),
-                    );
-                  },
-                  child: Text('Carousel Images',style: TextStyle(color: Colors.white),
-                  ),
-                )
-            ),
-            ButtonTheme(
-                buttonColor: Color(0xFF031e39),
-                child: FlatButton(
-                  color: Colors.blueGrey, //Color(0xFF81A483),
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => SearchScreen()
+                  )
+              ),
+              ButtonTheme(
+                  buttonColor: Color(0xFF031e39),
+                  child: FlatButton(
+                    color: Colors.blueGrey, //Color(0xFF81A483),
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => SearchScreen()
+                      ),
+                      );
+                    },
+                    child: Text('Search Bar',style: TextStyle(color: Colors.white),
                     ),
-                    );
-                  },
-                  child: Text('Search Bar',style: TextStyle(color: Colors.white),
-                  ),
-                )
-            ),
-            ButtonTheme(
-                buttonColor: Color(0xFF031e39),
-                child: FlatButton(
-                  color: Colors.blueGrey, //Color(0xFF81A483),
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => TabMenuScreen()
+                  )
+              ),
+              ButtonTheme(
+                  buttonColor: Color(0xFF031e39),
+                  child: FlatButton(
+                    color: Colors.blueGrey, //Color(0xFF81A483),
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => TabMenuScreen()
+                      ),
+                      );
+                    },
+                    child: Text('Tab Menu with Firebase',style: TextStyle(color: Colors.white),
                     ),
-                    );
-                  },
-                  child: Text('Tab Menu with Firebase',style: TextStyle(color: Colors.white),
-                  ),
-                )
-            ),
-            ButtonTheme(
-                buttonColor: Color(0xFF031e39),
-                child: FlatButton(
-                  color: Colors.blueGrey, //Color(0xFF81A483),
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => CarouselVerticalScreen()
+                  )
+              ),
+              ButtonTheme(
+                  buttonColor: Color(0xFF031e39),
+                  child: FlatButton(
+                    color: Colors.blueGrey, //Color(0xFF81A483),
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => CarouselVerticalScreen()
+                      ),
+                      );
+                    },
+                    child: Text('Carousel Vertical Images',style: TextStyle(color: Colors.white),
                     ),
-                    );
-                  },
-                  child: Text('Carousel Vertical Images',style: TextStyle(color: Colors.white),
-                  ),
-                )
-            )
-          ],
+                  )
+              )
+            ],
+          ),
         ),
       ),
     );
