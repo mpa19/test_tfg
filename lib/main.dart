@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/CarouselVerticalScreen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_app/generated/l10n.dart';
+
+
 
 import 'CarouselScreen.dart';
 import 'SearchScreen.dart';
@@ -23,6 +26,13 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        S.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
       home: MyHomePage(title: 'Demo'),
     );
   }
@@ -41,16 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        S.delegate,
-      ],
-      supportedLocales: S.delegate.supportedLocales,
-
-      home: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
         ),
@@ -68,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       );
                     },
-                    child: Text('Shared Preferences',style: TextStyle(color: Colors.white),
+                    child: Text(S.current.preferencesText, style: TextStyle(color: Colors.white),
                     ),
                   )
               ),
@@ -82,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       );
                     },
-                    child: Text('Select an image',style: TextStyle(color: Colors.white),
+                    child: Text(S.current.selImageText, style: TextStyle(color: Colors.white),
                     ),
                   )
               ),
@@ -145,7 +146,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ),
-      ),
-    );
+      );
   }
 }

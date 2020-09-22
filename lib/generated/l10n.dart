@@ -33,7 +33,25 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  /// `Shared preferences`
+  String get preferencesText {
+    return Intl.message(
+      'Shared preferences',
+      name: 'preferencesText',
+      desc: '',
+      args: [],
+    );
+  }
 
+  /// `Select an image`
+  String get selImageText {
+    return Intl.message(
+      'Select an image',
+      name: 'selImageText',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
@@ -42,6 +60,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
+      Locale.fromSubtags(languageCode: 'es'),
     ];
   }
 
