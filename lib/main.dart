@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/CarouselVerticalScreen.dart';
+import 'package:flutter_app/LogInScreen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_app/generated/l10n.dart';
-
-
 
 import 'CarouselScreen.dart';
 import 'SearchScreen.dart';
@@ -140,6 +139,20 @@ class _MyHomePageState extends State<MyHomePage> {
                       );
                     },
                     child: Text('Carousel Vertical Images',style: TextStyle(color: Colors.white),
+                    ),
+                  )
+              ),
+              ButtonTheme(
+                  buttonColor: Color(0xFF031e39),
+                  child: FlatButton(
+                    color: Colors.blueGrey, //Color(0xFF81A483),
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => LogInScreen()
+                      ),
+                      );
+                    },
+                    child: Text('Log in',style: TextStyle(color: Colors.white),
                     ),
                   )
               )
