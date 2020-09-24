@@ -2,8 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app/TabMenuScreen.dart';
 import 'package:flutter_app/utilities/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import 'SharedPreferences.dart';
 
@@ -21,13 +23,20 @@ class LogInState extends State<LogInScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  FirebaseAuth _auth;
+  GoogleSignIn googleSignIn;
+
   @override
   void initState() {
     super.initState();
     Firebase.initializeApp().whenComplete(() {
       setState(() {});
+      _auth = FirebaseAuth.instance;
+      googleSignIn = GoogleSignIn();
     });
   }
+
+
 
   Widget _buildEmailTF() {
     return Column(
@@ -226,7 +235,16 @@ class LogInState extends State<LogInScreen> {
             ),
           ),
           _buildSocialBtn(
-                () => print('Login with Google'),
+                () {
+                  signInWithGoogle().then((result) {
+                    if (result != null) {
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => TabMenuScreen()
+                      ),
+                      );
+                    }
+                  });
+                },
             AssetImage(
               'assets/images/google.png',
             ),
@@ -281,6 +299,36 @@ class LogInState extends State<LogInScreen> {
         print('Wrong password provided for that user.');
       }
     }
+  }
+
+
+  Future<String> signInWithGoogle() async {
+    await Firebase.initializeApp();
+
+    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+    final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
+
+    final AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleSignInAuthentication.accessToken,
+      idToken: googleSignInAuthentication.idToken,
+    );
+
+    final UserCredential authResult = await _auth.signInWithCredential(credential);
+    final User user = authResult.user;
+
+    if (user != null) {
+      assert(!user.isAnonymous);
+      assert(await user.getIdToken() != null);
+
+      final User currentUser = _auth.currentUser;
+      assert(user.uid == currentUser.uid);
+
+      print('signInWithGoogle succeeded: $user');
+
+      return '$user';
+    }
+
+    return null;
   }
 
   @override
