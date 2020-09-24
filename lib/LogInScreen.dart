@@ -1,16 +1,33 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/utilities/constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'SharedPreferences.dart';
+
 
 class LogInScreen extends StatefulWidget {
 
   @override
   LogInState createState() => LogInState();
+
 }
 
 class LogInState extends State<LogInScreen> {
   bool _rememberMe = false;
+
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    Firebase.initializeApp().whenComplete(() {
+      setState(() {});
+    });
+  }
 
   Widget _buildEmailTF() {
     return Column(
@@ -26,6 +43,7 @@ class LogInState extends State<LogInScreen> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
+            controller: _emailController,
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(
               color: Colors.white,
@@ -61,6 +79,7 @@ class LogInState extends State<LogInScreen> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
+            controller: _passwordController,
             obscureText: true,
             style: TextStyle(
               color: Colors.white,
@@ -129,7 +148,9 @@ class LogInState extends State<LogInScreen> {
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: () => print('Login Button Pressed'),
+        onPressed: () {
+          _signInWithEmailAndPassword();
+        },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
@@ -241,6 +262,25 @@ class LogInState extends State<LogInScreen> {
         ),
       ),
     );
+  }
+
+  void _signInWithEmailAndPassword() async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _emailController.text,
+          password: _passwordController.text
+      );
+      Navigator.push(context, MaterialPageRoute(
+          builder: (context) => SharedPreferencesScreen()
+      ),
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
+    }
   }
 
   @override
