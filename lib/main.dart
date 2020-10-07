@@ -174,20 +174,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
               ),
-              ButtonTheme(
-                buttonColor: Color(0xFF031e39),
-                child: FlatButton(
-                  color: Colors.blueGrey, //Color(0xFF81A483),
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => BoardScreen()
-                    ),
-                    );
-                  },
-                  child: Text('Board',style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              )
             ],
           ),
         ),
