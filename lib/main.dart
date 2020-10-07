@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/BoardScreen.dart';
 import 'package:flutter_app/CarouselVerticalScreen.dart';
 import 'package:flutter_app/LogInScreen.dart';
+import 'package:flutter_app/push_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_app/generated/l10n.dart';
-
-import 'package:firebase_messaging/firebase_messaging.dart';
 
 
 import 'CarouselScreen.dart';
@@ -23,6 +22,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    PushNotificationsManager();
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
