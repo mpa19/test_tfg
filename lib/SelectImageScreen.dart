@@ -32,18 +32,22 @@ class _SelectImageState extends State<SelectImageScreen> {
       body: Center(
         child: CircleAvatar(
           radius: 100,
-          backgroundColor: Color(0xff476cfb),
-          child: ClipOval(
-            child: SizedBox(
-              width: 180,
-              height: 180,
-                child: _image == null
-                    ? Image.network("https://lh3.googleusercontent.com/proxy/OmGN2Zwo356GOtR3VG8QRmzV5DGyp2lyUSTi2PCIv6O_IQTTuigtfflNKqrKJSM3tnZ6_0M03ggCf5M93hO0zLro1xOUcw9r2BAswKdFtPaMDim60UIVmLQ",
-                    fit: BoxFit.fill
-                    )
-                    : Image.file(_image)
+          backgroundColor: Colors.red,
+          child: CircleAvatar(
+              radius: 70,
+              backgroundColor: Color(0xff476cfb),
+            child: ClipOval(
+              child: SizedBox(
+                  width: 180,
+                  height: 180,
+                  child: _image == null
+                      ? Image.asset('assets/images/defaultuser.png',
+                      fit: BoxFit.fill
+                  )
+                      : Image.file(_image)
+              ),
             ),
-          ),
+          )
         )
       ),
       floatingActionButton: FloatingActionButton(
