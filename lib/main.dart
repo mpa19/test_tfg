@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/BoardScreen.dart';
 import 'package:flutter_app/CarouselVerticalScreen.dart';
-import 'package:flutter_app/LogInScreen.dart';
-import 'package:flutter_app/push_notifications.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_app/generated/l10n.dart';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'CarouselScreen.dart';
 import 'SearchScreen.dart';
@@ -16,39 +11,7 @@ import 'SharedPreferences.dart';
 import 'TabMenuScreen.dart';
 import 'generated/l10n.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-
-
-  @override
-  Widget build(BuildContext context) {
-    PushNotificationsManager();
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        S.delegate,
-      ],
-      supportedLocales: S.delegate.supportedLocales,
-      home: MyHomePage(title: 'Demo'),
-    );
-  }
-}
-
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -93,8 +56,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
+          title: Text("MAIN"),
         ),
+
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -182,20 +146,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Text('Carousel Vertical Images',style: TextStyle(color: Colors.white),
                     ),
                   )
-              ),
-              ButtonTheme(
-                  buttonColor: Color(0xFF031e39),
-                  child: FlatButton(
-                    color: Colors.blueGrey, //Color(0xFF81A483),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => LogInScreen()
-                      ),
-                      );
-                    },
-                    child: Text('Log in',style: TextStyle(color: Colors.white),
-                    ),
-                  ),
               ),
               ButtonTheme(
                 buttonColor: Color(0xFF031e39),
