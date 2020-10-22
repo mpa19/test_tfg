@@ -5,6 +5,7 @@ class Mysql {
       user = 'root',
       password = '',
       db = 'tfg';
+
   static int port = 3306;
 
   Mysql();
