@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/BoardScreen.dart';
 import 'package:flutter_app/CarouselVerticalScreen.dart';
 import 'package:flutter_app/generated/l10n.dart';
+import 'package:flutter_app/mysql.dart';
 
 
 import 'CarouselScreen.dart';
@@ -19,6 +20,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+
+
   /*final FirebaseMessaging _fcm = FirebaseMessaging();
 
   @override
@@ -158,6 +162,33 @@ class _MyHomePageState extends State<MyHomePage> {
                   );
                 },
                 child: Text('Board',style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+            ButtonTheme(
+              buttonColor: Color(0xFF031e39),
+              child: FlatButton(
+                color: Colors.blueGrey, //Color(0xFF81A483),
+                onPressed: () {
+                  var db = new Mysql();
+                  var mail = '';
+
+
+                    db.getConnection().then((conn) {
+                      String sql = 'SELECT userName FROM `user`';
+                      conn.query(sql).then((results) {
+                        for(var row in results){
+                          setState(() {
+                            mail = row[0];
+                          });
+                        }
+                      });
+                      conn.close();
+                    });
+
+                  print(mail);
+                },
+                child: Text('Mysql',style: TextStyle(color: Colors.white),
                 ),
               ),
             ),
