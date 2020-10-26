@@ -63,7 +63,16 @@ class _MyHomePageState extends State<MyHomePage> {
   var msg='';
   var dataGet = '';
   Future<List> _getData() async {
-    final response = await http.post("http://10.0.2.2/tienda/getdata.php");
+    final response = await http.post("http://10.0.2.2/wenect/getdata.php");
+
+    /*
+
+    final response = await http.post("http://10.0.2.2/wenect/login.php", body: {
+        "username": user.text,
+        "password": pass.text,
+    });
+
+    */
 
     var datauser = json.decode(response.body);
 
