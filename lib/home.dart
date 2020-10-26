@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/BoardScreen.dart';
 import 'package:flutter_app/CarouselVerticalScreen.dart';
@@ -11,6 +13,8 @@ import 'SelectImageScreen.dart';
 import 'SharedPreferences.dart';
 import 'TabMenuScreen.dart';
 import 'generated/l10n.dart';
+
+import 'package:http/http.dart' as http;
 
 class MyHomePage extends StatefulWidget {
 
@@ -55,6 +59,30 @@ class _MyHomePageState extends State<MyHomePage> {
       },
     );
   }*/
+
+  var msg='';
+  var dataGet;
+  Future<List> _getData() async {
+    final response = await http.post("http://10.0.2.2/tienda/getdata.php");
+
+    var datauser = json.decode(response.body);
+
+    print(datauser);
+    if(datauser.length==0){
+      setState(() {
+        msg="Login Fail";
+      });
+    }else{
+      for(var row in datauser){
+        setState(() {
+          dataGet = row['user_name'];
+          print(dataGet);
+        });
+      }
+    }
+
+    return datauser;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -170,7 +198,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: FlatButton(
                 color: Colors.blueGrey, //Color(0xFF81A483),
                 onPressed: () {
-                  var db = new Mysql();
+                  /*var db = new Mysql();
                   var mail = '';
 
 
@@ -186,7 +214,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       conn.close();
                     });
 
-                  print(mail);
+                  print(mail);*/
+                  _getData();
                 },
                 child: Text('Mysql',style: TextStyle(color: Colors.white),
                 ),
