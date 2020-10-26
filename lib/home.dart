@@ -61,13 +61,13 @@ class _MyHomePageState extends State<MyHomePage> {
   }*/
 
   var msg='';
-  var dataGet;
+  var dataGet = '';
   Future<List> _getData() async {
     final response = await http.post("http://10.0.2.2/tienda/getdata.php");
 
     var datauser = json.decode(response.body);
 
-    print(datauser);
+    //print(datauser);
     if(datauser.length==0){
       setState(() {
         msg="Login Fail";
@@ -75,10 +75,10 @@ class _MyHomePageState extends State<MyHomePage> {
     }else{
       for(var row in datauser){
         setState(() {
-          dataGet = row['user_name'];
-          print(dataGet);
+          dataGet += row['user_name'] + '\n';
         });
       }
+
     }
 
     return datauser;
@@ -197,7 +197,7 @@ class _MyHomePageState extends State<MyHomePage> {
               buttonColor: Color(0xFF031e39),
               child: FlatButton(
                 color: Colors.blueGrey, //Color(0xFF81A483),
-                onPressed: () {
+                onPressed: () async {
                   /*var db = new Mysql();
                   var mail = '';
 
@@ -215,7 +215,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     });
 
                   print(mail);*/
-                  _getData();
+                  await _getData();
+                  print(dataGet);
+
                 },
                 child: Text('Mysql',style: TextStyle(color: Colors.white),
                 ),
