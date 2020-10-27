@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/BoardScreen.dart';
 import 'package:flutter_app/CarouselVerticalScreen.dart';
 import 'package:flutter_app/generated/l10n.dart';
-import 'package:flutter_app/mysql.dart';
-
 
 import 'CarouselScreen.dart';
 import 'SearchScreen.dart';
@@ -63,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
   var msg='';
   var dataGet = '';
   Future<List> _getData() async {
-    final response = await http.post("http://10.0.2.2/wenect/getdata.php");
+    final response = await http.post("https://www.martabatalla.com/flutter/wenect/getdata.php");
 
     /*
 
@@ -84,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }else{
       for(var row in datauser){
         setState(() {
-          dataGet += row['user_name'] + '\n';
+          dataGet += row['user_1'] + '\n';
         });
       }
 
@@ -207,23 +205,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: FlatButton(
                 color: Colors.blueGrey, //Color(0xFF81A483),
                 onPressed: () async {
-                  /*var db = new Mysql();
-                  var mail = '';
 
-
-                    db.getConnection().then((conn) {
-                      String sql = 'SELECT userName FROM `user`';
-                      conn.query(sql).then((results) {
-                        for(var row in results){
-                          setState(() {
-                            mail = row[0];
-                          });
-                        }
-                      });
-                      conn.close();
-                    });
-
-                  print(mail);*/
                   await _getData();
                   print(dataGet);
 
