@@ -1,8 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/BoardScreen.dart';
 import 'package:flutter_app/CarouselVerticalScreen.dart';
+import 'package:flutter_app/CommonFriendsScreen.dart';
 import 'package:flutter_app/generated/l10n.dart';
 
 import 'CarouselScreen.dart';
@@ -12,7 +11,6 @@ import 'SharedPreferences.dart';
 import 'TabMenuScreen.dart';
 import 'generated/l10n.dart';
 
-import 'package:http/http.dart' as http;
 
 class MyHomePage extends StatefulWidget {
 
@@ -58,38 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }*/
 
-  var msg='';
-  var dataGet = '';
-  Future<List> _getData() async {
-    final response = await http.post("https://www.martabatalla.com/flutter/wenect/getdata.php");
 
-    /*
-
-    final response = await http.post("http://10.0.2.2/wenect/login.php", body: {
-        "username": user.text,
-        "password": pass.text,
-    });
-
-    */
-
-    var datauser = json.decode(response.body);
-
-    //print(datauser);
-    if(datauser.length==0){
-      setState(() {
-        msg="Login Fail";
-      });
-    }else{
-      for(var row in datauser){
-        setState(() {
-          dataGet += row['user_1'] + '\n';
-        });
-      }
-
-    }
-
-    return datauser;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -205,12 +172,15 @@ class _MyHomePageState extends State<MyHomePage> {
               child: FlatButton(
                 color: Colors.blueGrey, //Color(0xFF81A483),
                 onPressed: () async {
-
-                  await _getData();
-                  print(dataGet);
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => CommonFriendsScreen()
+                  ),
+                  );
+                  /*await _getData();
+                  print(dataGet);*/
 
                 },
-                child: Text('Mysql',style: TextStyle(color: Colors.white),
+                child: Text('Common friends ',style: TextStyle(color: Colors.white),
                 ),
               ),
             ),
