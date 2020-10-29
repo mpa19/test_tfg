@@ -20,30 +20,20 @@ class _SelectImageState extends State<SelectImageScreen> {
   File _image;
   final picker = ImagePicker();
   String msg = '';
+
   Future<List> _uploadImage() async {
     final response = await http.post(
         "https://www.martabatalla.com/flutter/wenect/profileImages/uploadImage.php",
         body: {
           "image": base64Encode(_image.readAsBytesSync()),
-          "name": "1"+basename(_image.path)
+          "name": "1"+ extension(basename(_image.path)),
+          "id": "1"
         });
-
-    var datauser = json.decode(response.body);
-
-    if(datauser.length==0){
-      setState(() {
-        msg="Upload Fail";
-      });
-    }else{
-      msg="Upload Successfully";
-    }
-    return datauser;
   }
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery); // or ImageSource.camera to do a photo
 
-    // /public_html/flutter/wenect/profileImages
     setState(() {
       _image = File(pickedFile.path);
     });
