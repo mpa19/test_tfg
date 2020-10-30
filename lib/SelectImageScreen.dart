@@ -20,23 +20,32 @@ class _SelectImageState extends State<SelectImageScreen> {
   File _image;
   final picker = ImagePicker();
   String msg = '';
+  bool update = false;
+  bool gotImage = false;
+
+  @override
+  void initState() {
+    
+  }
 
   Future<List> _uploadImage() async {
-    final response = await http.post(
+    await http.post(
         "https://www.martabatalla.com/flutter/wenect/profileImages/uploadImage.php",
         body: {
           "image": base64Encode(_image.readAsBytesSync()),
           "name": "1"+ extension(basename(_image.path)),
-          "id": "1"
         });
   }
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery); // or ImageSource.camera to do a photo
 
-    setState(() {
-      _image = File(pickedFile.path);
-    });
+    if(pickedFile.path != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+        update = true;
+      });
+    }
   }
 
   @override
@@ -59,11 +68,13 @@ class _SelectImageState extends State<SelectImageScreen> {
                       child: SizedBox(
                           width: 180,
                           height: 180,
-                          child: _image == null
-                              ? Image.asset('assets/images/defaultuser.png',
-                              fit: BoxFit.fill
-                          )
-                              : Image.file(_image)
+                          child: gotImage == true
+                              ? Image.network("https://www.martabatalla.com/flutter/wenect/profileImages/1.jpg")
+                              : _image == null
+                                ? Image.asset('assets/images/defaultuser.png',
+                                fit: BoxFit.fill
+                                ) 
+                                : Image.file(_image)
                       ),
                     ),
                   )
@@ -73,7 +84,9 @@ class _SelectImageState extends State<SelectImageScreen> {
                   child: FlatButton(
                     color: Colors.blueGrey, //Color(0xFF81A483),
                     onPressed: () {
-                      _uploadImage();
+                      if(update) _uploadImage();
+
+                      update = false;
                     },
                     child: Text("Upload Image", style: TextStyle(color: Colors.white),
                     ),
