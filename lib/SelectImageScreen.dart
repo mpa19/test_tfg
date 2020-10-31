@@ -22,11 +22,27 @@ class _SelectImageState extends State<SelectImageScreen> {
   String msg = '';
   bool update = false;
   bool gotImage = false;
+  var dataGet = '';
 
   @override
   void initState() {
-    
+    _getImageUrl();
   }
+
+  Future<List> _getImageUrl() async {
+    final response = await http.post("https://www.martabatalla.com/flutter/wenect/selectImage.php",
+      body: {
+        "id": "1"
+      });
+
+    var dataUser = json.decode(response.body);
+
+    if(dataUser.length>0){
+      dataGet = dataUser['user_image'];
+      gotImage = true;
+      }
+    }
+
 
   Future<List> _uploadImage() async {
     await http.post(
@@ -34,6 +50,7 @@ class _SelectImageState extends State<SelectImageScreen> {
         body: {
           "image": base64Encode(_image.readAsBytesSync()),
           "name": "1"+ extension(basename(_image.path)),
+          "id": "1"
         });
   }
 
@@ -69,11 +86,11 @@ class _SelectImageState extends State<SelectImageScreen> {
                           width: 180,
                           height: 180,
                           child: gotImage == true
-                              ? Image.network("https://www.martabatalla.com/flutter/wenect/profileImages/1.jpg")
+                              ? Image.network("https://www.martabatalla.com/flutter/wenect/profileImages/" + dataGet)
                               : _image == null
                                 ? Image.asset('assets/images/defaultuser.png',
-                                fit: BoxFit.fill
-                                ) 
+                                    fit: BoxFit.fill
+                                  )
                                 : Image.file(_image)
                       ),
                     ),
