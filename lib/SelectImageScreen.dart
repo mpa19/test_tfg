@@ -43,6 +43,14 @@ class _SelectImageState extends State<SelectImageScreen> {
       }
     }
 
+  Future<List> _uploadImageMysql() async {
+    await http.post(
+        "https://www.martabatalla.com/flutter/wenect/profileImages/uploadMysql.php",
+        body: {
+          "id": "1"
+        });
+  }
+
 
   Future<List> _uploadImage() async {
     await http.post(
@@ -61,6 +69,7 @@ class _SelectImageState extends State<SelectImageScreen> {
       setState(() {
         _image = File(pickedFile.path);
         update = true;
+        _uploadImageMysql();
       });
     }
   }
