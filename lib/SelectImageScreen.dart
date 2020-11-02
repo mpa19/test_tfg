@@ -49,7 +49,7 @@ class _SelectImageState extends State<SelectImageScreen> {
 
   Future<List> _uploadImageMysql() async {
     await http.post(
-        "https://www.martabatalla.com/flutter/wenect/profileImages/uploadMysql.php",
+        "https://www.martabatalla.com/flutter/wenect/profileImages/updateMysql.php",
         body: {
           "name": "2"+ extension(basename(_image.path)),
           "id": "2"
@@ -74,7 +74,6 @@ class _SelectImageState extends State<SelectImageScreen> {
       setState(() {
         _image = File(pickedFile.path);
         update = true;
-        _uploadImageMysql();
       });
     }
   }
@@ -115,7 +114,10 @@ class _SelectImageState extends State<SelectImageScreen> {
                   child: FlatButton(
                     color: Colors.blueGrey, //Color(0xFF81A483),
                     onPressed: () {
-                      if(update) _uploadImage();
+                      if(update){
+                        _uploadImage();
+                        _uploadImageMysql();
+                      }
 
                       update = false;
                     },
