@@ -32,7 +32,7 @@ class _SelectImageState extends State<SelectImageScreen> {
   Future<List> _getImageUrl() async {
     final response = await http.post("https://www.martabatalla.com/flutter/wenect/profileImages/selectImage.php",
       body: {
-        "id": "1"
+        "id": "2"
       });
 
     var dataUser = json.decode(response.body);
@@ -41,7 +41,7 @@ class _SelectImageState extends State<SelectImageScreen> {
       for(var row in dataUser) {
         setState(() {
           dataGet = row['user_image'];
-          gotImage = true;
+          if(dataGet!="") gotImage = true;
         });
       }
     }
@@ -51,7 +51,8 @@ class _SelectImageState extends State<SelectImageScreen> {
     await http.post(
         "https://www.martabatalla.com/flutter/wenect/profileImages/uploadMysql.php",
         body: {
-          "id": "1"
+          "name": "2"+ extension(basename(_image.path)),
+          "id": "2"
         });
   }
 
@@ -61,8 +62,8 @@ class _SelectImageState extends State<SelectImageScreen> {
         "https://www.martabatalla.com/flutter/wenect/profileImages/uploadImage.php",
         body: {
           "image": base64Encode(_image.readAsBytesSync()),
-          "name": "1"+ extension(basename(_image.path)),
-          "id": "1"
+          "name": "2"+ extension(basename(_image.path)),
+          "id": "2"
         });
   }
 
