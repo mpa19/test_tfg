@@ -30,7 +30,7 @@ class _SelectImageState extends State<SelectImageScreen> {
   }
 
   Future<List> _getImageUrl() async {
-    final response = await http.post("https://www.martabatalla.com/flutter/wenect/selectImage.php",
+    final response = await http.post("https://www.martabatalla.com/flutter/wenect/profileImages/selectImage.php",
       body: {
         "id": "1"
       });
@@ -38,10 +38,14 @@ class _SelectImageState extends State<SelectImageScreen> {
     var dataUser = json.decode(response.body);
 
     if(dataUser.length>0){
-      dataGet = dataUser['user_image'];
-      gotImage = true;
+      for(var row in dataUser) {
+        setState(() {
+          dataGet = row['user_image'];
+          gotImage = true;
+        });
       }
     }
+  }
 
   Future<List> _uploadImageMysql() async {
     await http.post(
