@@ -101,7 +101,7 @@ class SignUpState extends State<SignUpScreen> {
         Padding(
           padding: EdgeInsets.fromLTRB(0, 6, 0, 0),
           child: Text(
-              'Password dosen´t match',
+              'Password doesn´t match',
               style: TextStyle(
                 color: Colors.red,
                 fontFamily: 'OpenSans',
