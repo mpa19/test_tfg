@@ -1,7 +1,8 @@
-import 'package:firebase_core/firebase_core.dart';
+//import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app/SignUpScreen.dart';
 import 'package:flutter_app/utilities/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -45,10 +46,10 @@ class LogInState extends State<LogInScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  FirebaseAuth _auth;
+  //FirebaseAuth _auth;
   GoogleSignIn googleSignIn;
 
-  @override
+  /*@override
   void initState() {
     super.initState();
     Firebase.initializeApp().whenComplete(() {
@@ -56,7 +57,7 @@ class LogInState extends State<LogInScreen> {
       _auth = FirebaseAuth.instance;
       googleSignIn = GoogleSignIn();
     });
-  }
+  }*/
 
 
 
@@ -201,7 +202,7 @@ class LogInState extends State<LogInScreen> {
     );
   }
 
-  Widget _buildSignInWithText() {
+  /*Widget _buildSignInWithText() {
     return Column(
       children: <Widget>[
         Text(
@@ -218,9 +219,9 @@ class LogInState extends State<LogInScreen> {
         ),
       ],
     );
-  }
+  }*/
 
-  Widget _buildSocialBtn(Function onTap, AssetImage logo) {
+  /*Widget _buildSocialBtn(Function onTap, AssetImage logo) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -242,9 +243,9 @@ class LogInState extends State<LogInScreen> {
         ),
       ),
     );
-  }
+  }*/
 
-  Widget _buildSocialBtnRow() {
+  /*Widget _buildSocialBtnRow() {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 30.0),
       child: Row(
@@ -279,11 +280,16 @@ class LogInState extends State<LogInScreen> {
         ],
       ),
     );
-  }
+  }*/
 
   Widget _buildSignupBtn() {
     return GestureDetector(
-      onTap: () => print('Sign Up Button Pressed'),
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(
+            builder: (context) => SignUpScreen()
+        ),
+        );
+      },
       child: RichText(
         text: TextSpan(
           children: [
@@ -329,7 +335,7 @@ class LogInState extends State<LogInScreen> {
   }
 
 
-  Future<String> signInWithGoogle() async {
+  /*Future<String> signInWithGoogle() async {
     await Firebase.initializeApp();
 
     final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
@@ -356,7 +362,7 @@ class LogInState extends State<LogInScreen> {
     }
 
     return null;
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -413,8 +419,8 @@ class LogInState extends State<LogInScreen> {
                       _buildForgotPasswordBtn(),
                       _buildRememberMeCheckbox(),
                       _buildLoginBtn(),
-                      _buildSignInWithText(),
-                      _buildSocialBtnRow(),
+                      //_buildSignInWithText(),
+                      //_buildSocialBtnRow(),
                       _buildSignupBtn(),
                     ],
                   ),
