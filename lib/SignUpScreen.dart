@@ -18,6 +18,7 @@ class SignUpState extends State<SignUpScreen> {
   bool _emailEmpty = false;
   bool _passwordEmpty = false;
   bool _passwordMatch = false;
+  bool _emailInUse = false;
 
 
 
@@ -91,6 +92,35 @@ class SignUpState extends State<SignUpScreen> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _emailUsed(){
+    return Container(
+      color: Colors.amberAccent,
+      width: double.infinity,
+      padding: EdgeInsets.all(5.0),
+      child: Row(
+        children: [
+          SizedBox(height: 30.0),
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: Icon(Icons.error_outline),
+          ),
+          Expanded(
+              child: Text("Email already registered")
+          ),
+          IconButton(
+              icon: Icon(Icons.close),
+              onPressed: () {
+                print("AA");
+                setState(() {
+                  _emailInUse = false;
+                });
+              }
+          )
+        ],
+      ),
     );
   }
 
@@ -239,6 +269,7 @@ class SignUpState extends State<SignUpScreen> {
       _emailEmpty = false;
       _passwordEmpty = false;
       _passwordMatch = false;
+      _emailInUse = false;
 
       if(_emailController.text == "" || _passwordController.text == "") {
         setState(() {
@@ -254,6 +285,9 @@ class SignUpState extends State<SignUpScreen> {
           ),
         );*/
       } else if(!_checkEmail()) {
+        setState((){
+          _emailInUse = true;
+        });
 
       } else if(_passwordController.text != _passwordRepeatController.text) {
         setState(() {
@@ -266,7 +300,7 @@ class SignUpState extends State<SignUpScreen> {
   }
 
   bool _checkEmail(){
-    return true;
+    return false;
   }
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -298,6 +332,16 @@ class SignUpState extends State<SignUpScreen> {
                 ),
               ),
               Container(
+                  height: double.infinity,
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(height: 50.0),
+
+                      if(_emailInUse) _emailUsed(),
+                    ]
+                  )
+              ),
+              Container(
                 height: double.infinity,
                 child: SingleChildScrollView(
                   physics: AlwaysScrollableScrollPhysics(),
@@ -305,6 +349,7 @@ class SignUpState extends State<SignUpScreen> {
                     horizontal: 40.0,
                     vertical: 120.0,
                   ),
+
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -320,9 +365,7 @@ class SignUpState extends State<SignUpScreen> {
                       SizedBox(height: 30.0),
                       _buildEmailTF(),
                       if(_emailEmpty) _errorEmail(),
-                      SizedBox(
-                        height: 30.0,
-                      ),
+                      SizedBox(height: 30.0),
                       _buildPasswordTF(),
                       if(_passwordEmpty) _errorPassowrd(),
                       _buildPasswordTFRepeat(),
