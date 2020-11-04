@@ -15,6 +15,10 @@ class SignUpState extends State<SignUpScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _passwordRepeatController = TextEditingController();
+  bool _emailEmpty = false;
+  bool _passwordEmpty = false;
+  bool _passwordMatch = false;
+
 
 
   Widget _buildEmailTF() {
@@ -30,7 +34,7 @@ class SignUpState extends State<SignUpScreen> {
           alignment: Alignment.centerLeft,
           decoration: kBoxDecorationStyle,
           height: 60.0,
-          child: TextField(
+          child:  TextField(
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(
@@ -47,6 +51,61 @@ class SignUpState extends State<SignUpScreen> {
               hintText: 'Enter your Email',
               hintStyle: kHintTextStyle,
             ),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _errorEmail(){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 6, 0, 0),
+          child: Text(
+              'Email can´t be empty',
+              style: TextStyle(
+                color: Colors.red,
+                fontFamily: 'OpenSans',
+              )
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _errorPassowrd(){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 6, 0, 4),
+          child: Text(
+              'Password can´t be empty',
+              style: TextStyle(
+                color: Colors.red,
+                fontFamily: 'OpenSans',
+              )
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _errorPassowrdMatch(){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 6, 0, 0),
+          child: Text(
+              'Password dosen´t match',
+              style: TextStyle(
+                color: Colors.red,
+                fontFamily: 'OpenSans',
+              )
           ),
         ),
       ],
@@ -176,21 +235,34 @@ class SignUpState extends State<SignUpScreen> {
     );
   }
 
-  void _signUpCheck() async {
-      if(_emailController.text == "" || _passwordController.text == "" || _passwordRepeatController.text == "") {
+  void _signUpCheck() {
+      _emailEmpty = false;
+      _passwordEmpty = false;
+      _passwordMatch = false;
 
-        _scaffoldKey.currentState.showSnackBar(
+      if(_emailController.text == "" || _passwordController.text == "") {
+        setState(() {
+          if(_emailController.text == "") _emailEmpty = true;
+          if(_passwordController.text == "") _passwordEmpty = true;
+        });
+
+        /*_scaffoldKey.currentState.showSnackBar(
           SnackBar(
             content: const Text('Fill in all the fields'),
             action: SnackBarAction(
                 label: 'UNDO', onPressed: _scaffoldKey.currentState.hideCurrentSnackBar),
           ),
-        );
+        );*/
       } else if(!_checkEmail()) {
 
       } else if(_passwordController.text != _passwordRepeatController.text) {
-
+        setState(() {
+          _passwordMatch = true;
+        });
       }
+
+      setState((){});
+
   }
 
   bool _checkEmail(){
@@ -247,11 +319,14 @@ class SignUpState extends State<SignUpScreen> {
                       ),
                       SizedBox(height: 30.0),
                       _buildEmailTF(),
+                      if(_emailEmpty) _errorEmail(),
                       SizedBox(
                         height: 30.0,
                       ),
                       _buildPasswordTF(),
+                      if(_passwordEmpty) _errorPassowrd(),
                       _buildPasswordTFRepeat(),
+                      if(_passwordMatch) _errorPassowrdMatch(),
                       _buildSignUpBtn(),
                       _buildCancelBtn()
                     ],
