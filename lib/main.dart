@@ -401,14 +401,8 @@ class LogInState extends State<LogInScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text(
-                        'Sign In',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'OpenSans',
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      Image.asset('assets/images/logo.png',
+                          fit: BoxFit.fill
                       ),
                       SizedBox(height: 30.0),
                       _buildEmailTF(),

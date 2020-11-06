@@ -62,7 +62,6 @@ class SignUpState extends State<SignUpScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-
         Padding(
           padding: EdgeInsets.fromLTRB(0, 6, 0, 0),
           child: Text(
@@ -113,7 +112,6 @@ class SignUpState extends State<SignUpScreen> {
           IconButton(
               icon: Icon(Icons.close),
               onPressed: () {
-                print("AA");
                 setState(() {
                   _emailInUse = false;
                 });
@@ -300,7 +298,8 @@ class SignUpState extends State<SignUpScreen> {
   }
 
   bool _checkEmail(){
-    return false;
+    bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(_emailController.text);
+    return emailValid;
   }
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -333,49 +332,43 @@ class SignUpState extends State<SignUpScreen> {
               ),
               Container(
                   height: double.infinity,
-                  child: Column(
-                    children: <Widget>[
-                      SizedBox(height: 50.0),
-
-                      if(_emailInUse) _emailUsed(),
+                  child: SingleChildScrollView(
+                      physics: AlwaysScrollableScrollPhysics(),
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(height: 80.0),
+                          if(_emailInUse) _emailUsed(),
+                          Container(
+                            padding: const EdgeInsets.all(40),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  'Sign Up',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: 'OpenSans',
+                                    fontSize: 30.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(height: 30.0),
+                                _buildEmailTF(),
+                                if(_emailEmpty) _errorEmail(),
+                                SizedBox(height: 30.0),
+                                _buildPasswordTF(),
+                                if(_passwordEmpty) _errorPassowrd(),
+                                _buildPasswordTFRepeat(),
+                                if(_passwordMatch) _errorPassowrdMatch(),
+                                _buildSignUpBtn(),
+                                _buildCancelBtn()
+                              ],
+                            ),
+                          )
                     ]
                   )
               ),
-              Container(
-                height: double.infinity,
-                child: SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 40.0,
-                    vertical: 120.0,
-                  ),
-
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        'Sign Up',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'OpenSans',
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: 30.0),
-                      _buildEmailTF(),
-                      if(_emailEmpty) _errorEmail(),
-                      SizedBox(height: 30.0),
-                      _buildPasswordTF(),
-                      if(_passwordEmpty) _errorPassowrd(),
-                      _buildPasswordTFRepeat(),
-                      if(_passwordMatch) _errorPassowrdMatch(),
-                      _buildSignUpBtn(),
-                      _buildCancelBtn()
-                    ],
-                  ),
-                ),
-              )
+              ),
             ],
           ),
         ),
