@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/utilities/constants.dart';
+
+import 'package:http/http.dart' as http;
+
 
 class SignUpScreen extends StatefulWidget {
 
@@ -15,11 +20,14 @@ class SignUpState extends State<SignUpScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _passwordRepeatController = TextEditingController();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   bool _emailEmpty = false;
   bool _passwordEmpty = false;
   bool _passwordMatch = false;
   bool _emailInUse = false;
 
+  String errorMessageEmail = "";
 
 
   Widget _buildEmailTF() {
@@ -76,7 +84,7 @@ class SignUpState extends State<SignUpScreen> {
     );
   }
 
-  Widget _errorPassowrd(){
+  Widget _errorPassword(){
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -107,7 +115,7 @@ class SignUpState extends State<SignUpScreen> {
             child: Icon(Icons.error_outline),
           ),
           Expanded(
-              child: Text("Email already registered")
+              child: Text(errorMessageEmail)
           ),
           IconButton(
               icon: Icon(Icons.close),
@@ -263,7 +271,7 @@ class SignUpState extends State<SignUpScreen> {
     );
   }
 
-  void _signUpCheck() {
+  _signUpCheck()  async {
       _emailEmpty = false;
       _passwordEmpty = false;
       _passwordMatch = false;
@@ -275,21 +283,16 @@ class SignUpState extends State<SignUpScreen> {
           if(_passwordController.text == "") _passwordEmpty = true;
         });
 
-        /*_scaffoldKey.currentState.showSnackBar(
-          SnackBar(
-            content: const Text('Fill in all the fields'),
-            action: SnackBarAction(
-                label: 'UNDO', onPressed: _scaffoldKey.currentState.hideCurrentSnackBar),
-          ),
-        );*/
-      } else if(!_checkEmail()) {
-        setState((){
-          _emailInUse = true;
-        });
-
       } else if(_passwordController.text != _passwordRepeatController.text) {
         setState(() {
           _passwordMatch = true;
+        });
+      } else if(_checkEmail()) {
+        await _checkUser();
+      } else {
+        setState(() {
+          errorMessageEmail = "Bad Message Format";
+          _emailInUse = true;
         });
       }
 
@@ -297,11 +300,29 @@ class SignUpState extends State<SignUpScreen> {
 
   }
 
-  bool _checkEmail(){
+  _checkUser() async {
+    final response = await http.post("https://www.martabatalla.com/flutter/wenect/selectUser.php",
+        body: {
+          "email": _emailController.text
+        });
+
+    var dataUser = json.decode(response.body);
+
+    if(dataUser.length==0){
+      // Register user to database
+
+    } else{
+      setState(() {
+        errorMessageEmail = "Email already registered";
+        _emailInUse = true;
+      });
+    }
+  }
+
+  bool _checkEmail()  {
     bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(_emailController.text);
     return emailValid;
   }
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -357,7 +378,7 @@ class SignUpState extends State<SignUpScreen> {
                                 if(_emailEmpty) _errorEmail(),
                                 SizedBox(height: 30.0),
                                 _buildPasswordTF(),
-                                if(_passwordEmpty) _errorPassowrd(),
+                                if(_passwordEmpty) _errorPassword(),
                                 _buildPasswordTFRepeat(),
                                 if(_passwordMatch) _errorPassowrdMatch(),
                                 _buildSignUpBtn(),
