@@ -29,6 +29,7 @@ class SignUpState extends State<SignUpScreen> {
 
   String errorMessageEmail = "";
 
+  var _list;
 
   Widget _buildEmailTF() {
     return Column(
@@ -300,6 +301,16 @@ class SignUpState extends State<SignUpScreen> {
 
   }
 
+  _codePassword() async {
+    final response = await http.post("https://www.martabatalla.com/flutter/wenect/addUser.php",
+        body: {
+          "password": _passwordController.text
+        });
+
+    var dataUser = json.decode(response.body);
+    _list = dataUser[0].values.toList();
+  }
+
   _checkUser() async {
     final response = await http.post("https://www.martabatalla.com/flutter/wenect/selectUser.php",
         body: {
@@ -309,8 +320,7 @@ class SignUpState extends State<SignUpScreen> {
     var dataUser = json.decode(response.body);
 
     if(dataUser.length==0){
-      // Register user to database
-
+      await _codePassword();
     } else{
       setState(() {
         errorMessageEmail = "Email already registered";
