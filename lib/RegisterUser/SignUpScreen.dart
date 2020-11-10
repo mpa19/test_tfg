@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app/RegisterUser/CreateProfileScreen.dart';
 import 'package:flutter_app/utilities/constants.dart';
 
 import 'package:http/http.dart' as http;
@@ -232,7 +233,7 @@ class SignUpState extends State<SignUpScreen> {
         ),
         color: Colors.white,
         child: Text(
-          'Sign Up',
+          'Next',
           style: TextStyle(
             color: Color(0xFF527DAA),
             letterSpacing: 1.5,
@@ -245,7 +246,8 @@ class SignUpState extends State<SignUpScreen> {
     );
   }
 
-  Widget _buildCancelBtn() {
+
+  /*Widget _buildCancelBtn() {
     return Container(
       width: double.infinity,
       child: RaisedButton(
@@ -270,7 +272,7 @@ class SignUpState extends State<SignUpScreen> {
         ),
       ),
     );
-  }
+  }*/
 
   _signUpCheck()  async {
       _emailEmpty = false;
@@ -298,7 +300,6 @@ class SignUpState extends State<SignUpScreen> {
       }
 
       setState((){});
-
   }
 
   _codePassword() async {
@@ -309,6 +310,10 @@ class SignUpState extends State<SignUpScreen> {
 
     var dataUser = json.decode(response.body);
     _list = dataUser[0].values.toList();
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => CreateProfileScreen()),
+    );
   }
 
   _checkUser() async {
@@ -392,13 +397,13 @@ class SignUpState extends State<SignUpScreen> {
                                 _buildPasswordTFRepeat(),
                                 if(_passwordMatch) _errorPassowrdMatch(),
                                 _buildSignUpBtn(),
-                                _buildCancelBtn()
+                                //_buildCancelBtn()
                               ],
                             ),
                           )
-                    ]
-                  )
-              ),
+                      ]
+                     )
+                  ),
               ),
             ],
           ),
