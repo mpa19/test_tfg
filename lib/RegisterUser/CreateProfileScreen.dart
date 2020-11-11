@@ -28,10 +28,11 @@ class CreateProfileState extends State<CreateProfileScreen> {
   bool _nameEmpty = false;
   bool _secondNameEmpty = false;
 
-  File _image = null;
+  File _image;
   final picker = ImagePicker();
 
-  String id;
+  final storage = new FlutterSecureStorage();
+
 
   Widget _buildProfileImage(){
     return Container(
@@ -94,7 +95,7 @@ class CreateProfileState extends State<CreateProfileScreen> {
     );
   }
 
-  Future getImage() async {
+  getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery); // or ImageSource.camera to do a photo
 
     if(pickedFile.path != null) {
@@ -176,8 +177,6 @@ class CreateProfileState extends State<CreateProfileScreen> {
     );
   }
 
-  final storage = new FlutterSecureStorage();
-
   _createUserMysql() async {
     await http.post("https://www.martabatalla.com/flutter/wenect/createUser.php",
         body: {
@@ -207,7 +206,7 @@ class CreateProfileState extends State<CreateProfileScreen> {
 
   }
 
-  Future<List> _getIdUser() async {
+  _getIdUser() async {
     final response = await http.post("https://www.martabatalla.com/flutter/wenect/selectUser.php",
         body: {
           "email": await storage.read(key: "email")
@@ -216,28 +215,28 @@ class CreateProfileState extends State<CreateProfileScreen> {
     var dataUser = json.decode(response.body);
 
     if(dataUser.length>0){
-      id = dataUser[0]['user_id'];
+      await storage.write(key: "id", value: dataUser[0]['user_id']);
     }
   }
 
 
-  Future<List> _uploadImageMysql() async {
+  _uploadImageMysql() async {
     await http.post(
         "https://www.martabatalla.com/flutter/wenect/profileImages/updateMysql.php",
         body: {
-          "name": id + extension(basename(_image.path)),
-          "id": id
+          "name": await storage.read(key: "id") + extension(basename(_image.path)),
+          "id": await storage.read(key: "id")
         });
   }
 
 
-  Future<List> _uploadImage() async {
+  _uploadImage() async {
     await http.post(
         "https://www.martabatalla.com/flutter/wenect/profileImages/uploadImage.php",
         body: {
           "image": base64Encode(_image.readAsBytesSync()),
-          "name": id + extension(basename(_image.path)),
-          "id": id
+          "name": await storage.read(key: "id") + extension(basename(_image.path)),
+          "id": await storage.read(key: "id")
         });
   }
 

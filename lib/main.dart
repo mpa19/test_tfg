@@ -1,15 +1,18 @@
-//import 'package:firebase_core/firebase_core.dart';
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'file:///C:/Users/Marc/.AndroidStudio1.3/flutter_app/lib/RegisterUser/SignUpScreen.dart';
 import 'package:flutter_app/utilities/constants.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 import 'generated/l10n.dart';
-import 'home.dart';
+
+import 'package:http/http.dart' as http;
+
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -42,23 +45,16 @@ class LogInScreen extends StatefulWidget {
 
 class LogInState extends State<LogInScreen> {
   bool _rememberMe = false;
+  bool _errorLogin = false;
+  bool _emailEmpty = false;
+  bool _passwordEmpty = false;
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  //FirebaseAuth _auth;
-  GoogleSignIn googleSignIn;
+  final storage = new FlutterSecureStorage();
 
-  /*@override
-  void initState() {
-    super.initState();
-    Firebase.initializeApp().whenComplete(() {
-      setState(() {});
-      _auth = FirebaseAuth.instance;
-      googleSignIn = GoogleSignIn();
-    });
-  }*/
-
+  var _passwordCoded;
 
 
   Widget _buildEmailTF() {
@@ -202,85 +198,6 @@ class LogInState extends State<LogInScreen> {
     );
   }
 
-  /*Widget _buildSignInWithText() {
-    return Column(
-      children: <Widget>[
-        Text(
-          '- OR -',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        SizedBox(height: 20.0),
-        Text(
-          'Sign in with',
-          style: kLabelStyle,
-        ),
-      ],
-    );
-  }*/
-
-  /*Widget _buildSocialBtn(Function onTap, AssetImage logo) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 60.0,
-        width: 60.0,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              offset: Offset(0, 2),
-              blurRadius: 6.0,
-            ),
-          ],
-          image: DecorationImage(
-            image: logo,
-          ),
-        ),
-      ),
-    );
-  }*/
-
-  /*Widget _buildSocialBtnRow() {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 30.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          _buildSocialBtn(
-                () {
-              Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => MyHomePage()
-              ),
-              );
-            },
-            AssetImage(
-              'assets/images/facebook.png',
-            ),
-          ),
-          _buildSocialBtn(
-                () {
-              signInWithGoogle().then((result) {
-                if (result != null) {
-                  Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => MyHomePage()
-                  ),
-                  );
-                }
-              });
-            },
-            AssetImage(
-              'assets/images/google.png',
-            ),
-          ),
-        ],
-      ),
-    );
-  }*/
 
   Widget _buildSignupBtn() {
     return GestureDetector(
@@ -315,54 +232,78 @@ class LogInState extends State<LogInScreen> {
     );
   }
 
-  void _signInWithEmailAndPassword() async {
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _emailController.text,
-          password: _passwordController.text
-      );
-      Navigator.push(context, MaterialPageRoute(
-          builder: (context) => MyHomePage()
+  Widget _loginError(){
+    return Container(
+      color: Colors.amberAccent,
+      width: double.infinity,
+      padding: EdgeInsets.all(5.0),
+      child: Row(
+        children: [
+          SizedBox(height: 30.0),
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: Icon(Icons.error_outline),
+          ),
+          Expanded(
+              child: Text("Email and/or Password incorrects")
+          ),
+          IconButton(
+              icon: Icon(Icons.close),
+              onPressed: () {
+                setState(() {
+                  _errorLogin = false;
+                });
+              }
+          )
+        ],
       ),
-      );
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
+    );
+  }
+
+  _checkUserExist() async {
+    final response = await http.post("https://www.martabatalla.com/flutter/wenect/selectUser.php",
+        body: {
+          "email": _emailController.text,
+          "password": _passwordCoded[0]
+        });
+
+    var dataUser = json.decode(response.body);
+
+    if(dataUser.length>0){
+      await storage.write(key: "id", value: dataUser[0]['user_id']);
+      if(_rememberMe) {
+        await storage.write(key: "email", value: dataUser[0]['user_email']);
+        await storage.write(key: "password", value: dataUser[0]['user_password']);
       }
     }
   }
 
+  _codePassword() async {
+    final response = await http.post("https://www.martabatalla.com/flutter/wenect/createPassword.php",
+        body: {
+          "password": _passwordController.text
+        });
 
-  /*Future<String> signInWithGoogle() async {
-    await Firebase.initializeApp();
+    var dataUser = json.decode(response.body);
+    _passwordCoded = dataUser[0].values.toList();
+  }
 
-    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
-    final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
+  void _signInWithEmailAndPassword() async {
+    _emailEmpty = false;
+    _passwordEmpty = false;
 
-    final AuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleSignInAuthentication.accessToken,
-      idToken: googleSignInAuthentication.idToken,
-    );
-
-    final UserCredential authResult = await _auth.signInWithCredential(credential);
-    final User user = authResult.user;
-
-    if (user != null) {
-      assert(!user.isAnonymous);
-      assert(await user.getIdToken() != null);
-
-      final User currentUser = _auth.currentUser;
-      assert(user.uid == currentUser.uid);
-
-      print('signInWithGoogle succeeded: $user');
-
-      return '$user';
+    if(_emailController.text == "" || _passwordController.text == "") {
+      setState(() {
+        if(_emailController.text == "") _emailEmpty = true;
+        if(_passwordController.text == "") _passwordEmpty = true;
+      });
+    } else {
+      _codePassword();
+      _checkUserExist();
     }
 
-    return null;
-  }*/
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -401,6 +342,8 @@ class LogInState extends State<LogInScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
+                      SizedBox(height: 80.0),
+                      if(_errorLogin) _loginError(),
                       Image.asset('assets/images/logo.png',
                           fit: BoxFit.fill
                       ),
@@ -411,8 +354,6 @@ class LogInState extends State<LogInScreen> {
                       _buildForgotPasswordBtn(),
                       _buildRememberMeCheckbox(),
                       _buildLoginBtn(),
-                      //_buildSignInWithText(),
-                      //_buildSocialBtnRow(),
                       _buildSignupBtn(),
                     ],
                   ),
