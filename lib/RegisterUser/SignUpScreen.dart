@@ -8,6 +8,9 @@ import 'package:flutter_app/utilities/constants.dart';
 
 import 'package:http/http.dart' as http;
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+
 
 class SignUpScreen extends StatefulWidget {
 
@@ -302,14 +305,20 @@ class SignUpState extends State<SignUpScreen> {
       setState((){});
   }
 
+  final storage = new FlutterSecureStorage();
+
   _codePassword() async {
-    final response = await http.post("https://www.martabatalla.com/flutter/wenect/addUser.php",
+    final response = await http.post("https://www.martabatalla.com/flutter/wenect/createPassword.php",
         body: {
           "password": _passwordController.text
         });
 
     var dataUser = json.decode(response.body);
     _list = dataUser[0].values.toList();
+
+    await storage.write(key: "password", value: _list[0]);
+    await storage.write(key: "email", value: _emailController.text);
+
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => CreateProfileScreen()),

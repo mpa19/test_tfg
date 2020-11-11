@@ -1,10 +1,16 @@
 import 'dart:io';
+import 'dart:convert';
+
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:path/path.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/utilities/constants.dart';
 import 'package:image_picker/image_picker.dart';
+
+import 'package:http/http.dart' as http;
 
 
 class CreateProfileScreen extends StatefulWidget {
@@ -22,8 +28,10 @@ class CreateProfileState extends State<CreateProfileScreen> {
   bool _nameEmpty = false;
   bool _secondNameEmpty = false;
 
-  File _image;
+  File _image = null;
   final picker = ImagePicker();
+
+  String id;
 
   Widget _buildProfileImage(){
     return Container(
@@ -32,7 +40,7 @@ class CreateProfileState extends State<CreateProfileScreen> {
         child: Column(
                 children: <Widget>[
                   CircleAvatar(
-                    radius: 100,
+                    radius: 95,
                     backgroundColor: Colors.blue[900],
                     child: ClipOval(
                       child: SizedBox(
@@ -42,11 +50,14 @@ class CreateProfileState extends State<CreateProfileScreen> {
                               ? Image.asset('assets/images/defaultuser.png',
                               fit: BoxFit.fill
                           )
-                              : Image.file(_image)
+                              : Image.file(_image, fit: BoxFit.fill)
                       ),
                     ),
                   ),
-                  SizedBox(height: 10.0),
+
+                  if(_image != null) _cancelPhoto()
+                  else SizedBox(height: 40.0),
+
                   FloatingActionButton.extended(
                     onPressed: () {
                       getImage();
@@ -59,13 +70,36 @@ class CreateProfileState extends State<CreateProfileScreen> {
     );
   }
 
+  Widget _cancelPhoto(){
+    return Container(
+      transform: Matrix4.translationValues(65.0, -40.0, 0.0),
+      child: CircleAvatar(
+        radius: 20,
+        backgroundColor: Colors.red,
+        child: ClipOval(
+          child: SizedBox(
+              width: 180,
+              height: 180,
+              child: IconButton(
+                  icon: Icon(Icons.close, color: Colors.black87,),
+                  onPressed: () {
+                    setState(() {
+                      _image = null;
+                    });
+                  }
+              )
+          ),
+        ),
+      ),
+    );
+  }
+
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery); // or ImageSource.camera to do a photo
 
     if(pickedFile.path != null) {
       setState(() {
         _image = File(pickedFile.path);
-        //update = true;
       });
     }
   }
@@ -142,16 +176,69 @@ class CreateProfileState extends State<CreateProfileScreen> {
     );
   }
 
+  final storage = new FlutterSecureStorage();
 
-  _createUser() {
+  _createUserMysql() async {
+    await http.post("https://www.martabatalla.com/flutter/wenect/createUser.php",
+        body: {
+          "name": _nameController.text,
+          "secondName": _secondNameController.text,
+          "email": await storage.read(key: "email"),
+          "password": await storage.read(key: "password")
+    });
+  }
+
+  _createUser() async {
     _nameEmpty = false;
     _secondNameEmpty = false;
 
     if(_checkTF()) {
-      //
+      await _createUserMysql();
+      if(_image!=null) {
+        await _getIdUser();
+        await _uploadImage();
+        await _uploadImageMysql();
+      }
+      /*Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => CreateProfileScreen()),
+      );*/
     }
 
+  }
 
+  Future<List> _getIdUser() async {
+    final response = await http.post("https://www.martabatalla.com/flutter/wenect/selectUser.php",
+        body: {
+          "email": await storage.read(key: "email")
+        });
+
+    var dataUser = json.decode(response.body);
+
+    if(dataUser.length>0){
+      id = dataUser[0]['user_id'];
+    }
+  }
+
+
+  Future<List> _uploadImageMysql() async {
+    await http.post(
+        "https://www.martabatalla.com/flutter/wenect/profileImages/updateMysql.php",
+        body: {
+          "name": id + extension(basename(_image.path)),
+          "id": id
+        });
+  }
+
+
+  Future<List> _uploadImage() async {
+    await http.post(
+        "https://www.martabatalla.com/flutter/wenect/profileImages/uploadImage.php",
+        body: {
+          "image": base64Encode(_image.readAsBytesSync()),
+          "name": id + extension(basename(_image.path)),
+          "id": id
+        });
   }
 
   bool _checkTF() {
