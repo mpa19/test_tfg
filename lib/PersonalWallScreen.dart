@@ -22,29 +22,30 @@ class PersonalWallScreen extends StatefulWidget {
 
 class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProviderStateMixin {
   bool _gotImage = false;
-  bool _boardContainer = true;
-
 
   var dataGet;
   final storage = new FlutterSecureStorage();
-
-  var _colorNot;
-  var _textNot;
-
-  var _colorBoard;
-  var _textBoard;
+  var _isVisible;
 
   List<Widget>_randomChildren;
 
+  TabController _tabController;
+
+  List<BoardClass> _bcList;
+
+
   @override
   void initState() {
-    _colorNot = Colors.white;
-    _textNot = Color(0xFF527DAA);
-    _colorBoard = Colors.blue[900];
-    _textBoard = Colors.white;
+    super.initState();
+    _bcList = new List<BoardClass>();
+    _bcList.add(BoardClass("GYM", 'assets/images/146651.jpg'));
+    _bcList.add(BoardClass("PROGRAMMERS", 'assets/images/39902.jpg'));
 
+    _isVisible = true;
     _getImageUrl();
+    _tabController = TabController(vsync: this, length: 2);
 
+    _tabController.addListener(_handleTabSelection);
     _randomChildren = new List<Widget>();
   }
 
@@ -142,16 +143,18 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
     );
   }
 
+/*
+BoardClass("GYM", 'assets/images/146651.jpg'), BoardClass("PROGRAMMERS", 'assets/images/39902.jpg'), BoardClass("ART DEALERS", 'assets/images/934713.jpg'),
+              BoardClass("FRIENDS", 'assets/images/39902.jpg'), BoardClass("ARCHITECTS", 'assets/images/146651.jpg'), BoardClass("LEARNING", 'assets/images/39902.jpg'),
+              BoardClass("BANK MANAGERS", 'assets/images/934713.jpg'), BoardClass("SOCIO", 'assets/images/146651.jpg'), BoardClass("MATHS", 'assets/images/39902.jpg'),
+              BoardClass("GAMING", 'assets/images/146651.jpg')
+*/
   Widget _buildBoards(){
     return GridView.count(
             crossAxisCount: 3,
             childAspectRatio: 2/4,
             children: <BoardClass>[
-              BoardClass("GYM", 'assets/images/146651.jpg'), BoardClass("PROGRAMMERS", 'assets/images/39902.jpg'), BoardClass("ART DEALERS", 'assets/images/934713.jpg'),
-              BoardClass("FRIENDS", 'assets/images/39902.jpg'), BoardClass("ARCHITECTS", 'assets/images/146651.jpg'), BoardClass("LEARNING", 'assets/images/39902.jpg'),
-              BoardClass("BANK MANAGERS", 'assets/images/934713.jpg'), BoardClass("SOCIO", 'assets/images/146651.jpg'), BoardClass("MATHS", 'assets/images/39902.jpg'),
-              BoardClass("GAMING", 'assets/images/146651.jpg')
-
+              for (var i in _bcList) i,
             ].map((BoardClass board) {
               return
                 GestureDetector(
@@ -221,6 +224,40 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
     }
   }
 
+  Widget _buildNotifications(){
+    return ListView(
+      padding: EdgeInsets.zero,
+      children: Colors.primaries.map((color) {
+        return Container(color: color, height: 150.0);
+      }).toList(),
+    );
+  }
+
+  void _handleTabSelection() {
+    if (_tabController.indexIsChanging) {
+      switch (_tabController.index) {
+        case 0:
+            setState(() {
+              _isVisible = true;
+            });
+          break;
+        case 1:
+          setState(() {
+            _isVisible = false;
+          });
+          break;
+      }
+    }
+  }
+
+  _addBoard() {
+    setState(() {
+      _bcList.add( BoardClass("ART DEALERS", 'assets/images/934713.jpg'));
+
+    });
+
+  }
+
  // MediaQuery.of(context).size
 
   @override
@@ -229,6 +266,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
     _randomChildren.add(_buildProfileImage());
     _randomChildren.add(_buildContactsBtn());
     _randomChildren.add(_buildNameText());
+
     return Scaffold(
       body: Stack(
             children: <Widget>[
@@ -249,58 +287,59 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
                   ),
                 ),
               ),
-          Container(
-            padding: const EdgeInsets.all(40),
-            child: DefaultTabController(
-                length: 2,
-                child: NestedScrollView(
-                  // allows you to build a list of elements that would be scrolled away till the body reached the top
-                  headerSliverBuilder: (context, _) {
-                    return [
-                      SliverList(
-                        delegate: SliverChildListDelegate(
-                          _randomChildren,
-                        ),
-                      ),
-                    ];
-                  },
-                  // You tab view goes here
-                  body: Column(
-                    children: <Widget>[
-                      TabBar(
-                        tabs: [
-                          Tab(text: 'Boards'),
-                          Tab(text: 'Notifications'),
+              Container(
+                padding: const EdgeInsets.all(40),
+                child: DefaultTabController(
+                    length: 2,
+                    child: NestedScrollView(
+                      // allows you to build a list of elements that would be scrolled away till the body reached the top
+                      headerSliverBuilder: (context, _) {
+                        return [
+                          SliverList(
+                            delegate: SliverChildListDelegate(
+                              _randomChildren,
+                            ),
+                          ),
+                        ];
+                      },
+                      // You tab view goes here
+                      body: Column(
+                        children: <Widget>[
+                          TabBar(
+                            controller: _tabController,
+                            tabs: [
+                              Tab(text: 'Boards'),
+                              Tab(text: 'Notifications'),
+                            ],
+                          ),
+                          Expanded(
+                            child: TabBarView(
+                              controller: _tabController,
+                              children: [
+                                _buildBoards(),
+                                _buildNotifications()
+                              ],
+                            ),
+                          ),
                         ],
                       ),
-                      Expanded(
-                        child: TabBarView(
-                          children: [
-                            _buildBoards(),
-                            ListView(
-                              padding: EdgeInsets.zero,
-                              children: Colors.primaries.map((color) {
-                                return Container(color: color, height: 150.0);
-                              }).toList(),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-            )
+                    ),
+                )
               ),
             ],
-          ),
-
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Add your onPressed code here!
-        },
-        child: Icon(Icons.add),
-        backgroundColor: Colors.blue[900],
       ),
+
+      floatingActionButton: Visibility(
+        visible: _isVisible,
+        child: FloatingActionButton(
+            onPressed: () {
+              _addBoard();
+
+            },
+            child: Icon(Icons.add),
+            backgroundColor: Colors.blue[900],
+          ),
+      )
     );
   }
 }
