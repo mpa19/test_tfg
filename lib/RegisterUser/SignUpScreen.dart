@@ -318,6 +318,9 @@ class SignUpState extends State<SignUpScreen> {
 
     await storage.write(key: "password", value: _list[0]);
     await storage.write(key: "email", value: _emailController.text);
+    await storage.write(key: "remember", value: "false");
+    await storage.write(key: "login", value: "false");
+
 
     Navigator.push(
       context,

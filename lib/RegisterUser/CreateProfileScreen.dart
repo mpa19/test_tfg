@@ -4,13 +4,16 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:path/path.dart';
 
+import 'package:flutter_app/utilities/constants.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app/utilities/constants.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:http/http.dart' as http;
+
+import '../PersonalWallScreen.dart';
 
 
 class CreateProfileScreen extends StatefulWidget {
@@ -198,12 +201,14 @@ class CreateProfileState extends State<CreateProfileScreen> {
         await _uploadImage();
         await _uploadImageMysql();
       }
-      /*Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => CreateProfileScreen()),
-      );*/
-    }
 
+      await storage.write(key: "login", value: "true");
+
+      Navigator.push(this.context, MaterialPageRoute(
+          builder: (context) => PersonalWallScreen()
+      ),
+      );
+    }
   }
 
   _getIdUser() async {
@@ -217,6 +222,7 @@ class CreateProfileState extends State<CreateProfileScreen> {
     if(dataUser.length>0){
       await storage.write(key: "id", value: dataUser[0]['user_id']);
     }
+
   }
 
 

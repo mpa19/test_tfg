@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app/PersonalWallScreen.dart';
 import 'file:///C:/Users/Marc/.AndroidStudio1.3/flutter_app/lib/RegisterUser/SignUpScreen.dart';
+
 import 'package:flutter_app/utilities/constants.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -56,6 +58,27 @@ class LogInState extends State<LogInScreen> {
 
   var _passwordCoded;
 
+
+  @override
+  void initState() {
+    _checkLogin();
+  }
+
+  _checkLogin() async {
+    if(await storage.read(key: "login") == "true") {
+      Navigator.push(context, MaterialPageRoute(
+          builder: (context) => PersonalWallScreen()
+      ),
+      );
+    }
+
+    if(await storage.read(key: "remember") == "true") {
+      String _email = await storage.read(key: "email");
+      _emailController.text = _email;
+    }
+
+
+  }
 
   Widget _buildEmailTF() {
     return Column(
@@ -234,26 +257,32 @@ class LogInState extends State<LogInScreen> {
 
   Widget _loginError(){
     return Container(
-      color: Colors.amberAccent,
-      width: double.infinity,
-      padding: EdgeInsets.all(5.0),
-      child: Row(
+      child: Column(
         children: [
-          SizedBox(height: 30.0),
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: Icon(Icons.error_outline),
-          ),
-          Expanded(
-              child: Text("Email and/or Password incorrects")
-          ),
-          IconButton(
-              icon: Icon(Icons.close),
-              onPressed: () {
-                setState(() {
-                  _errorLogin = false;
-                });
-              }
+          Container(
+            color: Colors.amberAccent,
+            width: double.infinity,
+            padding: EdgeInsets.all(5.0),
+            child: Row(
+              children: [
+                SizedBox(height: 30.0),
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Icon(Icons.error_outline),
+                ),
+                Expanded(
+                    child: Text("Email and/or Password incorrects")
+                ),
+                IconButton(
+                    icon: Icon(Icons.close),
+                    onPressed: () {
+                      setState(() {
+                        _errorLogin = false;
+                      });
+                    }
+                )
+              ],
+            ),
           )
         ],
       ),
@@ -261,7 +290,7 @@ class LogInState extends State<LogInScreen> {
   }
 
   _checkUserExist() async {
-    final response = await http.post("https://www.martabatalla.com/flutter/wenect/selectUser.php",
+    final response = await http.post("https://www.martabatalla.com/flutter/wenect/loginUser.php",
         body: {
           "email": _emailController.text,
           "password": _passwordCoded[0]
@@ -273,9 +302,23 @@ class LogInState extends State<LogInScreen> {
       await storage.write(key: "id", value: dataUser[0]['user_id']);
       if(_rememberMe) {
         await storage.write(key: "email", value: dataUser[0]['user_email']);
-        await storage.write(key: "password", value: dataUser[0]['user_password']);
+        await storage.write(key: "remember", value: "true");
+      } else {
+        await storage.write(key: "email", value: "");
+        await storage.write(key: "remember", value: "false");
       }
+      await storage.write(key: "login", value: "true");
+
+      Navigator.push(context, MaterialPageRoute(
+          builder: (context) => PersonalWallScreen()
+      ),
+      );
+    } else {
+      setState(() {
+        _errorLogin = true;
+      });
     }
+
   }
 
   _codePassword() async {
@@ -291,6 +334,7 @@ class LogInState extends State<LogInScreen> {
   void _signInWithEmailAndPassword() async {
     _emailEmpty = false;
     _passwordEmpty = false;
+    _errorLogin = false;
 
     if(_emailController.text == "" || _passwordController.text == "") {
       setState(() {
@@ -298,11 +342,47 @@ class LogInState extends State<LogInScreen> {
         if(_passwordController.text == "") _passwordEmpty = true;
       });
     } else {
-      _codePassword();
-      _checkUserExist();
+      await _codePassword();
+      await _checkUserExist();
     }
 
     setState(() {});
+  }
+
+  Widget _errorName(){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 6, 0, 0),
+          child: Text(
+              'Email can\'t be empty',
+              style: TextStyle(
+                color: Colors.red,
+                fontFamily: 'OpenSans',
+              )
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _errorPassword(){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 6, 0, 0),
+          child: Text(
+              'Password can\'t be empty',
+              style: TextStyle(
+                color: Colors.red,
+                fontFamily: 'OpenSans',
+              )
+          ),
+        ),
+      ],
+    );
   }
 
   @override
@@ -331,30 +411,36 @@ class LogInState extends State<LogInScreen> {
                   ),
                 ),
               ),
+
               Container(
                 height: double.infinity,
                 child: SingleChildScrollView(
                   physics: AlwaysScrollableScrollPhysics(),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 40.0,
-                    vertical: 120.0,
-                  ),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       SizedBox(height: 80.0),
                       if(_errorLogin) _loginError(),
-                      Image.asset('assets/images/logo.png',
-                          fit: BoxFit.fill
+                      Container(
+                          padding: const EdgeInsets.all(40),
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                  Image.asset('assets/images/logo.png',
+                                      fit: BoxFit.fill
+                                  ),
+                                  SizedBox(height: 30.0),
+                                  _buildEmailTF(),
+                                  if(_emailEmpty) _errorName(),
+                                  SizedBox(height: 30.0),
+                                  _buildPasswordTF(),
+                                  if(_passwordEmpty) _errorPassword(),
+                                  _buildForgotPasswordBtn(),
+                                  _buildRememberMeCheckbox(),
+                                  _buildLoginBtn(),
+                                  _buildSignupBtn(),
+                              ]
+                          )
                       ),
-                      SizedBox(height: 30.0),
-                      _buildEmailTF(),
-                      SizedBox(height: 30.0),
-                      _buildPasswordTF(),
-                      _buildForgotPasswordBtn(),
-                      _buildRememberMeCheckbox(),
-                      _buildLoginBtn(),
-                      _buildSignupBtn(),
                     ],
                   ),
                 ),
@@ -366,3 +452,4 @@ class LogInState extends State<LogInScreen> {
     );
   }
 }
+

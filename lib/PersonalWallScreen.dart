@@ -9,17 +9,20 @@ import 'package:flutter/services.dart';
 
 import 'package:http/http.dart' as http;
 
+import 'main.dart';
 
-class CreateProfileScreen extends StatefulWidget {
+
+class PersonalWallScreen extends StatefulWidget {
 
   @override
-  CreateProfileState createState() => CreateProfileState();
+  PersonalWallState createState() => PersonalWallState();
 
 }
 
-class CreateProfileState extends State<CreateProfileScreen> {
+class PersonalWallState extends State<PersonalWallScreen> {
   bool _gotImage = false;
   var dataGet;
+  final storage = new FlutterSecureStorage();
 
 
   @override
@@ -28,20 +31,64 @@ class CreateProfileState extends State<CreateProfileScreen> {
   }
 
 
-  final storage = new FlutterSecureStorage();
   Widget _buildProfileImage(){
-    return CircleAvatar(
-          radius: 95,
-          backgroundColor: Colors.blue[900],
-          child: ClipOval(
-             child: SizedBox(
-                width: 180,
-                height: 180,
-                child: _gotImage == true
-                          ? Image.network("https://www.martabatalla.com/flutter/wenect/profileImages/" + dataGet, fit: BoxFit.fill)
-                          : Image.asset('assets/images/defaultuser.png', fit: BoxFit.fill),
-             )
+    return  Container(
+        padding: EdgeInsets.symmetric(vertical: 25.0),
+        width: double.infinity,
+        child: Column(
+          children: <Widget>[
+            CircleAvatar(
+                radius: 70,
+                backgroundColor: Colors.blue[900],
+                child: ClipOval(
+                   child: SizedBox(
+                      width: 130,
+                      height: 130,
+                      child: _gotImage == true
+                                ? Image.network("https://www.martabatalla.com/flutter/wenect/profileImages/" + dataGet, fit: BoxFit.fill)
+                                : Image.asset('assets/images/defaultuser.png', fit: BoxFit.fill),
+                   )
+                ),
+            )
+          ]
+        )
+    );
+  }
+
+  _closeSession() async {
+    await storage.write(key: "login", value: "false");
+    Navigator.push(context, MaterialPageRoute(
+        builder: (context) => MyApp()
+    ),
+    );
+  }
+
+
+  Widget _buildLoginBtn() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 25.0),
+      width: double.infinity,
+      child: RaisedButton(
+        elevation: 5.0,
+        onPressed: () {
+          _closeSession();
+        },
+        padding: EdgeInsets.all(15.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        color: Colors.red,
+        child: Text(
+          'Close session',
+          style: TextStyle(
+            color: Colors.white,
+            letterSpacing: 1.5,
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'OpenSans',
           ),
+        ),
+      ),
     );
   }
 
@@ -102,6 +149,7 @@ class CreateProfileState extends State<CreateProfileScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 _buildProfileImage(),
+                                _buildLoginBtn()
                               ],
                             ),
                           )
