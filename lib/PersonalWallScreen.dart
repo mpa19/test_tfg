@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter_app/BoardScreen.dart';
+import 'package:flutter_app/Boards/CreateBoardScreen.dart';
 import 'package:flutter_app/RegisterUser/CreateProfileScreen.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 
 import 'package:http/http.dart' as http;
 
@@ -250,13 +250,6 @@ BoardClass("GYM", 'assets/images/146651.jpg'), BoardClass("PROGRAMMERS", 'assets
     }
   }
 
-  _addBoard() {
-    setState(() {
-      _bcList.add( BoardClass("ART DEALERS", 'assets/images/934713.jpg'));
-
-    });
-
-  }
 
  // MediaQuery.of(context).size
 
@@ -333,8 +326,10 @@ BoardClass("GYM", 'assets/images/146651.jpg'), BoardClass("PROGRAMMERS", 'assets
         visible: _isVisible,
         child: FloatingActionButton(
             onPressed: () {
-              _addBoard();
-
+              Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => CreateBoardScreen()
+              ),
+              );
             },
             child: Icon(Icons.add),
             backgroundColor: Colors.blue[900],
