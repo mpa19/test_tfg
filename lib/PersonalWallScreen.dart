@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_app/BoardScreen.dart';
+import 'package:flutter_app/RegisterUser/CreateProfileScreen.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -8,6 +9,8 @@ import 'package:flutter/material.dart';
 
 
 import 'package:http/http.dart' as http;
+
+import 'SelectedScreen.dart';
 
 
 class PersonalWallScreen extends StatefulWidget {
@@ -43,34 +46,39 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
     _getImageUrl();
 
     _randomChildren = new List<Widget>();
-    _randomChildren.add(_buildProfileImage());
-    _randomChildren.add(_buildContactsBtn());
-    _randomChildren.add(_buildNameText());
-
   }
 
 
   Widget _buildProfileImage(){
-    return  Container(
-        padding: EdgeInsets.symmetric(vertical: 5.0),
-        width: double.infinity,
-        child: Column(
-          children: <Widget>[
-            CircleAvatar(
-                radius: 50,
-                backgroundColor: Colors.blue[900],
-                child: ClipOval(
-                   child: SizedBox(
-                      width: 90,
-                      height: 90,
-                      child: _gotImage == true
-                                ? Image.network("https://www.martabatalla.com/flutter/wenect/profileImages/" + dataGet, fit: BoxFit.fill)
-                                : Image.asset('assets/images/defaultuser.png', fit: BoxFit.fill),
-                   )
-                ),
-            )
-          ]
-        )
+    return  GestureDetector(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(
+              builder: (context) => CreateProfileScreen()
+          ),
+          );
+      },
+      child:Container(
+          padding: EdgeInsets.symmetric(vertical: 0),
+          width: double.infinity,
+          child: Column(
+            children: <Widget>[
+              SizedBox(height: 30.0),
+              CircleAvatar(
+                  radius: 55,
+                  backgroundColor: Colors.blue[900],
+                  child: ClipOval(
+                     child: SizedBox(
+                        width: 105,
+                        height: 105,
+                        child: _gotImage == true
+                                  ? Image.network("https://www.martabatalla.com/flutter/wenect/profileImages/" + dataGet, fit: BoxFit.fill)
+                                  : Image.asset('assets/images/defaultuser.png', fit: BoxFit.fill),
+                     )
+                  ),
+              )
+            ]
+          )
+      )
     );
   }
 
@@ -82,40 +90,11 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
     );
   }*/
 
-  /*Widget _buildLoginBtn() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 25.0),
-      width: double.infinity,
-      child: RaisedButton(
-        elevation: 5.0,
-        onPressed: () {
-          _closeSession();
-        },
-        padding: EdgeInsets.all(15.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-        color: Colors.red,
-        child: Text(
-          'Close session',
-          style: TextStyle(
-            color: Colors.white,
-            letterSpacing: 1.5,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-          ),
-        ),
-      ),
-    );
-  }*/
 
   Widget _buildContactsBtn() {
     return Container(
-      //padding: EdgeInsets.symmetric(vertical: 0.0),
-      //width: double.minPositive,
       child: ButtonTheme(
-        minWidth: 0,
+        minWidth: 50,
         height: 28.0,
         child: RaisedButton(
           elevation: 5.0,
@@ -125,7 +104,6 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
             ),
             );
           },
-          //padding: EdgeInsets.all(0.0),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),
           ),
@@ -135,7 +113,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
             style: TextStyle(
               color: Color(0xFF527DAA),
               letterSpacing: 1.5,
-              fontSize: 8.0,
+              fontSize: 10.0,
               fontWeight: FontWeight.bold,
               fontFamily: 'OpenSans',
             ),
@@ -145,89 +123,26 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
     );
   }
 
-  Widget _buildNotificationsBtn() {
-    return Container(
-      child: RaisedButton(
-        elevation: 5.0,
-        onPressed: () {
-          setState(() {
-            _boardContainer = false;
-            _colorBoard = Colors.white;
-            _textBoard = Color(0xFF527DAA);
-            _colorNot = Colors.blue[900];
-            _textNot = Colors.white;
-          });
-        },
-        padding: EdgeInsets.all(10.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-        color: _colorNot,
-        child: Text(
-          'Notifications',
-          style: TextStyle(
-            color: _textNot,
-            letterSpacing: 1.5,
-            fontSize: 11.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBoardsBtn() {
-    return Container(
-      child: RaisedButton(
-        elevation: 5.0,
-        onPressed: () {
-          setState(() {
-            _boardContainer = true;
-            _colorNot = Colors.white;
-            _textNot = Color(0xFF527DAA);
-            _colorBoard = Colors.blue[900];
-            _textBoard = Colors.white;
-          });
-        },
-        padding: EdgeInsets.all(10.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-        color: _colorBoard,
-        child: Text(
-          'Boards',
-          style: TextStyle(
-            color: _textBoard,
-            letterSpacing: 1.5,
-            fontSize: 11.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-          ),
-        ),
-      ),
-    );
-  }
-
-
 
   Widget _buildNameText() {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 0.0),
-      child: Text(
-          'MARC PEREZ',
-          style: TextStyle(
-            color: Colors.white,
-            letterSpacing: 5.5,
-            fontSize: 30.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-          ),
+      padding: EdgeInsets.symmetric(vertical: 10.0),
+      child: Center(
+          child: Text(
+            'MARC PEREZ',
+            style: TextStyle(
+              color: Colors.white,
+              letterSpacing: 5.5,
+              fontSize: 30.0,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'OpenSans',
+            ),
+        )
       )
     );
   }
 
-  /*Widget _buildBoards(){
+  Widget _buildBoards(){
     return GridView.count(
             crossAxisCount: 3,
             childAspectRatio: 2/4,
@@ -285,36 +200,8 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
                     )
                 );
             }).toList());
-  }*/
-
-  Widget _buildNotifications(){
-    return Container(
-        padding: EdgeInsets.symmetric(vertical: 10.0),
-        child: Text("Notifications")
-    );
   }
 
-  Widget _buildTabMenu(){
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 5.0),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 9,
-            child: _buildBoardsBtn()
-          ),
-          Expanded(
-            flex: 1,
-              child: SizedBox(height: 5.0)),
-
-          Expanded(
-            flex: 9,
-            child: _buildNotificationsBtn()
-          ),
-        ],
-      ),
-    );
-  }
 
   _getImageUrl() async {
     final response = await http.post("https://www.martabatalla.com/flutter/wenect/profileImages/selectImage.php",
@@ -338,6 +225,10 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
 
   @override
   Widget build(BuildContext context) {
+    _randomChildren = new List<Widget>();
+    _randomChildren.add(_buildProfileImage());
+    _randomChildren.add(_buildContactsBtn());
+    _randomChildren.add(_buildNameText());
     return Scaffold(
       body: Stack(
             children: <Widget>[
@@ -358,7 +249,9 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
                   ),
                 ),
               ),
-              DefaultTabController(
+          Container(
+            padding: const EdgeInsets.all(40),
+            child: DefaultTabController(
                 length: 2,
                 child: NestedScrollView(
                   // allows you to build a list of elements that would be scrolled away till the body reached the top
@@ -383,13 +276,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
                       Expanded(
                         child: TabBarView(
                           children: [
-                            GridView.count(
-                              padding: EdgeInsets.zero,
-                              crossAxisCount: 3,
-                              children: Colors.primaries.map((color) {
-                                return Container(color: color, height: 150.0);
-                              }).toList(),
-                            ),
+                            _buildBoards(),
                             ListView(
                               padding: EdgeInsets.zero,
                               children: Colors.primaries.map((color) {
@@ -402,6 +289,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
                     ],
                   ),
                 ),
+            )
               ),
             ],
           ),
@@ -426,40 +314,3 @@ class BoardClass {
     this.image = image;
   }
 }
-
-/*
-Container(
-                height: MediaQuery.of(context).size.height,
-                child: Column(
-                        children: <Widget>[
-                          SizedBox(height: MediaQuery.of(context).size.height* 0.05),
-                          Container(
-                            padding: const EdgeInsets.fromLTRB(30, 0, 30, 30),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                _buildProfileImage(),
-                                _buildContactsBtn(),
-                                _buildNameText(),
-                                _buildTabMenu(),
-                                /*Flexible(
-                                   child: _buildBoards(),
-                                )*/
-                                /*if(_boardContainer) _buildBoards()
-                                else _buildNotifications()*/
-
-                              ],
-                            ),
-                          ),
-                          //_buildBoards(),
-                        ]
-                    )
-                ),
-
-
- */
-
-/*
-
-
- */

@@ -48,8 +48,8 @@ class CreateProfileState extends State<CreateProfileScreen> {
                     backgroundColor: Colors.blue[900],
                     child: ClipOval(
                       child: SizedBox(
-                          width: 180,
-                          height: 180,
+                          width: 185,
+                          height: 185,
                           child: _image == null
                               ? Image.asset('assets/images/defaultuser.png',
                               fit: BoxFit.fill
