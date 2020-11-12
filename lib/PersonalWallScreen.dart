@@ -1,16 +1,13 @@
 import 'dart:convert';
 
+import 'package:flutter_app/BoardScreen.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 
 import 'package:http/http.dart' as http;
-
-import 'SelectedScreen.dart';
-import 'main.dart';
 
 
 class PersonalWallScreen extends StatefulWidget {
@@ -34,8 +31,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
   var _colorBoard;
   var _textBoard;
 
-
-  TabController _tabController;
+  List<Widget>_randomChildren;
 
   @override
   void initState() {
@@ -44,24 +40,29 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
     _colorBoard = Colors.blue[900];
     _textBoard = Colors.white;
 
-    _tabController = TabController(length: 2, vsync: this);
     _getImageUrl();
+
+    _randomChildren = new List<Widget>();
+    _randomChildren.add(_buildProfileImage());
+    _randomChildren.add(_buildContactsBtn());
+    _randomChildren.add(_buildNameText());
+
   }
 
 
   Widget _buildProfileImage(){
     return  Container(
-        padding: EdgeInsets.symmetric(vertical: 10.0),
+        padding: EdgeInsets.symmetric(vertical: 5.0),
         width: double.infinity,
         child: Column(
           children: <Widget>[
             CircleAvatar(
-                radius: 70,
+                radius: 50,
                 backgroundColor: Colors.blue[900],
                 child: ClipOval(
                    child: SizedBox(
-                      width: 130,
-                      height: 130,
+                      width: 90,
+                      height: 90,
                       child: _gotImage == true
                                 ? Image.network("https://www.martabatalla.com/flutter/wenect/profileImages/" + dataGet, fit: BoxFit.fill)
                                 : Image.asset('assets/images/defaultuser.png', fit: BoxFit.fill),
@@ -111,29 +112,36 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
 
   Widget _buildContactsBtn() {
     return Container(
-      //padding: EdgeInsets.symmetric(vertical: 5.0),
+      //padding: EdgeInsets.symmetric(vertical: 0.0),
       //width: double.minPositive,
-      child: RaisedButton(
-        elevation: 5.0,
-        onPressed: () {
-          //_closeSession();
-        },
-        padding: EdgeInsets.all(10.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-        color: Colors.white,
-        child: Text(
-          'CONTACTS',
-          style: TextStyle(
-            color: Color(0xFF527DAA),
-            letterSpacing: 1.5,
-            fontSize: 11.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
+      child: ButtonTheme(
+        minWidth: 0,
+        height: 28.0,
+        child: RaisedButton(
+          elevation: 5.0,
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(
+                builder: (context) => BoardScreen()
+            ),
+            );
+          },
+          //padding: EdgeInsets.all(0.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+          color: Colors.white,
+          child: Text(
+            'CONTACTS',
+            style: TextStyle(
+              color: Color(0xFF527DAA),
+              letterSpacing: 1.5,
+              fontSize: 8.0,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'OpenSans',
+            ),
           ),
         ),
-      ),
+      )
     );
   }
 
@@ -205,7 +213,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
 
   Widget _buildNameText() {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 10.0),
+      padding: EdgeInsets.symmetric(vertical: 0.0),
       child: Text(
           'MARC PEREZ',
           style: TextStyle(
@@ -219,10 +227,8 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
     );
   }
 
-  Widget _buildBoards(){
-    return Container(
-
-        /*child: GridView.count(
+  /*Widget _buildBoards(){
+    return GridView.count(
             crossAxisCount: 3,
             childAspectRatio: 2/4,
             children: <BoardClass>[
@@ -278,9 +284,8 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
                       ),
                     )
                 );
-            }).toList())*/
-    );
-  }
+            }).toList());
+  }*/
 
   Widget _buildNotifications(){
     return Container(
@@ -291,7 +296,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
 
   Widget _buildTabMenu(){
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 10.0),
+      padding: EdgeInsets.symmetric(vertical: 5.0),
       child: Row(
         children: [
           Expanded(
@@ -329,14 +334,12 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
     }
   }
 
+ // MediaQuery.of(context).size
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.light,
-        child: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: Stack(
+      body: Stack(
             children: <Widget>[
               Container(
                 height: double.infinity,
@@ -355,31 +358,60 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
                   ),
                 ),
               ),
-              Container(
-                height: double.infinity,
-                child: Column(
-                        children: <Widget>[
-                          SizedBox(height: 45.0),
-                          Container(
-                            padding: const EdgeInsets.fromLTRB(40, 0, 40, 40),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                _buildProfileImage(),
-                                _buildContactsBtn(),
-                                _buildNameText(),
-                                _buildTabMenu(),
-                                if(_boardContainer) _buildBoards()
-                                else _buildNotifications()
-                              ],
+              DefaultTabController(
+                length: 2,
+                child: NestedScrollView(
+                  // allows you to build a list of elements that would be scrolled away till the body reached the top
+                  headerSliverBuilder: (context, _) {
+                    return [
+                      SliverList(
+                        delegate: SliverChildListDelegate(
+                          _randomChildren,
+                        ),
+                      ),
+                    ];
+                  },
+                  // You tab view goes here
+                  body: Column(
+                    children: <Widget>[
+                      TabBar(
+                        tabs: [
+                          Tab(text: 'Boards'),
+                          Tab(text: 'Notifications'),
+                        ],
+                      ),
+                      Expanded(
+                        child: TabBarView(
+                          children: [
+                            GridView.count(
+                              padding: EdgeInsets.zero,
+                              crossAxisCount: 3,
+                              children: Colors.primaries.map((color) {
+                                return Container(color: color, height: 150.0);
+                              }).toList(),
                             ),
-                          )
-                        ]
-                    )
+                            ListView(
+                              padding: EdgeInsets.zero,
+                              children: Colors.primaries.map((color) {
+                                return Container(color: color, height: 150.0);
+                              }).toList(),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
+              ),
             ],
           ),
-        ),
+
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Add your onPressed code here!
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Colors.blue[900],
       ),
     );
   }
@@ -394,3 +426,40 @@ class BoardClass {
     this.image = image;
   }
 }
+
+/*
+Container(
+                height: MediaQuery.of(context).size.height,
+                child: Column(
+                        children: <Widget>[
+                          SizedBox(height: MediaQuery.of(context).size.height* 0.05),
+                          Container(
+                            padding: const EdgeInsets.fromLTRB(30, 0, 30, 30),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                _buildProfileImage(),
+                                _buildContactsBtn(),
+                                _buildNameText(),
+                                _buildTabMenu(),
+                                /*Flexible(
+                                   child: _buildBoards(),
+                                )*/
+                                /*if(_boardContainer) _buildBoards()
+                                else _buildNotifications()*/
+
+                              ],
+                            ),
+                          ),
+                          //_buildBoards(),
+                        ]
+                    )
+                ),
+
+
+ */
+
+/*
+
+
+ */
