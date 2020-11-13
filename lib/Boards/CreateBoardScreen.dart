@@ -1,18 +1,14 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_app/utilities/constants.dart';
-import 'package:flutter_app/RegisterUser/CreateProfileScreen.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 
-import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 
-import '../SelectedScreen.dart';
 
 
 class CreateBoardScreen extends StatefulWidget {
@@ -32,6 +28,8 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
   List<BoardClass> _bcList;
 
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
+
 
   File _image;
   final picker = ImagePicker();
@@ -168,6 +166,49 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
     );
   }
 
+  Widget _buildSearchTF() {
+    return
+        Container(
+          alignment: Alignment.centerLeft,
+          decoration: kBoxDecorationStyle,
+          height: 60.0,
+          child:  TextField(
+            controller: _searchController,
+            keyboardType: TextInputType.emailAddress,
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: 'OpenSans',
+            ),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(top: 14.0),
+              prefixIcon: Icon(
+                Icons.search,
+                color: Colors.white,
+              ),
+              hintText: 'Enter a friend name',
+              hintStyle: kHintTextStyle,
+            ),
+          ),
+        );
+
+  }
+
+  Widget _buildFriendText() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        SizedBox(height: 30.0),
+        Text(
+        'Add friends',
+        style: kLabelStyle,
+        ),
+        SizedBox(height: 10.0),
+
+      ]
+    );
+  }
+
   Widget _buildBoardTitle() {
     return Container(
       margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
@@ -199,14 +240,15 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
           return
             GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => SelectedScreen(text: board.title)
-                  ),
-                  );
+                  setState(() {
+                    if(board.selected == 0) board.setSelected(5);
+                    else board.setSelected(0);
+                  });
                 },
                 child: Container(
                   margin: EdgeInsets.all(2.0),
                   decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black, width: board.selected),
                     borderRadius: BorderRadius.circular(10.0),
                     image: DecorationImage(
                       image: AssetImage(board.image), // put image
@@ -288,10 +330,16 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
                         ),
                       ];
                     },
-                    // You tab view goes here
-                    body: Container(
-                      child: _buildBoards(),
-                    ),
+                    body: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+
+                      children: [
+                        _buildFriendText(),
+                        _buildSearchTF(),
+                        SizedBox(height: 10.0),
+                        Expanded(child: _buildBoards())
+                      ],
+                    )
                   ),
                 )
             ),
@@ -304,9 +352,14 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
 class BoardClass {
   String title;
   String image;
+  double selected = 0;
 
   BoardClass(String title, String image) {
     this.title = title;
     this.image = image;
+  }
+
+  setSelected(double selected){
+    this.selected = selected;
   }
 }
