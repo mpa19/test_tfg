@@ -251,8 +251,6 @@ BoardClass("GYM", 'assets/images/146651.jpg'), BoardClass("PROGRAMMERS", 'assets
   }
 
 
- // MediaQuery.of(context).size
-
   @override
   Widget build(BuildContext context) {
     _randomChildren = new List<Widget>();
@@ -285,7 +283,6 @@ BoardClass("GYM", 'assets/images/146651.jpg'), BoardClass("PROGRAMMERS", 'assets
                 child: DefaultTabController(
                     length: 2,
                     child: NestedScrollView(
-                      // allows you to build a list of elements that would be scrolled away till the body reached the top
                       headerSliverBuilder: (context, _) {
                         return [
                           SliverList(

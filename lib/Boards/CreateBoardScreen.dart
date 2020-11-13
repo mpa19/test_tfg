@@ -330,7 +330,9 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
     _randomChildren.add(_buildNameTF());
 
     return Scaffold(
-        body: Stack(
+      resizeToAvoidBottomPadding: false,
+
+      body: Stack(
           children: <Widget>[
             Container(
               height: double.infinity,
@@ -354,7 +356,6 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
                 child: DefaultTabController(
                   length: 2,
                   child: NestedScrollView(
-                    // allows you to build a list of elements that would be scrolled away till the body reached the top
                     headerSliverBuilder: (context, _) {
                       return [
                         SliverList(
@@ -366,7 +367,6 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
                     },
                     body: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-
                       children: [
                         _buildFriendText(),
                         _buildSearchTF(),
