@@ -7,6 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/utilities/constants.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -33,6 +34,10 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
 
   List<BoardClass> _bcList;
 
+  String _searchText = "";
+  final TextEditingController _searchController = TextEditingController();
+
+  List<BoardClass> _searchList = List();
 
   @override
   void initState() {
@@ -47,6 +52,22 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
 
     _tabController.addListener(_handleTabSelection);
     _randomChildren = new List<Widget>();
+
+    _searchList = _bcList;
+
+    _searchController.addListener(() {
+      if (_searchController.text.isEmpty) {
+        setState(() {
+          _searchText = "";
+          _buildSearchList();
+        });
+      } else {
+        setState(() {
+          _searchText = _searchController.text;
+          _buildSearchList();
+        });
+      }
+    });
   }
 
 
@@ -154,7 +175,7 @@ BoardClass("GYM", 'assets/images/146651.jpg'), BoardClass("PROGRAMMERS", 'assets
             crossAxisCount: 3,
             childAspectRatio: 2/4,
             children: <BoardClass>[
-              for (var i in _bcList) i,
+              for (var i in _searchList) i,
             ].map((BoardClass board) {
               return
                 GestureDetector(
@@ -250,6 +271,47 @@ BoardClass("GYM", 'assets/images/146651.jpg'), BoardClass("PROGRAMMERS", 'assets
     }
   }
 
+  List<BoardClass> _buildSearchList() {
+    if (_searchText.isEmpty) {
+      return _searchList = _bcList;
+    } else {
+      _searchList = _bcList
+          .where((element) =>
+      element.title.toLowerCase().contains(_searchText.toLowerCase()) ||
+          element.title.toLowerCase().contains(_searchText.toLowerCase()))
+          .toList();
+      print('${_searchList.length}');
+      return _searchList;
+    }
+  }
+
+  Widget _buildSearchTF() {
+
+    return Container(
+      alignment: Alignment.centerLeft,
+      decoration: kBoxDecorationStyle,
+      height: 60.0,
+      child:  TextField(
+        controller: _searchController,
+        keyboardType: TextInputType.emailAddress,
+        style: TextStyle(
+          color: Colors.white,
+          fontFamily: 'OpenSans',
+        ),
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.only(top: 14.0),
+          prefixIcon: Icon(
+            Icons.search,
+            color: Colors.white,
+          ),
+          hintText: 'Enter a friend name',
+          hintStyle: kHintTextStyle,
+        ),
+      ),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -302,6 +364,8 @@ BoardClass("GYM", 'assets/images/146651.jpg'), BoardClass("PROGRAMMERS", 'assets
                               Tab(text: 'Notifications'),
                             ],
                           ),
+                          SizedBox(height: 20.0),
+                          if(_isVisible) _buildSearchTF(),
                           Expanded(
                             child: TabBarView(
                               controller: _tabController,

@@ -222,7 +222,6 @@ class CreateProfileState extends State<CreateProfileScreen> {
     if(dataUser.length>0){
       await storage.write(key: "id", value: dataUser[0]['user_id']);
     }
-
   }
 
 
