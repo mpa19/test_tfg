@@ -34,6 +34,11 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
   File _image;
   final picker = ImagePicker();
 
+  String _searchText = "";
+
+  List<BoardClass> _searchList = List();
+
+
   @override
   void initState() {
     super.initState();
@@ -54,7 +59,36 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
     _bcList.add(BoardClass("PROGRAMMERS", 'assets/images/39902.jpg'));
     _bcList.add(BoardClass("PROGRAMMERS", 'assets/images/39902.jpg'));
 
+    _searchList = _bcList;
     _randomChildren = new List<Widget>();
+
+    _searchController.addListener(() {
+      if (_searchController.text.isEmpty) {
+        setState(() {
+          _searchText = "";
+          _buildSearchList();
+        });
+      } else {
+        setState(() {
+          _searchText = _searchController.text;
+          _buildSearchList();
+        });
+      }
+    });
+  }
+
+  List<BoardClass> _buildSearchList() {
+    if (_searchText.isEmpty) {
+      return _searchList = _bcList;
+    } else {
+      _searchList = _bcList
+          .where((element) =>
+      element.title.toLowerCase().contains(_searchText.toLowerCase()) ||
+          element.title.toLowerCase().contains(_searchText.toLowerCase()))
+          .toList();
+      print('${_searchList.length}');
+      return _searchList;
+    }
   }
 
 
@@ -166,9 +200,10 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
     );
   }
 
+
   Widget _buildSearchTF() {
-    return
-        Container(
+
+    return Container(
           alignment: Alignment.centerLeft,
           decoration: kBoxDecorationStyle,
           height: 60.0,
@@ -191,7 +226,6 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
             ),
           ),
         );
-
   }
 
   Widget _buildFriendText() {
@@ -235,7 +269,7 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
         crossAxisCount: 3,
         childAspectRatio: 2/4,
         children: <BoardClass>[
-          for (var i in _bcList) i,
+          for (var i in _searchList) i,
         ].map((BoardClass board) {
           return
             GestureDetector(
