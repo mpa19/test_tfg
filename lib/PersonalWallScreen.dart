@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter_app/BoardScreen.dart';
+import 'BoardScreen.dart';
 import 'package:flutter_app/Boards/CreateBoardScreen.dart';
 import 'package:flutter_app/RegisterUser/CreateProfileScreen.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -32,19 +32,22 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
 
   TabController _tabController;
 
-  List<BoardClass> _bcList;
+  List<BoardClass> _bcList = new List<BoardClass>();
+
+
+  List<BoardClass> _searchList = List();
 
   String _searchText = "";
   final TextEditingController _searchController = TextEditingController();
 
-  List<BoardClass> _searchList = List();
 
   @override
-  void initState() {
+  initState() {
     super.initState();
-    _bcList = new List<BoardClass>();
-    _bcList.add(BoardClass("GYM", 'assets/images/146651.jpg'));
-    _bcList.add(BoardClass("PROGRAMMERS", 'assets/images/39902.jpg'));
+
+    _getBoards();
+    /*_bcList.add(BoardClass("GYM", 'assets/images/146651.jpg'));
+    _bcList.add(BoardClass("PROGRAMMERS", 'assets/images/39902.jpg'));*/
 
     _isVisible = true;
     _getImageUrl();
@@ -68,6 +71,24 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
         });
       }
     });
+  }
+
+  _getBoards() async {
+    final response = await http.post("https://www.martabatalla.com/flutter/wenect/getBoards.php",
+        body: {
+          "id": await storage.read(key: "id")
+        });
+
+    var dataUser = json.decode(response.body);
+
+    if(dataUser.length>0) {
+      for(var row in dataUser) {
+        var _image;
+        if(row['board_image'] == "") _image = "https://www.martabatalla.com/flutter/wenect/146651.jpg";
+        else _image = "https://www.martabatalla.com/flutter/wenect/users/"+await storage.read(key: "id")+"/"+row['board_image'];
+        _bcList.add(new BoardClass(row['board_id'], row['board_name'], _image));
+      }
+    }
   }
 
 
@@ -164,12 +185,6 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
     );
   }
 
-/*
-BoardClass("GYM", 'assets/images/146651.jpg'), BoardClass("PROGRAMMERS", 'assets/images/39902.jpg'), BoardClass("ART DEALERS", 'assets/images/934713.jpg'),
-              BoardClass("FRIENDS", 'assets/images/39902.jpg'), BoardClass("ARCHITECTS", 'assets/images/146651.jpg'), BoardClass("LEARNING", 'assets/images/39902.jpg'),
-              BoardClass("BANK MANAGERS", 'assets/images/934713.jpg'), BoardClass("SOCIO", 'assets/images/146651.jpg'), BoardClass("MATHS", 'assets/images/39902.jpg'),
-              BoardClass("GAMING", 'assets/images/146651.jpg')
-*/
   Widget _buildBoards(){
     return GridView.count(
             crossAxisCount: 3,
@@ -190,7 +205,7 @@ BoardClass("GYM", 'assets/images/146651.jpg'), BoardClass("PROGRAMMERS", 'assets
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.0),
                         image: DecorationImage(
-                          image: AssetImage(board.image), // put image
+                          image: NetworkImage(board.image), // put image
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -401,10 +416,12 @@ BoardClass("GYM", 'assets/images/146651.jpg'), BoardClass("PROGRAMMERS", 'assets
 }
 
 class BoardClass {
+  String id;
   String title;
   String image;
 
-  BoardClass(String title, String image) {
+  BoardClass(String id, String title, String image) {
+    this.id = id;
     this.title = title;
     this.image = image;
   }

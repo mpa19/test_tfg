@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/BoardScreen.dart';
+import 'file:///C:/Users/Marc/.AndroidStudio1.3/flutter_app/lib/BoardScreen.dart';
 import 'package:flutter_app/CarouselVerticalScreen.dart';
 import 'package:flutter_app/CommonFriendsScreen.dart';
 import 'package:flutter_app/generated/l10n.dart';

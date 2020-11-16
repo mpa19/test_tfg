@@ -1,9 +1,9 @@
-import 'dart:convert';
+//import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:http/http.dart' as http;
+//import 'package:http/http.dart' as http;
 
 class CommonFriendsScreen extends StatefulWidget {
 
@@ -15,7 +15,7 @@ class _CommonFriendsState extends State<CommonFriendsScreen> {
   var msg='';
   var dataGet = '';
 
-  Future<List> _getFriends() async {
+  /*_getFriends() async {
     final response = await http.post("https://www.martabatalla.com/flutter/wenect/getdata.php");
 
     /*
@@ -39,8 +39,7 @@ class _CommonFriendsState extends State<CommonFriendsScreen> {
         });
       }
     }
-    return datauser;
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {

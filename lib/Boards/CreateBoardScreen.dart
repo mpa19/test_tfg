@@ -30,7 +30,6 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _searchController = TextEditingController();
 
-
   File _image;
   final picker = ImagePicker();
 

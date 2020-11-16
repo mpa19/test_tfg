@@ -26,10 +26,11 @@ class _SelectImageState extends State<SelectImageScreen> {
 
   @override
   void initState() {
+    super.initState();
     _getImageUrl();
   }
 
-  Future<List> _getImageUrl() async {
+  _getImageUrl() async {
     final response = await http.post("https://www.martabatalla.com/flutter/wenect/profileImages/selectImage.php",
       body: {
         "id": "2"
@@ -47,7 +48,7 @@ class _SelectImageState extends State<SelectImageScreen> {
     }
   }
 
-  Future<List> _uploadImageMysql() async {
+  _uploadImageMysql() async {
     await http.post(
         "https://www.martabatalla.com/flutter/wenect/profileImages/updateMysql.php",
         body: {
@@ -57,7 +58,7 @@ class _SelectImageState extends State<SelectImageScreen> {
   }
 
 
-  Future<List> _uploadImage() async {
+  _uploadImage() async {
     await http.post(
         "https://www.martabatalla.com/flutter/wenect/profileImages/uploadImage.php",
         body: {

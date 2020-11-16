@@ -61,6 +61,7 @@ class LogInState extends State<LogInScreen> {
 
   @override
   void initState() {
+    super.initState();
     _checkLogin();
   }
 
