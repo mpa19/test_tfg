@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_app/utilities/constants.dart';
@@ -6,8 +7,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
 import 'package:image_picker/image_picker.dart';
+
+import 'package:http/http.dart' as http;
+
 
 
 
@@ -25,7 +28,7 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
 
   List<Widget>_randomChildren;
 
-  List<BoardClass> _bcList;
+  List<FriendClass> _bcList = new List<FriendClass>();
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _searchController = TextEditingController();
@@ -35,28 +38,29 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
 
   String _searchText = "";
 
-  List<BoardClass> _searchList = List();
+  List<FriendClass> _searchList = List();
 
 
   @override
   void initState() {
     super.initState();
-    _bcList = new List<BoardClass>();
-    _bcList.add(BoardClass("GYM", 'assets/images/146651.jpg'));
-    _bcList.add(BoardClass("PROGRAMMERS", 'assets/images/39902.jpg'));
-    _bcList.add(BoardClass("PROGRAMMERS", 'assets/images/39902.jpg'));
-    _bcList.add(BoardClass("PROGRAMMERS", 'assets/images/39902.jpg'));
-    _bcList.add(BoardClass("PROGRAMMERS", 'assets/images/39902.jpg'));
-    _bcList.add(BoardClass("PROGRAMMERS", 'assets/images/39902.jpg'));
-    _bcList.add(BoardClass("PROGRAMMERS", 'assets/images/39902.jpg'));
-    _bcList.add(BoardClass("PROGRAMMERS", 'assets/images/39902.jpg'));
-    _bcList.add(BoardClass("PROGRAMMERS", 'assets/images/39902.jpg'));
-    _bcList.add(BoardClass("PROGRAMMERS", 'assets/images/39902.jpg'));
-    _bcList.add(BoardClass("PROGRAMMERS", 'assets/images/39902.jpg'));
-    _bcList.add(BoardClass("PROGRAMMERS", 'assets/images/39902.jpg'));
-    _bcList.add(BoardClass("PROGRAMMERS", 'assets/images/39902.jpg'));
-    _bcList.add(BoardClass("PROGRAMMERS", 'assets/images/39902.jpg'));
-    _bcList.add(BoardClass("PROGRAMMERS", 'assets/images/39902.jpg'));
+    /*_bcList.add(FriendClass("GYM", 'assets/images/146651.jpg'));
+    _bcList.add(FriendClass("PROGRAMMERS", 'assets/images/39902.jpg'));
+    _bcList.add(FriendClass("PROGRAMMERS", 'assets/images/39902.jpg'));
+    _bcList.add(FriendClass("PROGRAMMERS", 'assets/images/39902.jpg'));
+    _bcList.add(FriendClass("PROGRAMMERS", 'assets/images/39902.jpg'));
+    _bcList.add(FriendClass("PROGRAMMERS", 'assets/images/39902.jpg'));
+    _bcList.add(FriendClass("PROGRAMMERS", 'assets/images/39902.jpg'));
+    _bcList.add(FriendClass("PROGRAMMERS", 'assets/images/39902.jpg'));
+    _bcList.add(FriendClass("PROGRAMMERS", 'assets/images/39902.jpg'));
+    _bcList.add(FriendClass("PROGRAMMERS", 'assets/images/39902.jpg'));
+    _bcList.add(FriendClass("PROGRAMMERS", 'assets/images/39902.jpg'));
+    _bcList.add(FriendClass("PROGRAMMERS", 'assets/images/39902.jpg'));
+    _bcList.add(FriendClass("PROGRAMMERS", 'assets/images/39902.jpg'));
+    _bcList.add(FriendClass("PROGRAMMERS", 'assets/images/39902.jpg'));
+    _bcList.add(FriendClass("PROGRAMMERS", 'assets/images/39902.jpg'));*/
+
+    _getFriends();
 
     _searchList = _bcList;
     _randomChildren = new List<Widget>();
@@ -76,7 +80,25 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
     });
   }
 
-  List<BoardClass> _buildSearchList() {
+  _getFriends() async {
+    final response = await http.post("https://www.martabatalla.com/flutter/wenect/getFriends.php",
+        body: {
+          "id": await storage.read(key: "id")
+        });
+
+    var dataUser = json.decode(response.body);
+
+    if(dataUser.length>0) {
+      for(var row in dataUser) {
+        var _image;
+        if(row['user_image'] == "") _image = "https://www.martabatalla.com/flutter/wenect/defaultuser.png";
+        else _image = "https://www.martabatalla.com/flutter/wenect/profileImages/"+row['user_image'];
+        _bcList.add(new FriendClass(row['user_id'], row['user_name']+" "+row['user_secondName'], _image));
+      }
+    }
+  }
+
+  List<FriendClass> _buildSearchList() {
     if (_searchText.isEmpty) {
       return _searchList = _bcList;
     } else {
@@ -236,6 +258,7 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
         'Add friends',
         style: kLabelStyle,
         ),
+
         SizedBox(height: 10.0),
 
       ]
@@ -244,10 +267,18 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
 
   Widget _buildBoardTitle() {
     return Container(
-      margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-      child: Column(
+      transform: Matrix4.translationValues(-25.0, 20.0, 0.0),
+      child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            IconButton(
+                icon: Icon(Icons.close, size: 35,),
+                onPressed: () {
+                  Navigator.of(context).pop();
+
+                }
+            ),
+            SizedBox(width: 20),
             Text(
               "Create Board", // Main text on the image
               style:
@@ -257,6 +288,7 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
                 fontSize: 40.0,
               ),
             ),
+
           ]
       ),
     );
@@ -267,24 +299,24 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
     return GridView.count(
         crossAxisCount: 3,
         childAspectRatio: 2/4,
-        children: <BoardClass>[
+        children: <FriendClass>[
           for (var i in _searchList) i,
-        ].map((BoardClass board) {
+        ].map((FriendClass friend) {
           return
             GestureDetector(
                 onTap: () {
                   setState(() {
-                    if(board.selected == 0) board.setSelected(5);
-                    else board.setSelected(0);
+                    if(friend.selected == 0) friend.setSelected(5);
+                    else friend.setSelected(0);
                   });
                 },
                 child: Container(
                   margin: EdgeInsets.all(2.0),
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black, width: board.selected),
+                    border: Border.all(color: Colors.black, width: friend.selected),
                     borderRadius: BorderRadius.circular(10.0),
                     image: DecorationImage(
-                      image: AssetImage(board.image), // put image
+                      image: AssetImage(friend.image), // put image
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -293,7 +325,7 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        board.title, // Main text on the image
+                        friend.title, // Main text on the image
                         style:
                         TextStyle(
                           color: Colors.white,
@@ -318,6 +350,39 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
                 )
             );
         }).toList());
+  }
+
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Creating board'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Are you sure you wanna create this board?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('No'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Yes'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
 
@@ -378,16 +443,26 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
             ),
           ],
         ),
+        floatingActionButton: FloatingActionButton(
+          heroTag: "createBoard",
+          onPressed: () {
+            _showMyDialog();
+          },
+          child: Icon(Icons.check),
+          backgroundColor: Colors.green[900],
+        ),
     );
   }
 }
 
-class BoardClass {
+class FriendClass {
+  String id;
   String title;
   String image;
   double selected = 0;
 
-  BoardClass(String title, String image) {
+  FriendClass(String id, String title, String image) {
+    this.id = id;
     this.title = title;
     this.image = image;
   }

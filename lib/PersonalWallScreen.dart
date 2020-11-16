@@ -270,19 +270,18 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
   }
 
   void _handleTabSelection() {
-    if (_tabController.indexIsChanging) {
-      switch (_tabController.index) {
-        case 0:
-            setState(() {
-              _isVisible = true;
-            });
-          break;
-        case 1:
-          setState(() {
-            _isVisible = false;
-          });
-          break;
-      }
+    print(_tabController.index);
+    switch (_tabController.index) {
+      case 0:
+        setState(() {
+          _isVisible = true;
+        });
+        break;
+      case 1:
+        setState(() {
+          _isVisible = false;
+        });
+        break;
     }
   }
 
@@ -401,6 +400,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
       floatingActionButton: Visibility(
         visible: _isVisible,
         child: FloatingActionButton(
+            heroTag: "addBoard",
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(
                   builder: (context) => CreateBoardScreen()
