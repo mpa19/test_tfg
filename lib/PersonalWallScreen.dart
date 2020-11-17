@@ -318,7 +318,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
             Icons.search,
             color: Colors.white,
           ),
-          hintText: 'Enter a friend name',
+          hintText: 'Enter a board name',
           hintStyle: kHintTextStyle,
         ),
       ),
@@ -352,6 +352,19 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
                     stops: [0.1, 0.4, 0.7, 0.9],
                   ),
                 ),
+              ),
+              AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0.0,
+                leading: new Container(),
+                actions: [
+                  IconButton(
+                      icon: Icon(Icons.menu, size: 35,),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      }
+                  ),
+                ],
               ),
               Container(
                 padding: const EdgeInsets.all(40),

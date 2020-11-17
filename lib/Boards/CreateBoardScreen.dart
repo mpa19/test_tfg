@@ -269,18 +269,11 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
 
   Widget _buildBoardTitle() {
     return Container(
-      transform: Matrix4.translationValues(-25.0, 20.0, 0.0),
-      child: Row(
+      //transform: Matrix4.translationValues(-25.0, 20.0, 0.0),
+      child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            IconButton(
-                icon: Icon(Icons.close, size: 35,),
-                onPressed: () {
-                  Navigator.of(context).pop();
-
-                }
-            ),
-            SizedBox(width: 20),
+            SizedBox(height: 30),
             Text(
               "Create Board", // Main text on the image
               style:
@@ -397,7 +390,6 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
 
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-
       body: Stack(
           children: <Widget>[
             Container(
@@ -416,6 +408,24 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
                   stops: [0.1, 0.4, 0.7, 0.9],
                 ),
               ),
+            ),
+            AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0.0,
+              leading: IconButton(
+                  icon: Icon(Icons.close, size: 35,),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  }
+              ),
+              actions: [
+                IconButton(
+                    icon: Icon(Icons.menu, size: 35,),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    }
+                ),
+              ],
             ),
             Container(
                 padding: const EdgeInsets.all(40),
