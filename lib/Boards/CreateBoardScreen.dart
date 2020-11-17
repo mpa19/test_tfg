@@ -93,7 +93,9 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
         var _image;
         if(row['user_image'] == "") _image = "https://www.martabatalla.com/flutter/wenect/defaultuser.png";
         else _image = "https://www.martabatalla.com/flutter/wenect/profileImages/"+row['user_image'];
-        _bcList.add(new FriendClass(row['user_id'], row['user_name']+" "+row['user_secondName'], _image));
+        setState(() {
+          _bcList.add(new FriendClass(row['user_id'], row['user_name']+" "+row['user_second'], _image));
+        });
       }
     }
   }
@@ -316,7 +318,7 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
                     border: Border.all(color: Colors.black, width: friend.selected),
                     borderRadius: BorderRadius.circular(10.0),
                     image: DecorationImage(
-                      image: AssetImage(friend.image), // put image
+                      image: NetworkImage(friend.image), // put image
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -334,7 +336,7 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
                         ),
                       ),
 
-                      Padding(
+                      /*Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: Text(
                           'Subtext', // Subtext on the image
@@ -344,7 +346,7 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
                           ),
                           textAlign: TextAlign.center,
                         ),
-                      ),
+                      ),*/
                     ],
                   ),
                 )

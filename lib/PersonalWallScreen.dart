@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'BoardScreen.dart';
 import 'package:flutter_app/Boards/CreateBoardScreen.dart';
 import 'package:flutter_app/RegisterUser/CreateProfileScreen.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -12,6 +11,7 @@ import 'package:flutter_app/utilities/constants.dart';
 import 'package:http/http.dart' as http;
 
 import 'SelectedScreen.dart';
+import 'main.dart';
 
 
 class PersonalWallScreen extends StatefulWidget {
@@ -27,6 +27,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
   var dataGet;
   final storage = new FlutterSecureStorage();
   var _isVisible;
+  String _userName = "";
 
   List<Widget>_randomChildren;
 
@@ -41,6 +42,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
   final TextEditingController _searchController = TextEditingController();
 
 
+
   @override
   initState() {
     super.initState();
@@ -48,7 +50,6 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
     _getBoards();
     /*_bcList.add(BoardClass("GYM", 'assets/images/146651.jpg'));
     _bcList.add(BoardClass("PROGRAMMERS", 'assets/images/39902.jpg'));*/
-
     _isVisible = true;
     _getImageUrl();
     _tabController = TabController(vsync: this, length: 2);
@@ -89,6 +90,9 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
         _bcList.add(new BoardClass(row['board_id'], row['board_name'], _image));
       }
     }
+
+    _userName = await storage.read(key: "name");
+
   }
 
 
@@ -125,13 +129,13 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
     );
   }
 
-  /*_closeSession() async {
+  _closeSession() async {
     await storage.write(key: "login", value: "false");
     Navigator.push(context, MaterialPageRoute(
         builder: (context) => MyApp()
     ),
     );
-  }*/
+  }
 
 
   Widget _buildContactsBtn() {
@@ -142,10 +146,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
         child: RaisedButton(
           elevation: 5.0,
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(
-                builder: (context) => BoardScreen()
-            ),
-            );
+            _closeSession();
           },
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),
@@ -167,12 +168,12 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
   }
 
 
-  Widget _buildNameText() {
+  Widget _buildNameText()  {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10.0),
       child: Center(
           child: Text(
-            'MARC PEREZ',
+            _userName,
             style: TextStyle(
               color: Colors.white,
               letterSpacing: 5.5,
@@ -270,7 +271,6 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
   }
 
   void _handleTabSelection() {
-    print(_tabController.index);
     switch (_tabController.index) {
       case 0:
         setState(() {
@@ -300,7 +300,6 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
   }
 
   Widget _buildSearchTF() {
-
     return Container(
       alignment: Alignment.centerLeft,
       decoration: kBoxDecorationStyle,

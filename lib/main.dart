@@ -301,6 +301,7 @@ class LogInState extends State<LogInScreen> {
 
     if(dataUser.length>0){
       await storage.write(key: "id", value: dataUser[0]['user_id']);
+      await storage.write(key: "name", value: dataUser[0]['user_name']+" "+dataUser[0]['user_second']);
       if(_rememberMe) {
         await storage.write(key: "email", value: dataUser[0]['user_email']);
         await storage.write(key: "remember", value: "true");
