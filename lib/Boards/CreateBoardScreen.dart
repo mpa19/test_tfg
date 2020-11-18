@@ -40,26 +40,13 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
 
   List<FriendClass> _searchList = List();
 
+  bool _nameEmpty = false;
+  bool _nameExist = false;
+
 
   @override
   void initState() {
     super.initState();
-    /*_bcList.add(FriendClass("GYM", 'assets/images/146651.jpg'));
-    _bcList.add(FriendClass("PROGRAMMERS", 'assets/images/39902.jpg'));
-    _bcList.add(FriendClass("PROGRAMMERS", 'assets/images/39902.jpg'));
-    _bcList.add(FriendClass("PROGRAMMERS", 'assets/images/39902.jpg'));
-    _bcList.add(FriendClass("PROGRAMMERS", 'assets/images/39902.jpg'));
-    _bcList.add(FriendClass("PROGRAMMERS", 'assets/images/39902.jpg'));
-    _bcList.add(FriendClass("PROGRAMMERS", 'assets/images/39902.jpg'));
-    _bcList.add(FriendClass("PROGRAMMERS", 'assets/images/39902.jpg'));
-    _bcList.add(FriendClass("PROGRAMMERS", 'assets/images/39902.jpg'));
-    _bcList.add(FriendClass("PROGRAMMERS", 'assets/images/39902.jpg'));
-    _bcList.add(FriendClass("PROGRAMMERS", 'assets/images/39902.jpg'));
-    _bcList.add(FriendClass("PROGRAMMERS", 'assets/images/39902.jpg'));
-    _bcList.add(FriendClass("PROGRAMMERS", 'assets/images/39902.jpg'));
-    _bcList.add(FriendClass("PROGRAMMERS", 'assets/images/39902.jpg'));
-    _bcList.add(FriendClass("PROGRAMMERS", 'assets/images/39902.jpg'));*/
-
     _getFriends();
 
     _searchList = _bcList;
@@ -186,6 +173,23 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
     );
   }
 
+  Widget _errorName(){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 6, 0, 0),
+          child: Text(
+              'Name can\'t be empty',
+              style: TextStyle(
+                color: Colors.red,
+                fontFamily: 'OpenSans',
+              )
+          ),
+        ),
+      ],
+    );
+  }
 
   Widget _buildNameTF() {
     return Column(
@@ -214,7 +218,7 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
                 Icons.email,
                 color: Colors.white,
               ),
-              hintText: 'Enter your Email',
+              hintText: 'Enter your Board Name',
               hintStyle: kHintTextStyle,
             ),
           ),
@@ -225,7 +229,6 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
 
 
   Widget _buildSearchTF() {
-
     return Container(
           alignment: Alignment.centerLeft,
           decoration: kBoxDecorationStyle,
@@ -269,11 +272,9 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
 
   Widget _buildBoardTitle() {
     return Container(
-      //transform: Matrix4.translationValues(-25.0, 20.0, 0.0),
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            SizedBox(height: 30),
             Text(
               "Create Board", // Main text on the image
               style:
@@ -283,7 +284,6 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
                 fontSize: 40.0,
               ),
             ),
-
           ]
       ),
     );
@@ -328,18 +328,6 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
                           fontSize: 14.0,
                         ),
                       ),
-
-                      /*Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Text(
-                          'Subtext', // Subtext on the image
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15.0,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),*/
                     ],
                   ),
                 )
@@ -371,6 +359,8 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
             TextButton(
               child: Text('Yes'),
               onPressed: () {
+                _createBoardMysql();
+                Navigator.of(context).pop();
                 Navigator.of(context).pop();
               },
             ),
@@ -380,13 +370,122 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
     );
   }
 
+  Widget _buildAppBar() {
+    return Container(
+       child: Column(
+         children: [
+           AppBar(
+             backgroundColor: Colors.transparent,
+             elevation: 0.0,
+             leading: IconButton(
+                 icon: Icon(Icons.close, size: 35,),
+                 onPressed: () {
+                   Navigator.of(context).pop();
+                 }
+             ),
+             actions: [
+               IconButton(
+                   icon: Icon(Icons.menu, size: 35,),
+                   onPressed: () {
+                     Navigator.of(context).pop();
+                   }
+               ),
+             ],
+           ),
+           if(_nameExist) _nameError(),
+           SizedBox(height: 10)
+         ],
+       )
+    );
+  }
+
+  Widget _buildTop() {
+    return Container(
+        padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
+        child: Column(
+          children: [
+            _buildBoardTitle(),
+            _buildProfileImage(),
+            _buildNameTF(),
+            if(_nameEmpty) _errorName()
+        ],
+      ),
+    );
+  }
+  _createBoardMysql() async {
+    var _nameImage = "";
+    if(_image != null) _nameImage = _nameController.text;
+    await http.post("https://www.martabatalla.com/flutter/wenect/createBoard.php",
+        body: {
+          "id": await storage.read(key: "id"),
+          "name": _nameController.text,
+          "photo": _nameImage
+        });
+  }
+  _checkData() async {
+    _nameEmpty = false;
+    _nameExist = false;
+
+    if(_nameController.text == ""){
+      setState(() {
+        _nameEmpty = true;
+      });
+    } else if(await _checkNameExist()){
+      setState(() {
+        _nameExist = true;
+      });
+    } else {
+      _showMyDialog();
+    }
+
+    setState(() {});
+  }
+
+  Future<bool> _checkNameExist() async {
+      return false;
+  }
+
+  Widget _nameError(){
+    return Container(
+      child: Column(
+        children: [
+          Container(
+            color: Colors.amberAccent,
+            width: double.infinity,
+            padding: EdgeInsets.all(5.0),
+            child: Row(
+              children: [
+                SizedBox(height: 30.0),
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Icon(Icons.error_outline),
+                ),
+                Expanded(
+                    child: Text("Name already exist")
+                ),
+                IconButton(
+                    icon: Icon(Icons.close),
+                    onPressed: () {
+                      setState(() {
+                        _nameExist = false;
+                      });
+                    }
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
     _randomChildren = new List<Widget>();
-    _randomChildren.add(_buildBoardTitle());
-    _randomChildren.add(_buildProfileImage());
-    _randomChildren.add(_buildNameTF());
+    _randomChildren.add(_buildAppBar());
+    _randomChildren.add(_buildTop());
 
     return Scaffold(
       resizeToAvoidBottomPadding: false,
@@ -409,26 +508,7 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
                 ),
               ),
             ),
-            AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0.0,
-              leading: IconButton(
-                  icon: Icon(Icons.close, size: 35,),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  }
-              ),
-              actions: [
-                IconButton(
-                    icon: Icon(Icons.menu, size: 35,),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    }
-                ),
-              ],
-            ),
             Container(
-                padding: const EdgeInsets.all(40),
                 child: DefaultTabController(
                   length: 2,
                   child: NestedScrollView(
@@ -441,14 +521,17 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
                         ),
                       ];
                     },
-                    body: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildFriendText(),
-                        _buildSearchTF(),
-                        SizedBox(height: 10.0),
-                        Expanded(child: _buildBoards())
-                      ],
+                    body: Container(
+                      padding: const EdgeInsets.fromLTRB(40, 20, 40, 0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildFriendText(),
+                          _buildSearchTF(),
+                          SizedBox(height: 10.0),
+                          Expanded(child: _buildBoards())
+                        ],
+                      ),
                     )
                   ),
                 )
@@ -458,7 +541,8 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
         floatingActionButton: FloatingActionButton(
           heroTag: "createBoard",
           onPressed: () {
-            _showMyDialog();
+            _checkData();
+            //_showMyDialog();
           },
           child: Icon(Icons.check),
           backgroundColor: Colors.green[900],

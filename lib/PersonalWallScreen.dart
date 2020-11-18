@@ -47,9 +47,10 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
   initState() {
     super.initState();
 
-    _getBoards();
-    /*_bcList.add(BoardClass("GYM", 'assets/images/146651.jpg'));
-    _bcList.add(BoardClass("PROGRAMMERS", 'assets/images/39902.jpg'));*/
+    setState(() {
+      _getBoards();
+    });
+
     _isVisible = true;
     _getImageUrl();
     _tabController = TabController(vsync: this, length: 2);
@@ -91,7 +92,9 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
       }
     }
 
+
     _userName = await storage.read(key: "name");
+
 
   }
 
