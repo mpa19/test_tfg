@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 
 import 'SelectedScreen.dart';
 
-class BoardScreen extends StatefulWidget {
+class BoardScreen1 extends StatefulWidget {
 
   @override
-  _BoardScreenState createState() => _BoardScreenState();
+  _BoardScreenState1 createState() => _BoardScreenState1();
 }
 
-class _BoardScreenState extends State<BoardScreen> {
+class _BoardScreenState1 extends State<BoardScreen1> {
 
   @override
   Widget build(BuildContext context) {

@@ -159,7 +159,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 color: Colors.blueGrey, //Color(0xFF81A483),
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => BoardScreen()
+                      builder: (context) => BoardScreen1()
                   ),
                   );
                 },

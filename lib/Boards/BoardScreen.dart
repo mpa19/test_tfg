@@ -11,28 +11,25 @@ import 'package:http/http.dart' as http;
 
 
 
-
 class BoardScreen extends StatefulWidget {
   final boardId;
+  final name;
 
   @override
-  BoardScreen({Key key, @required this.boardId}) : super(key: key);
+  BoardScreen({Key key, @required this.boardId, this.name}) : super(key: key);
 
   @override
   BoardState createState() => BoardState();
-
 
 }
 
 class BoardState extends State<BoardScreen> with SingleTickerProviderStateMixin {
 
-
-
   bool _gotImage = false;
 
   var dataGet;
   final storage = new FlutterSecureStorage();
-  String _userName = "";
+  String _userName;
 
   List<Widget>_randomChildren;
 
@@ -55,6 +52,7 @@ class BoardState extends State<BoardScreen> with SingleTickerProviderStateMixin 
       _getFriends();
     });
 
+    _userName = widget.name;
     //_getImageUrl();
 
     _randomChildren = new List<Widget>();
@@ -285,7 +283,12 @@ class BoardState extends State<BoardScreen> with SingleTickerProviderStateMixin 
             AppBar(
               backgroundColor: Colors.transparent,
               elevation: 0.0,
-              leading: new Container(),
+              leading: IconButton(
+                  icon: Icon(Icons.arrow_back, size: 35,),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  }
+              ),
               actions: [
                 IconButton(
                     icon: Icon(Icons.menu, size: 35,),

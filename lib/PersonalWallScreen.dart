@@ -10,6 +10,8 @@ import 'package:flutter_app/utilities/constants.dart';
 
 import 'package:http/http.dart' as http;
 
+import 'BoardScreen1.dart';
+import 'Boards/BoardScreen.dart';
 import 'SelectedScreen.dart';
 import 'main.dart';
 
@@ -198,7 +200,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
                 GestureDetector(
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => SelectedScreen(text: board.title)
+                          builder: (context) => BoardScreen(boardId: board.id, name: board.title)
                       ),
                       );
                     },
