@@ -3,9 +3,12 @@ import 'dart:io';
 
 import 'package:flutter_app/utilities/constants.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:path/path.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
 
 import 'package:image_picker/image_picker.dart';
 
@@ -22,6 +25,7 @@ class CreateBoardScreen extends StatefulWidget {
 }
 
 class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProviderStateMixin {
+  bool _isPrivate = false;
 
   var dataGet;
   final storage = new FlutterSecureStorage();
@@ -337,7 +341,7 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
 
   Future<void> _showMyDialog() async {
     return showDialog<void>(
-      context: context,
+      context: this.context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
@@ -380,14 +384,14 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
              leading: IconButton(
                  icon: Icon(Icons.close, size: 35,),
                  onPressed: () {
-                   Navigator.of(context).pop();
+                   Navigator.of(this.context).pop();
                  }
              ),
              actions: [
                IconButton(
                    icon: Icon(Icons.menu, size: 35,),
                    onPressed: () {
-                     Navigator.of(context).pop();
+                     Navigator.of(this.context).pop();
                    }
                ),
              ],
@@ -407,20 +411,38 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
             _buildBoardTitle(),
             _buildProfileImage(),
             _buildNameTF(),
+            _buildPublicSw(),
             if(_nameEmpty) _errorName()
         ],
       ),
     );
   }
+
+  _uploadImage() async {
+    await http.post(
+        "https://www.martabatalla.com/flutter/wenect/uploadBoardImage.php",
+        body: {
+          "image": base64Encode(_image.readAsBytesSync()),
+          "name": (_nameController.text + extension(basename(_image.path))).toLowerCase(),
+          "id": await storage.read(key: "id")
+        });
+  }
+
   _createBoardMysql() async {
     var _nameImage = "";
-    if(_image != null) _nameImage = _nameController.text;
+    if(_image != null) {
+      _nameImage = _nameController.text + extension(basename(_image.path));
+      await _uploadImage();
+    }
+
     await http.post("https://www.martabatalla.com/flutter/wenect/createBoard.php",
         body: {
           "id": await storage.read(key: "id"),
           "name": _nameController.text,
-          "photo": _nameImage
-        });
+          "photo": _nameImage.toLowerCase(),
+          "private": _isPrivate.toString()
+    });
+
   }
   _checkData() async {
     _nameEmpty = false;
@@ -479,7 +501,24 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
     );
   }
 
-
+  Widget _buildPublicSw() {
+    return Row(
+      children: [
+        SizedBox(height: 80),
+        Text(
+          "Make it Private",
+          style: kLabelStyle,
+        ),
+        Switch(
+        value: _isPrivate,
+        onChanged:(value) {
+          setState(() {
+            _isPrivate = value;
+          });
+        })
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -522,7 +561,7 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
                       ];
                     },
                     body: Container(
-                      padding: const EdgeInsets.fromLTRB(40, 20, 40, 0),
+                      padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

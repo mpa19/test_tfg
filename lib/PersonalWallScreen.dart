@@ -92,9 +92,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
       }
     }
 
-
     _userName = await storage.read(key: "name");
-
 
   }
 
