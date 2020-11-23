@@ -418,12 +418,12 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
     );
   }
 
-  _uploadImage() async {
+  _uploadImage(String _name) async {
     await http.post(
         "https://www.martabatalla.com/flutter/wenect/uploadBoardImage.php",
         body: {
           "image": base64Encode(_image.readAsBytesSync()),
-          "name": (_nameController.text + extension(basename(_image.path))).toLowerCase(),
+          "name": _name,
           "id": await storage.read(key: "id")
         });
   }
@@ -432,16 +432,26 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
     var _nameImage = "";
     if(_image != null) {
       _nameImage = _nameController.text + extension(basename(_image.path));
-      await _uploadImage();
+      await _uploadImage(_nameImage);
     }
 
-    await http.post("https://www.martabatalla.com/flutter/wenect/createBoard.php",
+    var response = await http.post("https://www.martabatalla.com/flutter/wenect/createBoard.php",
         body: {
           "id": await storage.read(key: "id"),
           "name": _nameController.text,
           "photo": _nameImage.toLowerCase(),
           "private": _isPrivate.toString()
     });
+
+    for (var i in _searchList){
+      if(i.selected>0) {
+        await http.post("https://www.martabatalla.com/flutter/wenect/relationBoardUsers.php",
+            body: {
+              "user_id": i.id,
+              "board_id": response.body.toString(),
+            });
+      }
+    }
 
   }
   _checkData() async {
