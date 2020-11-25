@@ -14,6 +14,8 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:http/http.dart' as http;
 
+import '../PersonalWallScreen.dart';
+
 
 
 
@@ -27,6 +29,7 @@ class CreateBoardScreen extends StatefulWidget {
 class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProviderStateMixin {
   bool _isPrivate = false;
 
+  var _errorText;
   var dataGet;
   final storage = new FlutterSecureStorage();
 
@@ -45,7 +48,6 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
   List<FriendClass> _searchList = List();
 
   bool _nameEmpty = false;
-  bool _nameExist = false;
 
 
   @override
@@ -184,7 +186,7 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
         Padding(
           padding: EdgeInsets.fromLTRB(0, 6, 0, 0),
           child: Text(
-              'Name can\'t be empty',
+              _errorText,
               style: TextStyle(
                 color: Colors.red,
                 fontFamily: 'OpenSans',
@@ -364,8 +366,10 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
               child: Text('Yes'),
               onPressed: () {
                 _createBoardMysql();
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
+                Navigator.pushReplacement(context, MaterialPageRoute(
+                    builder: (context) => PersonalWallScreen()
+                ),
+                );
               },
             ),
           ],
@@ -384,7 +388,10 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
              leading: IconButton(
                  icon: Icon(Icons.close, size: 35,),
                  onPressed: () {
-                   Navigator.of(this.context).pop();
+                   Navigator.pushReplacement(this.context, MaterialPageRoute(
+                       builder: (context) => PersonalWallScreen()
+                   ),
+                   );
                  }
              ),
              actions: [
@@ -396,7 +403,6 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
                ),
              ],
            ),
-           if(_nameExist) _nameError(),
            SizedBox(height: 10)
          ],
        )
@@ -411,8 +417,8 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
             _buildBoardTitle(),
             _buildProfileImage(),
             _buildNameTF(),
+            if(_nameEmpty) _errorName(),
             _buildPublicSw(),
-            if(_nameEmpty) _errorName()
         ],
       ),
     );
@@ -452,19 +458,20 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
             });
       }
     }
-
   }
+
   _checkData() async {
     _nameEmpty = false;
-    _nameExist = false;
 
     if(_nameController.text == ""){
       setState(() {
+        _errorText = 'Name can\'t be empty';
         _nameEmpty = true;
       });
     } else if(await _checkNameExist()){
       setState(() {
-        _nameExist = true;
+        _errorText = 'You already have a board with that name';
+        _nameEmpty = true;
       });
     } else {
       _showMyDialog();
@@ -474,42 +481,19 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
   }
 
   Future<bool> _checkNameExist() async {
+    var response = await http.post("https://www.martabatalla.com/flutter/wenect/getBoardExist.php",
+        body: {
+          "id": await storage.read(key: "id"),
+          "name": _nameController.text,
+        });
+
+    var dataUser = json.decode(response.body);
+
+    if(dataUser.length==0) {
       return false;
+    } else return true;
   }
 
-  Widget _nameError(){
-    return Container(
-      child: Column(
-        children: [
-          Container(
-            color: Colors.amberAccent,
-            width: double.infinity,
-            padding: EdgeInsets.all(5.0),
-            child: Row(
-              children: [
-                SizedBox(height: 30.0),
-                Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: Icon(Icons.error_outline),
-                ),
-                Expanded(
-                    child: Text("Name already exist")
-                ),
-                IconButton(
-                    icon: Icon(Icons.close),
-                    onPressed: () {
-                      setState(() {
-                        _nameExist = false;
-                      });
-                    }
-                )
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  }
 
   Widget _buildPublicSw() {
     return Row(

@@ -417,7 +417,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
         child: FloatingActionButton(
             heroTag: "addBoard",
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(
+              Navigator.pushReplacement(context, MaterialPageRoute(
                   builder: (context) => CreateBoardScreen()
               ),
               );
