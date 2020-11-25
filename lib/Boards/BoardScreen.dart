@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_app/RegisterUser/CreateProfileScreen.dart';
+import 'package:flutter_app/UserProfile/ContactWallScreen.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -158,10 +159,10 @@ class BoardState extends State<BoardScreen> with SingleTickerProviderStateMixin 
           return
             GestureDetector(
                 onTap: () {
-                  setState(() {
-                    if(friend.selected == 0) friend.setSelected(5);
-                    else friend.setSelected(0);
-                  });
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => ContactWallScreen(userId: friend.id, name: friend.title)
+                  ),
+                  );
                 },
                 child: Container(
                   margin: EdgeInsets.all(2.0),

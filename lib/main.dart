@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app/PersonalWallScreen.dart';
+import 'file:///C:/Users/Marc/.AndroidStudio1.3/flutter_app/lib/UserProfile/PersonalWallScreen.dart';
 import 'file:///C:/Users/Marc/.AndroidStudio1.3/flutter_app/lib/RegisterUser/SignUpScreen.dart';
 
 import 'package:flutter_app/utilities/constants.dart';

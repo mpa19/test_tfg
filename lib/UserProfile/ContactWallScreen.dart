@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter_app/Boards/CreateBoardScreen.dart';
 import 'package:flutter_app/RegisterUser/CreateProfileScreen.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -10,20 +9,23 @@ import 'package:flutter_app/utilities/constants.dart';
 
 import 'package:http/http.dart' as http;
 
-import 'BoardScreen1.dart';
-import 'Boards/BoardScreen.dart';
-import 'SelectedScreen.dart';
-import 'main.dart';
+import '../Boards/BoardScreen.dart';
+import '../main.dart';
 
 
-class PersonalWallScreen extends StatefulWidget {
+class ContactWallScreen extends StatefulWidget {
+  final userId;
+  final name;
 
   @override
-  PersonalWallState createState() => PersonalWallState();
+  ContactWallScreen({Key key, @required this.userId, this.name}) : super(key: key);
+
+  @override
+  ContactWallState createState() => ContactWallState();
 
 }
 
-class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProviderStateMixin {
+class ContactWallState extends State<ContactWallScreen> with SingleTickerProviderStateMixin {
   bool _gotImage = false;
 
   var dataGet;
@@ -156,7 +158,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
           ),
           color: Colors.white,
           child: Text(
-            'CONTACTS',
+            'ADD FRIEND',
             style: TextStyle(
               color: Color(0xFF527DAA),
               letterSpacing: 1.5,
@@ -188,6 +190,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
       )
     );
   }
+
 
   Widget _buildBoards(){
     return GridView.count(
@@ -264,6 +267,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
     }
   }
 
+
   Widget _buildNotifications(){
     return ListView(
       padding: EdgeInsets.zero,
@@ -272,6 +276,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
       }).toList(),
     );
   }
+
 
   void _handleTabSelection() {
     switch (_tabController.index) {
@@ -288,6 +293,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
     }
   }
 
+
   List<BoardClass> _buildSearchList() {
     if (_searchText.isEmpty) {
       return _searchList = _bcList;
@@ -301,6 +307,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
       return _searchList;
     }
   }
+
 
   Widget _buildSearchTF() {
     return Container(
@@ -334,7 +341,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
     _randomChildren = new List<Widget>();
     _randomChildren.add(_buildProfileImage());
     _randomChildren.add(_buildContactsBtn());
-    _randomChildren.add(_buildNameText());
+    //_randomChildren.add(_buildNameText());
 
     return Scaffold(
       body: Stack(
@@ -386,6 +393,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
                       // You tab view goes here
                       body: Column(
                         children: <Widget>[
+                          _buildNameText(),
                           TabBar(
                             controller: _tabController,
                             tabs: [
@@ -411,21 +419,6 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
               ),
             ],
       ),
-
-      floatingActionButton: Visibility(
-        visible: _isVisible,
-        child: FloatingActionButton(
-            heroTag: "addBoard",
-            onPressed: () {
-              Navigator.pushReplacement(context, MaterialPageRoute(
-                  builder: (context) => CreateBoardScreen()
-              ),
-              );
-            },
-            child: Icon(Icons.add),
-            backgroundColor: Colors.blue[900],
-          ),
-      )
     );
   }
 }

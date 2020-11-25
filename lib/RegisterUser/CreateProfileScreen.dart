@@ -13,7 +13,7 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:http/http.dart' as http;
 
-import '../PersonalWallScreen.dart';
+import '../UserProfile/PersonalWallScreen.dart';
 
 
 class CreateProfileScreen extends StatefulWidget {
