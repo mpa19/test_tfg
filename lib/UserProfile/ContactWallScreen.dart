@@ -27,6 +27,9 @@ class ContactWallScreen extends StatefulWidget {
 class ContactWallState extends State<ContactWallScreen> with SingleTickerProviderStateMixin {
   bool _gotImage = false;
 
+  var _textBtn = "";
+  int _actionBtn;
+
   var dataGet;
   final storage = new FlutterSecureStorage();
   var _isVisible;
@@ -45,12 +48,12 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
   final TextEditingController _searchController = TextEditingController();
 
 
-
   @override
   initState() {
     super.initState();
 
     setState(() {
+      _checkFriend();
       _userName = widget.name;
       _getBoards();
     });
@@ -79,6 +82,56 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
     });
   }
 
+  _checkFriend() async {
+    final response = await http.post("https://www.martabatalla.com/flutter/wenect/checkFriend.php",
+        body: {
+          "friend": await storage.read(key: "id"),
+          "id": widget.userId
+        });
+
+    var dataUser = json.decode(response.body);
+
+    if(dataUser.length>0) {
+      for(var row in dataUser) {
+        if(row['status'] == "pending") {
+          setState(() {
+            _actionBtn = 1;
+            _textBtn = 'ACCEPT FRIEND REQUEST';
+          });
+        } else {
+          setState(() {
+            _actionBtn = 2;
+            _textBtn = 'SEND MESSAGE';
+          });
+        }
+      }
+    } else {
+      final response = await http.post("https://www.martabatalla.com/flutter/wenect/checkFriend.php",
+          body: {
+            "id": await storage.read(key: "id"),
+            "friend": widget.userId
+          });
+
+      var dataUser = json.decode(response.body);
+
+      if(dataUser.length>0) {
+        for (var row in dataUser) {
+          if(row['status'] == "pending") {
+            setState(() {
+              _actionBtn = 3;
+              _textBtn = 'FRIEND REQUEST SENDED';
+            });
+          }
+        }
+      } else {
+        setState(() {
+          _actionBtn = 0;
+          _textBtn = 'ADD FRIEND';
+        });
+      }
+    }
+  }
+
   _getBoards() async {
     final response = await http.post("https://www.martabatalla.com/flutter/wenect/getBoardsPublic.php",
         body: {
@@ -95,8 +148,6 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
         _bcList.add(new BoardClass(row['board_id'], row['board_name'], _image));
       }
     }
-
-
   }
 
 
@@ -125,14 +176,31 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
     );
   }
 
-  _closeSession() async {
-    await storage.write(key: "login", value: "false");
-    Navigator.push(context, MaterialPageRoute(
-        builder: (context) => MyApp()
-    ),
-    );
+
+  _acceptRequest() async {
+    await http.post("https://www.martabatalla.com/flutter/wenect/acceptRequest.php",
+        body: {
+          "id": await storage.read(key: "id"),
+          "friend": widget.userId
+        });
   }
 
+  _sendMessage() {
+
+  }
+
+  _sendRequest() async {
+    await http.post("https://www.martabatalla.com/flutter/wenect/sendRequest.php",
+        body: {
+          "id": await storage.read(key: "id"),
+          "friend": widget.userId
+        });
+
+    setState(() {
+      _actionBtn = 3;
+      _textBtn = 'FRIEND REQUEST SENDED';
+    });
+  }
 
   Widget _buildMsgFriendBtn() {
     return Container(
@@ -142,14 +210,16 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
         child: RaisedButton(
           elevation: 5.0,
           onPressed: () {
-            _closeSession();
-          },
+            if(_actionBtn == 1) _acceptRequest();
+            else if(_actionBtn == 2) _sendMessage();
+            else if(_actionBtn == 0) _sendRequest();
+            },
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),
           ),
           color: Colors.white,
           child: Text(
-            'ADD FRIEND',
+            _textBtn,
             style: TextStyle(
               color: Color(0xFF527DAA),
               letterSpacing: 1.5,
