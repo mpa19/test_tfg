@@ -146,8 +146,7 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
   }
 
   getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery); // or ImageSource.camera to do a photo
-
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
     if(pickedFile.path != null) {
       setState(() {
         _image = File(pickedFile.path);

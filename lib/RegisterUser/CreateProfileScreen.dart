@@ -13,8 +13,6 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:http/http.dart' as http;
 
-import '../UserProfile/PersonalWallScreen.dart';
-
 
 class CreateProfileScreen extends StatefulWidget {
 
@@ -204,10 +202,9 @@ class CreateProfileState extends State<CreateProfileScreen> {
 
       await storage.write(key: "login", value: "true");
 
-      Navigator.push(this.context, MaterialPageRoute(
-          builder: (context) => PersonalWallScreen()
-      ),
-      );
+      Navigator.pop(this.context);
+      Navigator.pop(this.context);
+
     }
   }
 

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter_app/Boards/CreateBoardScreen.dart';
-import 'package:flutter_app/RegisterUser/CreateProfileScreen.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -92,20 +91,14 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
       }
     }
 
+
     _userName = await storage.read(key: "name");
 
   }
 
 
   Widget _buildProfileImage(){
-    return  GestureDetector(
-        onTap: () {
-          Navigator.push(context, MaterialPageRoute(
-              builder: (context) => CreateProfileScreen()
-          ),
-          );
-      },
-      child:Container(
+    return  Container(
           padding: EdgeInsets.symmetric(vertical: 0),
           width: double.infinity,
           child: Column(
@@ -126,7 +119,6 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
               )
             ]
           )
-      )
     );
   }
 

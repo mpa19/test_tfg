@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter_app/RegisterUser/CreateProfileScreen.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -52,6 +51,7 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
     super.initState();
 
     setState(() {
+      _userName = widget.name;
       _getBoards();
     });
 
@@ -80,9 +80,9 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
   }
 
   _getBoards() async {
-    final response = await http.post("https://www.martabatalla.com/flutter/wenect/getBoards.php",
+    final response = await http.post("https://www.martabatalla.com/flutter/wenect/getBoardsPublic.php",
         body: {
-          "id": await storage.read(key: "id")
+          "id": widget.userId
         });
 
     var dataUser = json.decode(response.body);
@@ -96,20 +96,12 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
       }
     }
 
-    _userName = await storage.read(key: "name");
 
   }
 
 
   Widget _buildProfileImage(){
-    return  GestureDetector(
-        onTap: () {
-          Navigator.push(context, MaterialPageRoute(
-              builder: (context) => CreateProfileScreen()
-          ),
-          );
-      },
-      child:Container(
+    return Container(
           padding: EdgeInsets.symmetric(vertical: 0),
           width: double.infinity,
           child: Column(
@@ -130,7 +122,6 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
               )
             ]
           )
-      )
     );
   }
 
@@ -143,7 +134,7 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
   }
 
 
-  Widget _buildContactsBtn() {
+  Widget _buildMsgFriendBtn() {
     return Container(
       child: ButtonTheme(
         minWidth: 50,
@@ -252,7 +243,7 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
   _getImageUrl() async {
     final response = await http.post("https://www.martabatalla.com/flutter/wenect/profileImages/selectImage.php",
         body: {
-          "id":   await storage.read(key: "id")
+          "id":   widget.userId
         });
 
     var dataUser = json.decode(response.body);
@@ -340,8 +331,7 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
   Widget build(BuildContext context) {
     _randomChildren = new List<Widget>();
     _randomChildren.add(_buildProfileImage());
-    _randomChildren.add(_buildContactsBtn());
-    //_randomChildren.add(_buildNameText());
+    _randomChildren.add(_buildMsgFriendBtn());
 
     return Scaffold(
       body: Stack(

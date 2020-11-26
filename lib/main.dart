@@ -67,7 +67,7 @@ class LogInState extends State<LogInScreen> {
 
   _checkLogin() async {
     if(await storage.read(key: "login") == "true") {
-      Navigator.push(context, MaterialPageRoute(
+      Navigator.pushReplacement(context, MaterialPageRoute(
           builder: (context) => PersonalWallScreen()
       ),
       );
