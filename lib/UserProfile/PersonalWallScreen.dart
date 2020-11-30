@@ -190,7 +190,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
                 GestureDetector(
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => BoardScreen(boardId: board.id, name: board.title, isVisible: true)
+                          builder: (context) => BoardScreen(board: board, isVisible: true)
                       ),
                       );
                     },

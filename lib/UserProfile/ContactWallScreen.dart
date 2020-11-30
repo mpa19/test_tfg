@@ -263,7 +263,7 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
                 GestureDetector(
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => BoardScreen(boardId: board.id, name: board.title, isVisible: false)
+                          builder: (context) => BoardScreen(board: board, isVisible: false)
                       ),
                       );
                     },

@@ -13,12 +13,11 @@ import 'package:http/http.dart' as http;
 
 
 class BoardScreen extends StatefulWidget {
-  final boardId;
-  final name;
+  final board;
   final isVisible;
 
   @override
-  BoardScreen({Key key, @required this.boardId, @required this.name, @required this.isVisible}) : super(key: key);
+  BoardScreen({Key key, @required this.board, @required this.isVisible}) : super(key: key);
 
   @override
   BoardState createState() => BoardState();
@@ -54,7 +53,7 @@ class BoardState extends State<BoardScreen> with SingleTickerProviderStateMixin 
       _getFriends();
     });
 
-    _userName = widget.name;
+    _userName = widget.board.title;
     //_getImageUrl();
 
     _randomChildren = new List<Widget>();
@@ -79,7 +78,7 @@ class BoardState extends State<BoardScreen> with SingleTickerProviderStateMixin 
   _getFriends() async {
     final response = await http.post("https://www.martabatalla.com/flutter/wenect/getBoardUsers.php",
         body: {
-          "id": widget.boardId
+          "id": widget.board.id
         });
 
     var dataUser = json.decode(response.body);
@@ -97,7 +96,7 @@ class BoardState extends State<BoardScreen> with SingleTickerProviderStateMixin 
   }
 
 
-  Widget _buildProfileImage(){
+  Widget _buildBoardImage(){
     return  GestureDetector(
         onTap: () {
           Navigator.push(context, MaterialPageRoute(
@@ -118,9 +117,10 @@ class BoardState extends State<BoardScreen> with SingleTickerProviderStateMixin 
                         child: SizedBox(
                           width: 105,
                           height: 105,
-                          child: _gotImage == true
-                              ? Image.network("https://www.martabatalla.com/flutter/wenect/profileImages/" + dataGet, fit: BoxFit.fill)
-                              : Image.asset('assets/images/defaultuser.png', fit: BoxFit.fill),
+                          child: Image.network(
+                              widget.board.image,
+                              fit: BoxFit.fill
+                          )
                         )
                     ),
                   )
@@ -259,7 +259,7 @@ class BoardState extends State<BoardScreen> with SingleTickerProviderStateMixin 
   @override
   Widget build(BuildContext context) {
     _randomChildren = new List<Widget>();
-    _randomChildren.add(_buildProfileImage());
+    _randomChildren.add(_buildBoardImage());
     //_randomChildren.add(_buildNameText());
 
     return Scaffold(
@@ -335,7 +335,7 @@ class BoardState extends State<BoardScreen> with SingleTickerProviderStateMixin 
             heroTag: "editBoard",
             onPressed: () {
               /*Navigator.pushReplacement(context, MaterialPageRoute(
-                  builder: (context) => CreateBoardScreen()
+                  builder: (context) => EditBoardScreen()
               ),
               );*/
             },
