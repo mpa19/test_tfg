@@ -15,9 +15,10 @@ import 'package:http/http.dart' as http;
 class BoardScreen extends StatefulWidget {
   final boardId;
   final name;
+  final isVisible;
 
   @override
-  BoardScreen({Key key, @required this.boardId, this.name}) : super(key: key);
+  BoardScreen({Key key, @required this.boardId, @required this.name, @required this.isVisible}) : super(key: key);
 
   @override
   BoardState createState() => BoardState();
@@ -259,7 +260,7 @@ class BoardState extends State<BoardScreen> with SingleTickerProviderStateMixin 
   Widget build(BuildContext context) {
     _randomChildren = new List<Widget>();
     _randomChildren.add(_buildProfileImage());
-    _randomChildren.add(_buildNameText());
+    //_randomChildren.add(_buildNameText());
 
     return Scaffold(
         body: Stack(
@@ -316,6 +317,7 @@ class BoardState extends State<BoardScreen> with SingleTickerProviderStateMixin 
                     // You tab view goes here
                     body: Column(
                       children: <Widget>[
+                        _buildNameText(),
                         _buildSearchTF(),
                         Expanded(
                           child: _buildFriends(),
@@ -327,6 +329,20 @@ class BoardState extends State<BoardScreen> with SingleTickerProviderStateMixin 
             ),
           ],
         ),
+        floatingActionButton: Visibility(
+          visible: widget.isVisible,
+          child: FloatingActionButton(
+            heroTag: "editBoard",
+            onPressed: () {
+              /*Navigator.pushReplacement(context, MaterialPageRoute(
+                  builder: (context) => CreateBoardScreen()
+              ),
+              );*/
+            },
+            child: Icon(Icons.edit),
+            backgroundColor: Colors.green,
+          ),
+        )
     );
   }
 }

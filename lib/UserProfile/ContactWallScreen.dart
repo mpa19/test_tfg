@@ -9,7 +9,6 @@ import 'package:flutter_app/utilities/constants.dart';
 import 'package:http/http.dart' as http;
 
 import '../Boards/BoardScreen.dart';
-import '../main.dart';
 
 
 class ContactWallScreen extends StatefulWidget {
@@ -264,7 +263,7 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
                 GestureDetector(
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => BoardScreen(boardId: board.id, name: board.title)
+                          builder: (context) => BoardScreen(boardId: board.id, name: board.title, isVisible: false)
                       ),
                       );
                     },
