@@ -10,6 +10,8 @@ import 'package:flutter_app/utilities/constants.dart';
 
 import 'package:http/http.dart' as http;
 
+import 'EditBoardScreen.dart';
+
 
 
 class BoardScreen extends StatefulWidget {
@@ -334,10 +336,10 @@ class BoardState extends State<BoardScreen> with SingleTickerProviderStateMixin 
           child: FloatingActionButton(
             heroTag: "editBoard",
             onPressed: () {
-              /*Navigator.pushReplacement(context, MaterialPageRoute(
-                  builder: (context) => EditBoardScreen()
+              Navigator.pushReplacement(context, MaterialPageRoute(
+                  builder: (context) => EditBoardScreen(board: widget.board)
               ),
-              );*/
+              );
             },
             child: Icon(Icons.edit),
             backgroundColor: Colors.green,

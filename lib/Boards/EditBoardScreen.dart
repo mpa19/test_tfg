@@ -58,6 +58,7 @@ class EditBoardState extends State<EditBoardScreen> with SingleTickerProviderSta
     super.initState();
     _getFriends();
 
+    _nameController.text = widget.board.title;
     _searchList = _bcList;
     _randomChildren = new List<Widget>();
 
@@ -125,9 +126,7 @@ class EditBoardState extends State<EditBoardScreen> with SingleTickerProviderSta
                       width: 185,
                       height: 185,
                       child: _image == null
-                          ? Image.asset('assets/images/146651.jpg',
-                          fit: BoxFit.fill
-                      )
+                          ? Image.asset('assets/images/146651.jpg', fit: BoxFit.fill)
                           : Image.file(_image, fit: BoxFit.fill)
                   ),
                 ),
@@ -574,7 +573,7 @@ class EditBoardState extends State<EditBoardScreen> with SingleTickerProviderSta
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        heroTag: "createBoard",
+        heroTag: "checkEditBoard",
         onPressed: () {
           _checkData();
           //_showMyDialog();
