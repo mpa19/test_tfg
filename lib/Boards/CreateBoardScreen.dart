@@ -111,7 +111,6 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
   Widget _buildProfileImage(){
     return Container(
         padding: EdgeInsets.symmetric(vertical: 25.0),
-        width: double.infinity,
         child: Column(
             children: <Widget>[
               CircleAvatar(
@@ -263,7 +262,7 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        SizedBox(height: 30.0),
+        //SizedBox(height: 30.0),
         Text(
         'Add friends',
         style: kLabelStyle,
@@ -277,23 +276,43 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
 
   Widget _buildBoardTitle() {
     return Container(
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              "Create Board", // Main text on the image
-              style:
-              TextStyle(
+        padding: EdgeInsets.symmetric(vertical: 45.0),
+        child: Center(
+            child: Text(
+              "DETAILS",
+              style: TextStyle(
                 color: Colors.white,
+                letterSpacing: 5.5,
+                fontSize: 30.0,
                 fontWeight: FontWeight.bold,
-                fontSize: 40.0,
+                fontFamily: 'OpenSans',
               ),
-            ),
-          ]
-      ),
+            )
+        )
     );
   }
 
+  Widget _buildCreateBoardBtn() {
+    return Container(
+        padding: EdgeInsets.symmetric(vertical: 20.0),
+        alignment: Alignment.centerRight,
+        child: ButtonTheme(
+          minWidth: 50,
+          height: 55.0,
+          child: RaisedButton(
+              elevation: 2.0,
+              onPressed: () {
+                _checkData();
+              },
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+              color: Colors.green[900],
+              child:  Icon(Icons.check, color: Colors.white,)
+          ),
+        )
+    );
+  }
 
   Widget _buildBoards(){
     return GridView.count(
@@ -377,47 +396,15 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
     );
   }
 
-  Widget _buildAppBar() {
-    return Container(
-       child: Column(
-         children: [
-           AppBar(
-             backgroundColor: Colors.transparent,
-             elevation: 0.0,
-             leading: IconButton(
-                 icon: Icon(Icons.close, size: 35,),
-                 onPressed: () {
-                   Navigator.pushReplacement(this.context, MaterialPageRoute(
-                       builder: (context) => PersonalWallScreen()
-                   ),
-                   );
-                 }
-             ),
-             actions: [
-               IconButton(
-                   icon: Icon(Icons.menu, size: 35,),
-                   onPressed: () {
-                     Navigator.of(this.context).pop();
-                   }
-               ),
-             ],
-           ),
-           SizedBox(height: 10)
-         ],
-       )
-    );
-  }
 
   Widget _buildTop() {
     return Container(
-        padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
+        padding: const EdgeInsets.fromLTRB(40, 40, 40, 0),
         child: Column(
           children: [
-            _buildBoardTitle(),
+             //_buildBoardTitle(),
             _buildProfileImage(),
-            _buildNameTF(),
-            if(_nameEmpty) _errorName(),
-            _buildPublicSw(),
+
         ],
       ),
     );
@@ -516,7 +503,7 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
   @override
   Widget build(BuildContext context) {
     _randomChildren = new List<Widget>();
-    _randomChildren.add(_buildAppBar());
+    //_randomChildren.add(_buildAppBar());
     _randomChildren.add(_buildTop());
 
     return Scaffold(
@@ -540,6 +527,17 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
                 ),
               ),
             ),
+            AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0.0,
+              leading: IconButton(
+                  color: Colors.red[800],
+                  icon: Icon(Icons.close, size: 35,),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  }
+              ),
+            ),
             Container(
                 child: DefaultTabController(
                   length: 2,
@@ -558,10 +556,15 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          _buildBoardTitle(),
+                          _buildNameTF(),
+                          if(_nameEmpty) _errorName(),
+                          _buildPublicSw(),
                           _buildFriendText(),
                           _buildSearchTF(),
                           SizedBox(height: 10.0),
-                          Expanded(child: _buildBoards())
+                          Expanded(child: _buildBoards()),
+                          Expanded(child: _buildCreateBoardBtn())
                         ],
                       ),
                     )
@@ -570,7 +573,7 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
             ),
           ],
         ),
-        floatingActionButton: FloatingActionButton(
+        /*floatingActionButton: FloatingActionButton(
           heroTag: "createBoard",
           onPressed: () {
             _checkData();
@@ -578,7 +581,7 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
           },
           child: Icon(Icons.check),
           backgroundColor: Colors.green[900],
-        ),
+        ),*/
     );
   }
 }

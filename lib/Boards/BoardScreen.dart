@@ -263,6 +263,41 @@ class BoardState extends State<BoardScreen> with SingleTickerProviderStateMixin 
     );
   }
 
+  Widget _buildEditBoardBtn() {
+    return Container(
+        padding: EdgeInsets.symmetric(vertical: 40),
+        alignment: Alignment.centerRight,
+        child: ButtonTheme(
+          minWidth: 50,
+          height: 55.0,
+          child: RaisedButton(
+            elevation: 2.0,
+            onPressed: () {
+              pushNewScreen(
+                context,
+                screen:  EditBoardScreen(board: widget.board),
+                withNavBar: true,
+              );
+            },
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+            color: Colors.green,
+            child: /*Text(
+              'Edit BOARD',
+              style: TextStyle(
+                color: Color(0xFF527DAA),
+                letterSpacing: 1.5,
+                fontSize: 10.0,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'OpenSans',
+              ),
+            ),*/
+            Icon(Icons.edit, color: Colors.white,)
+          ),
+        )
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -330,6 +365,7 @@ class BoardState extends State<BoardScreen> with SingleTickerProviderStateMixin 
                         Expanded(
                           child: _buildFriends(),
                           ),
+                        _buildEditBoardBtn()
                       ],
                     ),
                   ),
@@ -337,20 +373,6 @@ class BoardState extends State<BoardScreen> with SingleTickerProviderStateMixin 
             ),
           ],
         ),
-        floatingActionButton: Visibility(
-          visible: widget.isVisible,
-          child: FloatingActionButton(
-            heroTag: "editBoard",
-            onPressed: () {
-              Navigator.pushReplacement(context, MaterialPageRoute(
-                  builder: (context) => EditBoardScreen(board: widget.board)
-              ),
-              );
-            },
-            child: Icon(Icons.edit),
-            backgroundColor: Colors.green,
-          ),
-        )
     );
   }
 }

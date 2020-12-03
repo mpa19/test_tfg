@@ -300,14 +300,14 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
 
   Widget _buildCreateBoardBtn() {
     return Container(
-        padding: EdgeInsets.symmetric(vertical: 35.0),
+        padding: EdgeInsets.symmetric(vertical: 40.0),
 
         alignment: Alignment.centerRight,
         child: ButtonTheme(
           minWidth: 50,
-          height: 28.0,
+          height: 55.0,
           child: RaisedButton(
-            elevation: 5.0,
+            elevation: 2.0,
             onPressed: () {
               pushNewScreen(
                 context,
@@ -318,17 +318,8 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0),
             ),
-            color: Colors.white,
-            child: Text(
-              'ADD BOARD',
-              style: TextStyle(
-                color: Color(0xFF527DAA),
-                letterSpacing: 1.5,
-                fontSize: 10.0,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'OpenSans',
-              ),
-            ),
+            color: Colors.blue[900],
+            child:  Icon(Icons.add, color: Colors.white,)
           ),
         )
     );
