@@ -14,6 +14,11 @@ import '../main.dart';
 
 
 class PersonalWallScreen extends StatefulWidget {
+  final BuildContext menuScreenContext;
+  final Function onScreenHideButtonPressed;
+  final bool hideStatus;
+
+  const PersonalWallScreen({Key key, this.menuScreenContext, this.onScreenHideButtonPressed, this.hideStatus=false}) : super(key: key);
 
   @override
   PersonalWallState createState() => PersonalWallState();

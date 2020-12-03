@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/Boards/CreateBoardScreen.dart';
 import 'package:flutter_app/NavigationBar/tab_navigator.dart';
 import 'package:flutter_app/UserProfile/PersonalWallScreen.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 
 
@@ -14,22 +15,22 @@ class MainWallScreen extends StatefulWidget {
 }
 
 class MainWallState extends State<MainWallScreen> {
-  @override
+  /*@override
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            title: Text('Products'),
+            //title: Text('Products'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
-            title: Text('Search'),
+            //title: Text('Search'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.shopping_cart),
-            title: Text('Cart'),
+            //title: Text('Cart'),
           ),
         ],
       ),
@@ -60,6 +61,115 @@ class MainWallState extends State<MainWallScreen> {
           });
         }
       },
+    );
+  }*/
+  PersistentTabController _controller;
+  bool _hideNavBar;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = PersistentTabController(initialIndex: 0);
+    _hideNavBar = false;
+  }
+
+  List<Widget> _buildScreens() {
+    return [
+      PersonalWallScreen(),
+      CreateBoardScreen(),
+      CreateBoardScreen(),
+      PersonalWallScreen(),
+      PersonalWallScreen(),
+    ];
+  }
+
+  List<PersistentBottomNavBarItem> _navBarsItems() {
+    return [
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.home),
+        title: "Home",
+        activeColor: Colors.blue,
+        inactiveColor: Colors.grey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.search),
+        title: ("Search"),
+        activeColor: Colors.teal,
+        inactiveColor: Colors.grey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.add),
+        title: ("Add"),
+        activeColor: Colors.blueAccent,
+        inactiveColor: Colors.grey,
+        activeContentColor: Colors.white,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.message),
+        title: ("Messages"),
+        activeColor: Colors.deepOrange,
+        inactiveColor: Colors.grey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.settings),
+        title: ("Settings"),
+        activeColor: Colors.indigo,
+        inactiveColor: Colors.grey,
+      ),
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: PersistentTabView(
+        controller: _controller,
+        screens: _buildScreens(),
+        items: _navBarsItems(),
+        confineInSafeArea: true,
+        backgroundColor: Colors.white,
+        handleAndroidBackButtonPress: true,
+        resizeToAvoidBottomInset: true,
+        stateManagement: true,
+        hideNavigationBarWhenKeyboardShows: true,
+        hideNavigationBar: _hideNavBar,
+        margin: EdgeInsets.all(10.0),
+        popActionScreens: PopActionScreensType.once,
+        bottomScreenMargin: 0.0,
+        // onWillPop: () async {
+        //   await showDialog(
+        //     context: context,
+        //     useSafeArea: true,
+        //     builder: (context) => Container(
+        //       height: 50.0,
+        //       width: 50.0,
+        //       color: Colors.white,
+        //       child: RaisedButton(
+        //         child: Text("Close"),
+        //         onPressed: () {
+        //           Navigator.pop(context);
+        //         },
+        //       ),
+        //     ),
+        //   );
+        //   return false;
+        // },
+        decoration: NavBarDecoration(
+            colorBehindNavBar: Colors.indigo,
+            borderRadius: BorderRadius.circular(20.0)),
+        popAllScreensOnTapOfSelectedTab: true,
+        itemAnimationProperties: ItemAnimationProperties(
+          duration: Duration(milliseconds: 400),
+          curve: Curves.ease,
+        ),
+        screenTransitionAnimation: ScreenTransitionAnimation(
+          animateTabTransition: true,
+          curve: Curves.ease,
+          duration: Duration(milliseconds: 200),
+        ),
+        navBarStyle:
+        NavBarStyle.style15, // Choose the nav bar style with this property
+      ),
     );
   }
 }
