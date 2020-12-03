@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
       ],
       supportedLocales: S.delegate.supportedLocales,
       home: LogInScreen(),
+        initialRoute: '/'
     );
   }
 }

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/utilities/constants.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 import 'EditBoardScreen.dart';
 
@@ -162,9 +163,14 @@ class BoardState extends State<BoardScreen> with SingleTickerProviderStateMixin 
           return
             GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(
+                  /*Navigator.push(context, MaterialPageRoute(
                       builder: (context) => ContactWallScreen(userId: friend.id, name: friend.title)
                   ),
+                  );*/
+                  pushNewScreen(
+                    context,
+                    screen: ContactWallScreen(userId: friend.id, name: friend.title),
+                    withNavBar: true,
                   );
                 },
                 child: Container(

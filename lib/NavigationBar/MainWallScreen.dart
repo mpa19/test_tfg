@@ -119,6 +119,8 @@ class MainWallState extends State<MainWallScreen> {
     ];
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -136,24 +138,6 @@ class MainWallState extends State<MainWallScreen> {
         margin: EdgeInsets.all(10.0),
         popActionScreens: PopActionScreensType.once,
         bottomScreenMargin: 0.0,
-        // onWillPop: () async {
-        //   await showDialog(
-        //     context: context,
-        //     useSafeArea: true,
-        //     builder: (context) => Container(
-        //       height: 50.0,
-        //       width: 50.0,
-        //       color: Colors.white,
-        //       child: RaisedButton(
-        //         child: Text("Close"),
-        //         onPressed: () {
-        //           Navigator.pop(context);
-        //         },
-        //       ),
-        //     ),
-        //   );
-        //   return false;
-        // },
         decoration: NavBarDecoration(
             colorBehindNavBar: Colors.indigo,
             borderRadius: BorderRadius.circular(20.0)),
@@ -168,7 +152,7 @@ class MainWallState extends State<MainWallScreen> {
           duration: Duration(milliseconds: 200),
         ),
         navBarStyle:
-        NavBarStyle.style15, // Choose the nav bar style with this property
+        NavBarStyle.style6, // Choose the nav bar style with this property
       ),
     );
   }

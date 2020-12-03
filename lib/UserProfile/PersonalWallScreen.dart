@@ -8,17 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/utilities/constants.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 import '../Boards/BoardScreen.dart';
 import '../main.dart';
 
 
 class PersonalWallScreen extends StatefulWidget {
-  final BuildContext menuScreenContext;
-  final Function onScreenHideButtonPressed;
-  final bool hideStatus;
-
-  const PersonalWallScreen({Key key, this.menuScreenContext, this.onScreenHideButtonPressed, this.hideStatus=false}) : super(key: key);
 
   @override
   PersonalWallState createState() => PersonalWallState();
@@ -137,32 +133,32 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
 
 
   Widget _buildContactsBtn() {
-    return Container(
-      child: ButtonTheme(
-        minWidth: 50,
-        height: 28.0,
-        child: RaisedButton(
-          elevation: 5.0,
-          onPressed: () {
-            _closeSession();
-          },
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0),
-          ),
-          color: Colors.white,
-          child: Text(
-            'CONTACTS',
-            style: TextStyle(
-              color: Color(0xFF527DAA),
-              letterSpacing: 1.5,
-              fontSize: 10.0,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'OpenSans',
+      return Container(
+          child: ButtonTheme(
+            minWidth: 50,
+            height: 28.0,
+            child: RaisedButton(
+              elevation: 5.0,
+              onPressed: () {
+                _closeSession();
+              },
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+              color: Colors.white,
+              child: Text(
+                'CONTACTS',
+                style: TextStyle(
+                  color: Color(0xFF527DAA),
+                  letterSpacing: 1.5,
+                  fontSize: 10.0,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'OpenSans',
+                ),
+              ),
             ),
-          ),
-        ),
-      )
-    );
+          )
+      );
   }
 
 
@@ -194,9 +190,14 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
               return
                 GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(
+                      /*Navigator.push(context, MaterialPageRoute(
                           builder: (context) => BoardScreen(board: board, isVisible: true)
                       ),
+                      );*/
+                      pushNewScreen(
+                        context,
+                        screen: BoardScreen(board: board, isVisible: true),
+                        withNavBar: true,
                       );
                     },
                     child: Container(
@@ -297,6 +298,42 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
     }
   }
 
+  Widget _buildCreateBoardBtn() {
+    return Container(
+        padding: EdgeInsets.symmetric(vertical: 35.0),
+
+        alignment: Alignment.centerRight,
+        child: ButtonTheme(
+          minWidth: 50,
+          height: 28.0,
+          child: RaisedButton(
+            elevation: 5.0,
+            onPressed: () {
+              pushNewScreen(
+                context,
+                screen: CreateBoardScreen(),
+                withNavBar: true,
+              );
+            },
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+            color: Colors.white,
+            child: Text(
+              'ADD BOARD',
+              style: TextStyle(
+                color: Color(0xFF527DAA),
+                letterSpacing: 1.5,
+                fontSize: 10.0,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'OpenSans',
+              ),
+            ),
+          ),
+        )
+    );
+  }
+
   Widget _buildSearchTF() {
     return Container(
       alignment: Alignment.centerLeft,
@@ -391,6 +428,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
                           ),
                           SizedBox(height: 20.0),
                           if(_isVisible) _buildSearchTF(),
+
                           Expanded(
                             child: TabBarView(
                               controller: _tabController,
@@ -400,6 +438,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
                               ],
                             ),
                           ),
+                          if(_isVisible) _buildCreateBoardBtn(),
                         ],
                       ),
                     ),
@@ -407,7 +446,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
               ),
             ],
       ),
-
+        /*floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Visibility(
         visible: _isVisible,
         child: FloatingActionButton(
@@ -421,7 +460,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
             child: Icon(Icons.add),
             backgroundColor: Colors.blue[900],
           ),
-      )
+      )*/
     );
   }
 }
