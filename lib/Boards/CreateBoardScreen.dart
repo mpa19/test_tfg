@@ -294,7 +294,7 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
 
   Widget _buildCreateBoardBtn() {
     return Container(
-        padding: EdgeInsets.symmetric(vertical: 20.0),
+        padding: EdgeInsets.symmetric(vertical: 0.0),
         alignment: Alignment.centerRight,
         child: ButtonTheme(
           minWidth: 50,

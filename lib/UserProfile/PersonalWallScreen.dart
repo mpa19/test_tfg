@@ -49,16 +49,16 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
 
     setState(() {
       _getBoards();
+      _isVisible = true;
+      _getImageUrl();
+      _tabController = TabController(vsync: this, length: 2);
+
+      _tabController.addListener(_handleTabSelection);
+      _randomChildren = new List<Widget>();
+
+      _searchList = _bcList;
     });
 
-    _isVisible = true;
-    _getImageUrl();
-    _tabController = TabController(vsync: this, length: 2);
-
-    _tabController.addListener(_handleTabSelection);
-    _randomChildren = new List<Widget>();
-
-    _searchList = _bcList;
 
     _searchController.addListener(() {
       if (_searchController.text.isEmpty) {

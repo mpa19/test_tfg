@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Boards/CreateBoardScreen.dart';
-import 'package:flutter_app/NavigationBar/tab_navigator.dart';
 import 'package:flutter_app/UserProfile/PersonalWallScreen.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
@@ -118,7 +117,6 @@ class MainWallState extends State<MainWallScreen> {
       ),
     ];
   }
-
 
 
   @override
