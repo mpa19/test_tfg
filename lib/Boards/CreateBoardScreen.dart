@@ -275,9 +275,9 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
   }
 
   Widget _buildBoardTitle() {
-    return Container(
+    /*return Container(
         padding: EdgeInsets.symmetric(vertical: 45.0),
-        child: Center(
+        /*child: Center(
             child: Text(
               "DETAILS",
               style: TextStyle(
@@ -288,13 +288,83 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
                 fontFamily: 'OpenSans',
               ),
             )
-        )
+        )*/
+        child: Container(
+            child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                Text(
+                "DETAILS",
+                style: TextStyle(
+                  color: Colors.white,
+                  letterSpacing: 5.5,
+                  fontSize: 30.0,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'OpenSans',
+                ),
+                ),
+                 // _buildCreateBoardBtn()
+                ]
+            ),
+        ),
+    );*/
+    return Stack(
+      children: <Widget>[
+
+            Column(
+              children: <Widget>[
+                SizedBox(height: 40.0),
+                Row(
+                  children: [
+
+                  ],
+                ),
+                Text(
+                  "DETAILS",
+                  style: TextStyle(
+                    color: Colors.white,
+                    letterSpacing: 5.5,
+                    fontSize: 30.0,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'OpenSans',
+                  ),
+                ),
+              ],
+            ),
+
+
+        Positioned(
+          top: 0,
+          right: 0,
+          child: _buildCreateBoardBtn()
+          ),
+
+      ],
     );
+
+    /*
+    *
+    * child: Column(
+  children: <Widget>[
+    SizedBox(height: 40.0),
+    Row(
+      children: <Widget>[
+        Expanded(
+          child: Stack(
+            children: [
+              Center(
+                child: Text(...),
+                ),
+              ),
+              Positioned(
+                right: 8,
+                child: IconButton(...),*/
   }
 
   Widget _buildCreateBoardBtn() {
     return Container(
-        padding: EdgeInsets.symmetric(vertical: 0.0),
+        padding: EdgeInsets.symmetric(horizontal: 0.0),
         alignment: Alignment.centerRight,
         child: ButtonTheme(
           minWidth: 50,
@@ -564,7 +634,7 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
                           _buildSearchTF(),
                           SizedBox(height: 10.0),
                           Expanded(child: _buildBoards()),
-                          Expanded(child: _buildCreateBoardBtn())
+                          //Expanded(child: _buildCreateBoardBtn())
                         ],
                       ),
                     )

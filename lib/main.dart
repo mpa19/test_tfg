@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'NavigationBar/MainWallScreen.dart';
+import 'NavigationBar/NavigationScreen.dart';
 import 'file:///C:/Users/Marc/.AndroidStudio1.3/flutter_app/lib/UserProfile/PersonalWallScreen.dart';
 import 'file:///C:/Users/Marc/.AndroidStudio1.3/flutter_app/lib/RegisterUser/SignUpScreen.dart';
 
@@ -70,7 +70,7 @@ class LogInState extends State<LogInScreen> {
   _checkLogin() async {
     if(await storage.read(key: "login") == "true") {
       Navigator.pushReplacement(context, MaterialPageRoute(
-          builder: (context) => MainWallScreen()
+          builder: (context) => NavigationScreen()
       ),
       );
     }

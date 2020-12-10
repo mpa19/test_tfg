@@ -6,14 +6,14 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 
 
-class MainWallScreen extends StatefulWidget {
+class NavigationScreen extends StatefulWidget {
 
   @override
-  MainWallState createState() => MainWallState();
+  NavigationState createState() => NavigationState();
 
 }
 
-class MainWallState extends State<MainWallScreen> {
+class NavigationState extends State<NavigationScreen> {
   /*@override
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
@@ -110,8 +110,8 @@ class MainWallState extends State<MainWallScreen> {
         inactiveColor: Colors.grey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.settings),
-        title: ("Settings"),
+        icon: Icon(Icons.account_circle),
+        title: ("Profile"),
         activeColor: Colors.indigo,
         inactiveColor: Colors.grey,
       ),
