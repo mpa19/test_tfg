@@ -437,21 +437,6 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
               ),
             ],
       ),
-        /*floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Visibility(
-        visible: _isVisible,
-        child: FloatingActionButton(
-            heroTag: "addBoard",
-            onPressed: () {
-              Navigator.pushReplacement(context, MaterialPageRoute(
-                  builder: (context) => CreateBoardScreen()
-              ),
-              );
-            },
-            child: Icon(Icons.add),
-            backgroundColor: Colors.blue[900],
-          ),
-      )*/
     );
   }
 }

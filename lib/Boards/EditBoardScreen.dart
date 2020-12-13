@@ -58,6 +58,7 @@ class EditBoardState extends State<EditBoardScreen> with SingleTickerProviderSta
     super.initState();
     _getFriends();
 
+    print(widget.board.image);
     _searchList = _bcList;
     _randomChildren = new List<Widget>();
 
@@ -127,7 +128,8 @@ class EditBoardState extends State<EditBoardScreen> with SingleTickerProviderSta
                       width: 185,
                       height: 185,
                       child: _image == null
-                          ? Image.asset('assets/images/146651.jpg',
+                          ? Image.network(
+                          widget.board.image,
                           fit: BoxFit.fill
                       )
                           : Image.file(_image, fit: BoxFit.fill)
