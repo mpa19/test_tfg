@@ -276,7 +276,7 @@ class BoardState extends State<BoardScreen> with SingleTickerProviderStateMixin 
               pushNewScreen(
                 context,
                 screen:  EditBoardScreen(board: widget.board),
-                withNavBar: true,
+                withNavBar: false,
               );
             },
             shape: RoundedRectangleBorder(

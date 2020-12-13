@@ -58,10 +58,12 @@ class EditBoardState extends State<EditBoardScreen> with SingleTickerProviderSta
     super.initState();
     _getFriends();
 
-    _nameController.text = widget.board.title;
     _searchList = _bcList;
     _randomChildren = new List<Widget>();
 
+    setState(() {
+      _nameController.text = widget.board.title;
+    });
     _searchController.addListener(() {
       if (_searchController.text.isEmpty) {
         setState(() {
@@ -115,7 +117,6 @@ class EditBoardState extends State<EditBoardScreen> with SingleTickerProviderSta
   Widget _buildProfileImage(){
     return Container(
         padding: EdgeInsets.symmetric(vertical: 25.0),
-        width: double.infinity,
         child: Column(
             children: <Widget>[
               CircleAvatar(
@@ -126,7 +127,9 @@ class EditBoardState extends State<EditBoardScreen> with SingleTickerProviderSta
                       width: 185,
                       height: 185,
                       child: _image == null
-                          ? Image.asset('assets/images/146651.jpg', fit: BoxFit.fill)
+                          ? Image.asset('assets/images/146651.jpg',
+                          fit: BoxFit.fill
+                      )
                           : Image.file(_image, fit: BoxFit.fill)
                   ),
                 ),
@@ -265,7 +268,7 @@ class EditBoardState extends State<EditBoardScreen> with SingleTickerProviderSta
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          SizedBox(height: 30.0),
+          //SizedBox(height: 30.0),
           Text(
             'Add friends',
             style: kLabelStyle,
@@ -278,24 +281,34 @@ class EditBoardState extends State<EditBoardScreen> with SingleTickerProviderSta
   }
 
   Widget _buildBoardTitle() {
-    return Container(
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+    return Stack(
+      children: <Widget>[
+
+        Column(
           children: <Widget>[
+            SizedBox(height: 50.0),
+            Row(
+              children: [
+              ],
+            ),
             Text(
-              "Create Board", // Main text on the image
-              style:
-              TextStyle(
+              "DETAILS",
+              style: TextStyle(
                 color: Colors.white,
+                letterSpacing: 5.5,
+                fontSize: 30.0,
                 fontWeight: FontWeight.bold,
-                fontSize: 40.0,
+                fontFamily: 'OpenSans',
               ),
             ),
-          ]
-      ),
+            SizedBox(height: 20.0),
+          ],
+        ),
+
+
+      ],
     );
   }
-
 
   Widget _buildBoards(){
     return GridView.count(
@@ -379,47 +392,15 @@ class EditBoardState extends State<EditBoardScreen> with SingleTickerProviderSta
     );
   }
 
-  Widget _buildAppBar() {
-    return Container(
-        child: Column(
-          children: [
-            AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0.0,
-              leading: IconButton(
-                  icon: Icon(Icons.close, size: 35,),
-                  onPressed: () {
-                    Navigator.pushReplacement(this.context, MaterialPageRoute(
-                        builder: (context) => PersonalWallScreen()
-                    ),
-                    );
-                  }
-              ),
-              actions: [
-                IconButton(
-                    icon: Icon(Icons.menu, size: 35,),
-                    onPressed: () {
-                      Navigator.of(this.context).pop();
-                    }
-                ),
-              ],
-            ),
-            SizedBox(height: 10)
-          ],
-        )
-    );
-  }
 
   Widget _buildTop() {
     return Container(
-      padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
+      padding: const EdgeInsets.fromLTRB(40, 40, 40, 0),
       child: Column(
         children: [
-          _buildBoardTitle(),
+          //_buildBoardTitle(),
           _buildProfileImage(),
-          _buildNameTF(),
-          if(_nameEmpty) _errorName(),
-          _buildPublicSw(),
+
         ],
       ),
     );
@@ -518,7 +499,7 @@ class EditBoardState extends State<EditBoardScreen> with SingleTickerProviderSta
   @override
   Widget build(BuildContext context) {
     _randomChildren = new List<Widget>();
-    _randomChildren.add(_buildAppBar());
+    //_randomChildren.add(_buildAppBar());
     _randomChildren.add(_buildTop());
 
     return Scaffold(
@@ -542,6 +523,17 @@ class EditBoardState extends State<EditBoardScreen> with SingleTickerProviderSta
               ),
             ),
           ),
+          AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0.0,
+            leading: IconButton(
+                color: Colors.red[800],
+                icon: Icon(Icons.close, size: 45,),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                }
+            ),
+          ),
           Container(
               child: DefaultTabController(
                 length: 2,
@@ -560,10 +552,15 @@ class EditBoardState extends State<EditBoardScreen> with SingleTickerProviderSta
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          _buildBoardTitle(),
+                          _buildNameTF(),
+                          if(_nameEmpty) _errorName(),
+                          _buildPublicSw(),
                           _buildFriendText(),
                           _buildSearchTF(),
                           SizedBox(height: 10.0),
-                          Expanded(child: _buildBoards())
+                          Expanded(child: _buildBoards()),
+                          //Expanded(child: _buildCreateBoardBtn())
                         ],
                       ),
                     )
@@ -573,14 +570,14 @@ class EditBoardState extends State<EditBoardScreen> with SingleTickerProviderSta
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        heroTag: "checkEditBoard",
-        onPressed: () {
-          _checkData();
-          //_showMyDialog();
-        },
-        child: Icon(Icons.check),
-        backgroundColor: Colors.green[900],
-      ),
+          heroTag: "createBoard",
+          onPressed: () {
+            _checkData();
+            //_showMyDialog();
+          },
+          child: Icon(Icons.check),
+          backgroundColor: Colors.green[900],
+        ),
     );
   }
 }

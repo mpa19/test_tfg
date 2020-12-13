@@ -312,7 +312,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
               pushNewScreen(
                 context,
                 screen: CreateBoardScreen(),
-                withNavBar: true,
+                withNavBar: false,
               );
             },
             shape: RoundedRectangleBorder(

@@ -275,10 +275,17 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
   }
 
   Widget _buildBoardTitle() {
-    /*return Container(
-        padding: EdgeInsets.symmetric(vertical: 45.0),
-        /*child: Center(
-            child: Text(
+    return Stack(
+      children: <Widget>[
+
+        Column(
+          children: <Widget>[
+            SizedBox(height: 50.0),
+            Row(
+              children: [
+              ],
+            ),
+            Text(
               "DETAILS",
               style: TextStyle(
                 color: Colors.white,
@@ -287,102 +294,16 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
                 fontWeight: FontWeight.bold,
                 fontFamily: 'OpenSans',
               ),
-            )
-        )*/
-        child: Container(
-            child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                Text(
-                "DETAILS",
-                style: TextStyle(
-                  color: Colors.white,
-                  letterSpacing: 5.5,
-                  fontSize: 30.0,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'OpenSans',
-                ),
-                ),
-                 // _buildCreateBoardBtn()
-                ]
             ),
+            SizedBox(height: 20.0),
+          ],
         ),
-    );*/
-    return Stack(
-      children: <Widget>[
 
-            Column(
-              children: <Widget>[
-                SizedBox(height: 40.0),
-                Row(
-                  children: [
-
-                  ],
-                ),
-                Text(
-                  "DETAILS",
-                  style: TextStyle(
-                    color: Colors.white,
-                    letterSpacing: 5.5,
-                    fontSize: 30.0,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'OpenSans',
-                  ),
-                ),
-              ],
-            ),
-
-
-        Positioned(
-          top: 0,
-          right: 0,
-          child: _buildCreateBoardBtn()
-          ),
 
       ],
     );
-
-    /*
-    *
-    * child: Column(
-  children: <Widget>[
-    SizedBox(height: 40.0),
-    Row(
-      children: <Widget>[
-        Expanded(
-          child: Stack(
-            children: [
-              Center(
-                child: Text(...),
-                ),
-              ),
-              Positioned(
-                right: 8,
-                child: IconButton(...),*/
   }
 
-  Widget _buildCreateBoardBtn() {
-    return Container(
-        padding: EdgeInsets.symmetric(horizontal: 0.0),
-        alignment: Alignment.centerRight,
-        child: ButtonTheme(
-          minWidth: 50,
-          height: 55.0,
-          child: RaisedButton(
-              elevation: 2.0,
-              onPressed: () {
-                _checkData();
-              },
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0),
-              ),
-              color: Colors.green[900],
-              child:  Icon(Icons.check, color: Colors.white,)
-          ),
-        )
-    );
-  }
 
   Widget _buildBoards(){
     return GridView.count(
@@ -643,7 +564,7 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
             ),
           ],
         ),
-        /*floatingActionButton: FloatingActionButton(
+        floatingActionButton: FloatingActionButton(
           heroTag: "createBoard",
           onPressed: () {
             _checkData();
@@ -651,7 +572,7 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
           },
           child: Icon(Icons.check),
           backgroundColor: Colors.green[900],
-        ),*/
+        ),
     );
   }
 }
