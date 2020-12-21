@@ -14,19 +14,14 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 
 
-class BoardScreen extends StatefulWidget {
-  final board;
-  final isVisible;
+class MainWallScreen extends StatefulWidget {
 
   @override
-  BoardScreen({Key key, @required this.board, @required this.isVisible}) : super(key: key);
-
-  @override
-  BoardState createState() => BoardState();
+  MainWallState createState() => MainWallState();
 
 }
 
-class BoardState extends State<BoardScreen> with SingleTickerProviderStateMixin {
+class MainWallState extends State<MainWallScreen> with SingleTickerProviderStateMixin {
 
   bool _gotImage = false;
 
@@ -52,7 +47,6 @@ class BoardState extends State<BoardScreen> with SingleTickerProviderStateMixin 
     super.initState();
 
 
-    _userName = widget.board.title;
     //_getImageUrl();
 
     _randomChildren = new List<Widget>();
@@ -150,6 +144,21 @@ class BoardState extends State<BoardScreen> with SingleTickerProviderStateMixin 
     _randomChildren.add(_buildSearchPeopleTF());
 
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text("WENECT"),
+        backgroundColor: Color(0xFF73AEF5),
+        elevation: 0.0,
+        leading: new Container(),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.menu, size: 35,),
+              onPressed: () {
+                Navigator.of(context).pop();
+              }
+          ),
+        ],
+      ),
       body: Stack(
         children: <Widget>[
           Container(
@@ -169,26 +178,9 @@ class BoardState extends State<BoardScreen> with SingleTickerProviderStateMixin 
               ),
             ),
           ),
-          AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0.0,
-            leading: IconButton(
-                icon: Icon(Icons.arrow_back, size: 35,),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                }
-            ),
-            actions: [
-              IconButton(
-                  icon: Icon(Icons.menu, size: 35,),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  }
-              ),
-            ],
-          ),
+
           Container(
-              padding: const EdgeInsets.all(40),
+              padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
               child: DefaultTabController(
                 length: 2,
                 child: NestedScrollView(
