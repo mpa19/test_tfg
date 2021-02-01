@@ -450,28 +450,15 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
                         ];
                       },
                       // You tab view goes here
-                      body: Column(
-                        children: <Widget>[
-                          _buildNameText(),
-                          TabBar(
-                            controller: _tabController,
-                            tabs: [
-                              Tab(text: 'Boards'),
-                              Tab(text: 'Notifications'),
-                            ],
-                          ),
-                          SizedBox(height: 20.0),
-                          if(_isVisible) _buildSearchTF(),
-                          Expanded(
-                            child: TabBarView(
-                              controller: _tabController,
-                              children: [
-                                _buildBoards(),
-                                _buildNotifications()
-                              ],
-                            ),
-                          ),
-                        ],
+                      body: Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _buildNameText(),
+                            _buildSearchTF(),
+                            Expanded(child:_buildBoards()),
+                          ],
+                        ),
                       ),
                     ),
                 )

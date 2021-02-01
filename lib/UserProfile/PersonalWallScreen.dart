@@ -412,12 +412,14 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                           _buildNameText(),
-                        Expanded(child:_buildBoards()),
+                          _buildSearchTF(),
+                          Expanded(child:_buildBoards()),
+                            _buildCreateBoardBtn()
                         ],
                       ),
                     ),
-                )
-              ),
+                  )
+                ),
               )
             ],
       ),
