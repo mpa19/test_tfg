@@ -31,12 +31,10 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
 
   var dataGet;
   final storage = new FlutterSecureStorage();
-  var _isVisible;
   String _userName = "";
 
   List<Widget>_randomChildren;
 
-  TabController _tabController;
 
   List<BoardClass> _bcList = new List<BoardClass>();
 
@@ -57,11 +55,8 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
       _getBoards();
     });
 
-    _isVisible = true;
     _getImageUrl();
-    _tabController = TabController(vsync: this, length: 2);
 
-    _tabController.addListener(_handleTabSelection);
     _randomChildren = new List<Widget>();
 
     _searchList = _bcList;
@@ -263,7 +258,7 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
                 GestureDetector(
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => BoardScreen(board: board, isVisible: false)
+                          builder: (context) => BoardScreen(board: board, isVisible: false, mine: false)
                       ),
                       );
                     },
@@ -324,32 +319,6 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
           if(dataGet!="") _gotImage = true;
         });
       }
-    }
-  }
-
-
-  Widget _buildNotifications(){
-    return ListView(
-      padding: EdgeInsets.zero,
-      children: Colors.primaries.map((color) {
-        return Container(color: color, height: 150.0);
-      }).toList(),
-    );
-  }
-
-
-  void _handleTabSelection() {
-    switch (_tabController.index) {
-      case 0:
-        setState(() {
-          _isVisible = true;
-        });
-        break;
-      case 1:
-        setState(() {
-          _isVisible = false;
-        });
-        break;
     }
   }
 
@@ -425,7 +394,12 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
               AppBar(
                 backgroundColor: Colors.transparent,
                 elevation: 0.0,
-                leading: new Container(),
+                leading: IconButton(
+                    icon: Icon(Icons.arrow_back, size: 35,),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    }
+                ),
                 actions: [
                   IconButton(
                       icon: Icon(Icons.menu, size: 35,),

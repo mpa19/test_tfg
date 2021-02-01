@@ -18,9 +18,10 @@ import 'EditBoardScreen.dart';
 class BoardScreen extends StatefulWidget {
   final board;
   final isVisible;
+  final mine;
 
   @override
-  BoardScreen({Key key, @required this.board, @required this.isVisible}) : super(key: key);
+  BoardScreen({Key key, @required this.board, @required this.isVisible, @required this.mine}) : super(key: key);
 
   @override
   BoardState createState() => BoardState();
@@ -365,7 +366,7 @@ class BoardState extends State<BoardScreen> with SingleTickerProviderStateMixin 
                         Expanded(
                           child: _buildFriends(),
                           ),
-                        _buildEditBoardBtn()
+                        if(widget.mine) _buildEditBoardBtn()
                       ],
                     ),
                   ),

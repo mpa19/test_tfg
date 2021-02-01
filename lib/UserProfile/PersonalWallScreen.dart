@@ -26,12 +26,10 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
 
   var dataGet;
   final storage = new FlutterSecureStorage();
-  var _isVisible;
   String _userName = "";
 
   List<Widget>_randomChildren;
 
-  TabController _tabController;
 
   List<BoardClass> _bcList = new List<BoardClass>();
 
@@ -49,11 +47,8 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
 
     setState(() {
       _getBoards();
-      _isVisible = true;
       _getImageUrl();
-      _tabController = TabController(vsync: this, length: 2);
 
-      _tabController.addListener(_handleTabSelection);
       _randomChildren = new List<Widget>();
 
       _searchList = _bcList;
@@ -196,7 +191,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
                       );*/
                       pushNewScreen(
                         context,
-                        screen: BoardScreen(board: board, isVisible: true),
+                        screen: BoardScreen(board: board, isVisible: true, mine: true),
                         withNavBar: true,
                       );
                     },
@@ -260,29 +255,6 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
     }
   }
 
-  Widget _buildNotifications(){
-    return ListView(
-      padding: EdgeInsets.zero,
-      children: Colors.primaries.map((color) {
-        return Container(color: color, height: 150.0);
-      }).toList(),
-    );
-  }
-
-  void _handleTabSelection() {
-    switch (_tabController.index) {
-      case 0:
-        setState(() {
-          _isVisible = true;
-        });
-        break;
-      case 1:
-        setState(() {
-          _isVisible = false;
-        });
-        break;
-    }
-  }
 
   List<BoardClass> _buildSearchList() {
     if (_searchText.isEmpty) {
