@@ -407,34 +407,18 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
                         ];
                       },
                       // You tab view goes here
-                      body: Column(
-                        children: <Widget>[
+                      body: Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
                           _buildNameText(),
-                          TabBar(
-                            controller: _tabController,
-                            tabs: [
-                              Tab(text: 'Boards'),
-                              Tab(text: 'Notifications'),
-                            ],
-                          ),
-                          SizedBox(height: 20.0),
-                          if(_isVisible) _buildSearchTF(),
-
-                          Expanded(
-                            child: TabBarView(
-                              controller: _tabController,
-                              children: [
-                                _buildBoards(),
-                                _buildNotifications()
-                              ],
-                            ),
-                          ),
-                          if(_isVisible) _buildCreateBoardBtn(),
+                        Expanded(child:_buildBoards()),
                         ],
                       ),
                     ),
                 )
               ),
+              )
             ],
       ),
     );
