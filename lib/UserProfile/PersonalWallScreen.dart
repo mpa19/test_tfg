@@ -11,6 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 import '../Boards/BoardScreen.dart';
+import '../ContactsScreen.dart';
 import '../main.dart';
 
 
@@ -135,7 +136,11 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
             child: RaisedButton(
               elevation: 5.0,
               onPressed: () {
-                _closeSession();
+                pushNewScreen(
+                  context,
+                  screen: ContactScreen(),
+                  withNavBar: false,
+                );
               },
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30.0),
