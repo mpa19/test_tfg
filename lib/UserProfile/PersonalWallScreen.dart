@@ -11,7 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 import '../Boards/BoardScreen.dart';
-import '../ContactsScreen.dart';
+import 'ContactsScreen.dart';
 import '../main.dart';
 
 
@@ -337,6 +337,41 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
     //_randomChildren.add(_buildNameText());
 
     return Scaffold(
+      endDrawer: Drawer(
+        // Add a ListView to the drawer. This ensures the user can scroll
+        // through the options in the drawer if there isn't enough vertical
+        // space to fit everything.
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              child: Text('Drawer Header'),
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+            ),
+            ListTile(
+              title: Text('Item 1'),
+              onTap: () {
+                // Update the state of the app
+                // ...
+                // Then close the drawer
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: Text('Item 2'),
+              onTap: () {
+                // Update the state of the app
+                // ...
+                // Then close the drawer
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
       body: Stack(
             children: <Widget>[
               Container(
@@ -359,16 +394,8 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
               AppBar(
                 backgroundColor: Colors.transparent,
                 elevation: 0.0,
-                leading: new Container(),
-                actions: [
-                  IconButton(
-                      icon: Icon(Icons.menu, size: 35,),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      }
-                  ),
-                ],
               ),
+
               Container(
                 padding: const EdgeInsets.all(40),
                 child: DefaultTabController(

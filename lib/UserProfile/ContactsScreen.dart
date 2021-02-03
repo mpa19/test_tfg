@@ -13,7 +13,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
-import 'UserProfile/ContactWallScreen.dart';
+import 'ContactWallScreen.dart';
 
 
 class ContactScreen extends StatefulWidget {
@@ -135,7 +135,7 @@ class ContactState extends State<ContactScreen> with SingleTickerProviderStateMi
               ],
             ),
             Text(
-              "DETAILS",
+              "CONTACTS",
               style: TextStyle(
                 color: Colors.white,
                 letterSpacing: 5.5,
@@ -147,8 +147,6 @@ class ContactState extends State<ContactScreen> with SingleTickerProviderStateMi
             SizedBox(height: 20.0),
           ],
         ),
-
-
       ],
     );
   }
