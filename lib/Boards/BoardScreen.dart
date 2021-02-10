@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter_app/RegisterUser/CreateProfileScreen.dart';
 import 'package:flutter_app/UserProfile/ContactWallScreen.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -101,14 +100,7 @@ class BoardState extends State<BoardScreen> with SingleTickerProviderStateMixin 
 
 
   Widget _buildBoardImage(){
-    return  GestureDetector(
-        onTap: () {
-          Navigator.push(context, MaterialPageRoute(
-              builder: (context) => CreateProfileScreen()
-          ),
-          );
-        },
-        child:Container(
+    return Container(
             padding: EdgeInsets.symmetric(vertical: 0),
             width: double.infinity,
             child: Column(
@@ -130,8 +122,7 @@ class BoardState extends State<BoardScreen> with SingleTickerProviderStateMixin 
                   )
                 ]
             )
-        )
-    );
+        );
   }
 
 
