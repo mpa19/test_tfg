@@ -334,7 +334,6 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
     _randomChildren = new List<Widget>();
     _randomChildren.add(_buildProfileImage());
     _randomChildren.add(_buildContactsBtn());
-    //_randomChildren.add(_buildNameText());
 
     return Scaffold(
       endDrawer: Drawer(
@@ -352,7 +351,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
               ),
             ),
             ListTile(
-              title: Text('Item 1'),
+              title: Text('About'),
               onTap: () {
                 // Update the state of the app
                 // ...
@@ -361,11 +360,11 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
               },
             ),
             ListTile(
-              title: Text('Item 2'),
+              title: Text('Close session',
+                    style: TextStyle(decoration: TextDecoration.underline,
+                    color: Colors.red)),
               onTap: () {
-                // Update the state of the app
-                // ...
-                // Then close the drawer
+                _closeSession();
                 Navigator.pop(context);
               },
             ),
