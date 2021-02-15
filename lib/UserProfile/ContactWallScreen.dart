@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_app/Chat/Chat.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/utilities/constants.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 import '../Boards/BoardScreen.dart';
 
@@ -180,7 +182,15 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
   }
 
   _sendMessage() {
-
+    String peerAvatar = "assets/images/defaultuser.png";
+    if(_gotImage == true){
+      peerAvatar = "https://www.martabatalla.com/flutter/wenect/profileImages/" + dataGet;
+    }
+    pushNewScreen(
+      context,
+      screen: ChatScreen(peerId: widget.userId, peerAvatar: peerAvatar),
+      withNavBar: false,
+    );
   }
 
   _sendRequest() async {
