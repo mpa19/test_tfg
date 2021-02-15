@@ -12,6 +12,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 
 import 'FullPhoto.dart';
 
@@ -54,6 +56,7 @@ class ChatScreen extends StatefulWidget {
 
 class ChatScreenState extends State<ChatScreen> {
   ChatScreenState({Key key, @required this.peerId, @required this.peerAvatar});
+  final storage = new FlutterSecureStorage();
 
   String peerId;
   String peerAvatar;
@@ -119,14 +122,12 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   readLocal() async {
-    prefs = await SharedPreferences.getInstance();
-    id = prefs.getString('id') ?? '';
+    id = await storage.read(key: "id");
     if (id.hashCode <= peerId.hashCode) {
       groupChatId = '$id-$peerId';
     } else {
       groupChatId = '$peerId-$id';
     }
-
     FirebaseFirestore.instance
         .collection('users')
         .doc(id)
