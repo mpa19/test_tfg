@@ -198,12 +198,6 @@ class ContactState extends State<ContactScreen> with SingleTickerProviderStateMi
         }).toList());
   }
 
-
-
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

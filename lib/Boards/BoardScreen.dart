@@ -295,7 +295,6 @@ class BoardState extends State<BoardScreen> with SingleTickerProviderStateMixin 
   Widget build(BuildContext context) {
     _randomChildren = new List<Widget>();
     _randomChildren.add(_buildBoardImage());
-    //_randomChildren.add(_buildNameText());
 
     return Scaffold(
         body: Stack(
