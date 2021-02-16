@@ -46,6 +46,7 @@ class ChatScreen extends StatefulWidget {
   final String peerId;
   final String peerAvatar;
 
+
   ChatScreen({Key key, @required this.peerId, @required this.peerAvatar})
       : super(key: key);
 
@@ -100,6 +101,7 @@ class ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
+
     focusNode.addListener(onFocusChange);
     listScrollController.addListener(_scrollListener);
 
@@ -128,10 +130,10 @@ class ChatScreenState extends State<ChatScreen> {
     } else {
       groupChatId = '$peerId-$id';
     }
-    FirebaseFirestore.instance
+    /*FirebaseFirestore.instance
         .collection('users')
         .doc(id)
-        .update({'chattingWith': peerId});
+        .update({'chattingWith': peerId});*/
 
     setState(() {});
   }
@@ -646,20 +648,22 @@ class ChatScreenState extends State<ChatScreen> {
 
           // Edit text
           Flexible(
-            child: Container(
-              child: TextField(
-                onSubmitted: (value) {
-                  onSendMessage(textEditingController.text, 0);
-                },
-                style: TextStyle(color: primaryColor, fontSize: 15.0),
-                controller: textEditingController,
-                decoration: InputDecoration.collapsed(
-                  hintText: 'Type your message...',
-                  hintStyle: TextStyle(color: greyColor),
+            child: Material(
+              child: Container(
+                child: TextField(
+                  onSubmitted: (value) {
+                    onSendMessage(textEditingController.text, 0);
+                  },
+                  style: TextStyle(color: primaryColor, fontSize: 15.0),
+                  controller: textEditingController,
+                  decoration: InputDecoration.collapsed(
+                    hintText: 'Type your message...',
+                    hintStyle: TextStyle(color: greyColor),
+                  ),
+                  focusNode: focusNode,
                 ),
-                focusNode: focusNode,
               ),
-            ),
+            )
           ),
 
           // Button send message
