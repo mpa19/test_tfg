@@ -20,17 +20,36 @@ import 'FullPhoto.dart';
 class Chat extends StatelessWidget {
   final String peerId;
   final String peerAvatar;
+  final String peerName;
 
-  Chat({Key key, @required this.peerId, @required this.peerAvatar})
+  Chat({Key key, @required this.peerId, @required this.peerAvatar, @required this.peerName})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'CHAT',
-          style: TextStyle(color: primaryColor, fontWeight: FontWeight.bold),
+        title: Container(
+          child: Row(
+            children: [
+              CircleAvatar(
+                radius: 25,
+                backgroundColor: Colors.blue[900],
+                child: ClipOval(
+                    child: SizedBox(
+                      width: 45,
+                      height: 45,
+                      child:Image.network(peerAvatar,fit: BoxFit.fill)
+                    )
+                ),
+              ),
+              SizedBox(width: 15.0),
+              Text(
+                peerName,
+                style: TextStyle(color: primaryColor, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
         ),
         centerTitle: true,
       ),
@@ -45,9 +64,10 @@ class Chat extends StatelessWidget {
 class ChatScreen extends StatefulWidget {
   final String peerId;
   final String peerAvatar;
+  final String peerName;
 
 
-  ChatScreen({Key key, @required this.peerId, @required this.peerAvatar})
+  ChatScreen({Key key, @required this.peerId, @required this.peerAvatar, @required this.peerName})
       : super(key: key);
 
   @override
@@ -257,7 +277,7 @@ class ChatScreenState extends State<ChatScreen> {
                   ),
                   errorWidget: (context, url, error) => Material(
                     child: Image.asset(
-                      'images/img_not_available.jpeg',
+                      'assets/images/img_not_available.jpeg',
                       width: 200.0,
                       height: 200.0,
                       fit: BoxFit.cover,
@@ -291,7 +311,7 @@ class ChatScreenState extends State<ChatScreen> {
           // Sticker
               : Container(
             child: Image.asset(
-              'images/${document.data()['content']}.gif',
+              'assets/images/${document.data()['content']}.gif',
               width: 100.0,
               height: 100.0,
               fit: BoxFit.cover,
@@ -370,7 +390,7 @@ class ChatScreenState extends State<ChatScreen> {
                         errorWidget: (context, url, error) =>
                             Material(
                               child: Image.asset(
-                                'images/img_not_available.jpeg',
+                                'assets/images/img_not_available.jpeg',
                                 width: 200.0,
                                 height: 200.0,
                                 fit: BoxFit.cover,
@@ -402,7 +422,7 @@ class ChatScreenState extends State<ChatScreen> {
                 )
                     : Container(
                   child: Image.asset(
-                    'images/${document.data()['content']}.gif',
+                    'assets/images/${document.data()['content']}.gif',
                     width: 100.0,
                     height: 100.0,
                     fit: BoxFit.cover,
@@ -510,7 +530,7 @@ class ChatScreenState extends State<ChatScreen> {
               FlatButton(
                 onPressed: () => onSendMessage('mimi1', 2),
                 child: Image.asset(
-                  'images/mimi1.gif',
+                  'assets/images/mimi1.gif',
                   width: 50.0,
                   height: 50.0,
                   fit: BoxFit.cover,
@@ -519,7 +539,7 @@ class ChatScreenState extends State<ChatScreen> {
               FlatButton(
                 onPressed: () => onSendMessage('mimi2', 2),
                 child: Image.asset(
-                  'images/mimi2.gif',
+                  'assets/images/mimi2.gif',
                   width: 50.0,
                   height: 50.0,
                   fit: BoxFit.cover,
@@ -528,7 +548,7 @@ class ChatScreenState extends State<ChatScreen> {
               FlatButton(
                 onPressed: () => onSendMessage('mimi3', 2),
                 child: Image.asset(
-                  'images/mimi3.gif',
+                  'assets/images/mimi3.gif',
                   width: 50.0,
                   height: 50.0,
                   fit: BoxFit.cover,
@@ -542,7 +562,7 @@ class ChatScreenState extends State<ChatScreen> {
               FlatButton(
                 onPressed: () => onSendMessage('mimi4', 2),
                 child: Image.asset(
-                  'images/mimi4.gif',
+                  'assets/images/mimi4.gif',
                   width: 50.0,
                   height: 50.0,
                   fit: BoxFit.cover,
@@ -551,7 +571,7 @@ class ChatScreenState extends State<ChatScreen> {
               FlatButton(
                 onPressed: () => onSendMessage('mimi5', 2),
                 child: Image.asset(
-                  'images/mimi5.gif',
+                  'assets/images/mimi5.gif',
                   width: 50.0,
                   height: 50.0,
                   fit: BoxFit.cover,
@@ -560,7 +580,7 @@ class ChatScreenState extends State<ChatScreen> {
               FlatButton(
                 onPressed: () => onSendMessage('mimi6', 2),
                 child: Image.asset(
-                  'images/mimi6.gif',
+                  'assets/images/mimi6.gif',
                   width: 50.0,
                   height: 50.0,
                   fit: BoxFit.cover,
@@ -574,7 +594,7 @@ class ChatScreenState extends State<ChatScreen> {
               FlatButton(
                 onPressed: () => onSendMessage('mimi7', 2),
                 child: Image.asset(
-                  'images/mimi7.gif',
+                  'assets/images/mimi7.gif',
                   width: 50.0,
                   height: 50.0,
                   fit: BoxFit.cover,
@@ -583,7 +603,7 @@ class ChatScreenState extends State<ChatScreen> {
               FlatButton(
                 onPressed: () => onSendMessage('mimi8', 2),
                 child: Image.asset(
-                  'images/mimi8.gif',
+                  'assets/images/mimi8.gif',
                   width: 50.0,
                   height: 50.0,
                   fit: BoxFit.cover,
@@ -592,7 +612,7 @@ class ChatScreenState extends State<ChatScreen> {
               FlatButton(
                 onPressed: () => onSendMessage('mimi9', 2),
                 child: Image.asset(
-                  'images/mimi9.gif',
+                  'assets/images/mimi9.gif',
                   width: 50.0,
                   height: 50.0,
                   fit: BoxFit.cover,

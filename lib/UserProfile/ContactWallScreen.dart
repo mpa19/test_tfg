@@ -188,7 +188,7 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
     }
     pushNewScreen(
       context,
-      screen: ChatScreen(peerId: widget.userId, peerAvatar: peerAvatar),
+      screen: Chat(peerId: widget.userId, peerAvatar: peerAvatar, peerName: widget.name),
       withNavBar: false,
     );
   }
