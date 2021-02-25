@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Boards/CreateBoardScreen.dart';
+import 'package:flutter_app/Chat/MainChatScreen.dart';
 import 'package:flutter_app/UserProfile/PersonalWallScreen.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:flutter_app/MainWallScreen.dart';
@@ -78,7 +79,7 @@ class NavigationState extends State<NavigationScreen> {
       PersonalWallScreen(),
       MainWallScreen(),
       CreateBoardScreen(),
-      PersonalWallScreen(),
+      MainChatScreen(),
       PersonalWallScreen(),
     ];
   }
