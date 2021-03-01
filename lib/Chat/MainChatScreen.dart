@@ -11,7 +11,7 @@ import 'package:flutter_app/Chat/const.dart';
 import 'package:http/http.dart' as http;
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'Chat.dart';
-import 'Loading.dart';
+import '../utilities/Loading.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class MainChatScreen extends StatefulWidget {
@@ -120,7 +120,7 @@ class MainChatScreenState extends State<MainChatScreen> {
     return Scaffold(
       appBar: AppBar(
         title: !isSearching
-            ? Text('MAIN')
+            ? Text('CHATS')
             : TextField(
           onChanged: (value) {
             _searchList;
@@ -201,7 +201,6 @@ class FriendClass {
   String id;
   String title;
   String image;
-  double selected = 0;
 
   FriendClass(String id, String title, String image) {
     this.id = id;
