@@ -7,7 +7,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Chat/const.dart';
 import 'package:flutter_app/Chat/FullPhoto.dart';
-import 'package:flutter_app/Chat/loading.dart';
+import 'package:flutter_app/utilities/loading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';

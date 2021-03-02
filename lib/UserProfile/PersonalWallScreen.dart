@@ -88,9 +88,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
       }
     }
 
-
     _userName = await storage.read(key: "name");
-
   }
 
 
@@ -110,7 +108,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
                         height: 105,
                         child: _gotImage == true
                                   ? Image.network("https://www.martabatalla.com/flutter/wenect/profileImages/" + dataGet, fit: BoxFit.fill)
-                                  : Image.asset('assets/images/defaultuser.png', fit: BoxFit.fill),
+                                  : Image.network("https://www.martabatalla.com/flutter/wenect/defaultuser.png", fit: BoxFit.fill),
                      )
                   ),
               )

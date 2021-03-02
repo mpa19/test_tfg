@@ -163,7 +163,7 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
                         height: 105,
                         child: _gotImage == true
                                   ? Image.network("https://www.martabatalla.com/flutter/wenect/profileImages/" + dataGet, fit: BoxFit.fill)
-                                  : Image.asset('assets/images/defaultuser.png', fit: BoxFit.fill),
+                                  : Image.network("https://www.martabatalla.com/flutter/wenect/defaultuser.png", fit: BoxFit.fill),
                      )
                   ),
               )
@@ -174,10 +174,12 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
 
 
   _acceptRequest() async {
-    await http.post("https://www.martabatalla.com/flutter/wenect/acceptRequest.php",
+    await http.post("https://www.martabatalla.com/flutter/wenect/friendRequest.php",
         body: {
           "id": await storage.read(key: "id"),
-          "friend": widget.userId
+          "friend": widget.userId,
+          "tipo": "friends",
+          "desc": await storage.read(key: "name")+" has accepted a friend request",
         });
   }
 
@@ -194,10 +196,12 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
   }
 
   _sendRequest() async {
-    await http.post("https://www.martabatalla.com/flutter/wenect/sendRequest.php",
+    await http.post("https://www.martabatalla.com/flutter/wenect/friendRequest.php",
         body: {
           "id": await storage.read(key: "id"),
-          "friend": widget.userId
+          "friend": widget.userId,
+          "tipo": "pending",
+          "desc": await storage.read(key: "name")+" has sent you a friend request"
         });
 
     setState(() {
