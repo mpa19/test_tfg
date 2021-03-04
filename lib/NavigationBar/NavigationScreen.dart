@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/Boards/CreateBoardScreen.dart';
 import 'package:flutter_app/Chat/MainChatScreen.dart';
 import 'package:flutter_app/UserProfile/PersonalWallScreen.dart';
+import 'package:flutter_app/notifications/MainNotificationsScreen.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:flutter_app/MainWallScreen.dart';
 
@@ -78,7 +79,7 @@ class NavigationState extends State<NavigationScreen> {
     return [
       PersonalWallScreen(),
       MainWallScreen(),
-      CreateBoardScreen(),
+      MainNotificationsScreen(),
       MainChatScreen(),
       PersonalWallScreen(),
     ];
@@ -99,7 +100,7 @@ class NavigationState extends State<NavigationScreen> {
         inactiveColor: Colors.grey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.add),
+        icon: Icon(Icons.notifications),
         title: ("Add"),
         activeColor: Colors.blueAccent,
         inactiveColor: Colors.grey,

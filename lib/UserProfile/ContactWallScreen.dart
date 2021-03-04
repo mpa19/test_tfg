@@ -179,7 +179,9 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
           "id": await storage.read(key: "id"),
           "friend": widget.userId,
           "tipo": "friends",
-          "desc": await storage.read(key: "name")+" has accepted a friend request",
+          "desc": " has accepted a friend request",
+          "userName": await storage.read(key: "name"),
+          "not_tipo": 1
         });
   }
 
@@ -201,7 +203,9 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
           "id": await storage.read(key: "id"),
           "friend": widget.userId,
           "tipo": "pending",
-          "desc": await storage.read(key: "name")+" has sent you a friend request"
+          "desc": " has sent you a friend request",
+          "userName": await storage.read(key: "name"),
+          "not_tipo": "0"
         });
 
     setState(() {

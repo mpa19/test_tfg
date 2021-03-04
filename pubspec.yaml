@@ -99,6 +99,8 @@ flutter:
     - assets/images/mimi8.gif
     - assets/images/mimi9.gif
     - assets/images/img_not_available.jpeg
+    - assets/images/addedfriend.png
+    - assets/images/addfriend.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
