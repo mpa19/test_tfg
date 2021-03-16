@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_app/Boards/CreateBoardScreen.dart';
+import 'package:flutter_app/NavigationBar/HamburgerMenu.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -334,41 +335,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
     _randomChildren.add(_buildContactsBtn());
 
     return Scaffold(
-      endDrawer: Drawer(
-        // Add a ListView to the drawer. This ensures the user can scroll
-        // through the options in the drawer if there isn't enough vertical
-        // space to fit everything.
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              child: Text('Drawer Header'),
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-            ),
-            ListTile(
-              title: Text('About'),
-              onTap: () {
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: Text('Close session',
-                    style: TextStyle(decoration: TextDecoration.underline,
-                    color: Colors.red)),
-              onTap: () {
-                _closeSession();
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
-      ),
+      endDrawer: HamburgerScreen(),
       body: Stack(
             children: <Widget>[
               Container(

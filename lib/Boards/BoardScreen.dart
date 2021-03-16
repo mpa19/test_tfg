@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_app/NavigationBar/HamburgerMenu.dart';
 import 'package:flutter_app/UserProfile/ContactWallScreen.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -297,6 +298,7 @@ class BoardState extends State<BoardScreen> with SingleTickerProviderStateMixin 
     _randomChildren.add(_buildBoardImage());
 
     return Scaffold(
+      endDrawer: HamburgerScreen(),
         body: Stack(
           children: <Widget>[
             Container(
@@ -325,14 +327,6 @@ class BoardState extends State<BoardScreen> with SingleTickerProviderStateMixin 
                     Navigator.of(context).pop();
                   }
               ),
-              actions: [
-                IconButton(
-                    icon: Icon(Icons.menu, size: 35,),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    }
-                ),
-              ],
             ),
             Container(
                 padding: const EdgeInsets.all(40),

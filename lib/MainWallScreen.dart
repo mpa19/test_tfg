@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_app/NavigationBar/HamburgerMenu.dart';
 import 'package:flutter_app/RegisterUser/CreateProfileScreen.dart';
 import 'package:flutter_app/UserProfile/ContactWallScreen.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -185,20 +186,13 @@ class MainWallState extends State<MainWallScreen> with SingleTickerProviderState
     _randomChildren.add(_buildSearchPeopleTF());
 
     return Scaffold(
+      endDrawer: HamburgerScreen(),
       appBar: AppBar(
         centerTitle: true,
         title: Text("APPNAME"),
         backgroundColor: Color(0xFF73AEF5),
         elevation: 0.0,
         leading: new Container(),
-        actions: [
-          IconButton(
-              icon: Icon(Icons.menu, size: 35,),
-              onPressed: () {
-                Navigator.of(context).pop();
-              }
-          ),
-        ],
       ),
       body: Stack(
         children: <Widget>[
