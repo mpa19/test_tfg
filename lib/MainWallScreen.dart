@@ -47,7 +47,9 @@ class MainWallState extends State<MainWallScreen> with SingleTickerProviderState
     super.initState();
 
 
-    //_getImageUrl();
+    setState(() {
+      _getFriends();
+    });
 
     _randomChildren = new List<Widget>();
 
@@ -68,6 +70,25 @@ class MainWallState extends State<MainWallScreen> with SingleTickerProviderState
     });
   }
 
+  _getFriends() async {
+    final response = await http.post("https://www.martabatalla.com/flutter/wenect/getAllUsers.php",
+        body: {
+          "id":await storage.read(key: "id")
+        });
+
+    var dataUser = json.decode(response.body);
+
+    if(dataUser.length>0) {
+      for(var row in dataUser) {
+        var _image;
+        if(row['user_image'] == "") _image = "https://www.martabatalla.com/flutter/wenect/defaultuser.png";
+        else _image = "https://www.martabatalla.com/flutter/wenect/profileImages/"+row['user_image'];
+        setState(() {
+          _bcList.add(new FriendClass(row['user_id'], row['user_name']+" "+row['user_second'], _image));
+        });
+      }
+    }
+  }
 
   List<FriendClass> _buildSearchList() {
     if (_searchText.isEmpty) {
@@ -83,31 +104,6 @@ class MainWallState extends State<MainWallScreen> with SingleTickerProviderState
     }
   }
 
-  Widget _buildSearchBoardTF() {
-    return Container(
-      alignment: Alignment.centerLeft,
-      decoration: kBoxDecorationStyle,
-      height: 60.0,
-      child:  TextField(
-        controller: _searchController,
-        keyboardType: TextInputType.emailAddress,
-        style: TextStyle(
-          color: Colors.white,
-          fontFamily: 'OpenSans',
-        ),
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.only(top: 14.0),
-          prefixIcon: Icon(
-            Icons.search,
-            color: Colors.white,
-          ),
-          hintText: 'Enter a board name',
-          hintStyle: kHintTextStyle,
-        ),
-      ),
-    );
-  }
 
   Widget _buildSearchPeopleTF() {
     return Container(
@@ -128,25 +124,70 @@ class MainWallState extends State<MainWallScreen> with SingleTickerProviderState
             Icons.search,
             color: Colors.white,
           ),
-          hintText: 'Enter a name',
+          hintText: 'Enter a username',
           hintStyle: kHintTextStyle,
         ),
       ),
     );
   }
 
+  Widget _buildFriends(){
+    return GridView.count(
+        crossAxisCount: 3,
+        childAspectRatio: 2/4,
+        children: <FriendClass>[
+          for (var i in _searchList) i,
+        ].map((FriendClass friend) {
+          return
+            GestureDetector(
+                onTap: () {
+                  pushNewScreen(
+                    context,
+                    screen: ContactWallScreen(userId: friend.id, name: friend.title),
+                    withNavBar: true,
+                  );
+                },
+                child: Container(
+                  margin: EdgeInsets.all(2.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black, width: friend.selected),
+                    borderRadius: BorderRadius.circular(10.0),
+                    image: DecorationImage(
+                      image: NetworkImage(friend.image), // put image
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        friend.title, // Main text on the image
+                        style:
+                        TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14.0,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+            );
+        }).toList());
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
     _randomChildren = new List<Widget>();
-    //_randomChildren.add(_buildBoardImage());
-    //_randomChildren.add(_buildNameText());
     _randomChildren.add(_buildSearchPeopleTF());
 
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("WENECT"),
+        title: Text("APPNAME"),
         backgroundColor: Color(0xFF73AEF5),
         elevation: 0.0,
         leading: new Container(),
@@ -196,7 +237,7 @@ class MainWallState extends State<MainWallScreen> with SingleTickerProviderState
                   // You tab view goes here
                   body: Column(
                     children: <Widget>[
-                      _buildSearchBoardTF(),
+                      Expanded(child:_buildFriends()),
                     ],
                   ),
                 ),

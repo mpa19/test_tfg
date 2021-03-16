@@ -101,7 +101,7 @@ class NavigationState extends State<NavigationScreen> {
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.notifications),
-        title: ("Add"),
+        title: ("Notifications"),
         activeColor: Colors.blueAccent,
         inactiveColor: Colors.grey,
         activeContentColor: Colors.white,

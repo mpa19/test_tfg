@@ -181,8 +181,13 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
           "tipo": "friends",
           "desc": " has accepted a friend request",
           "userName": await storage.read(key: "name"),
-          "not_tipo": 1
+          "not_tipo": "1"
         });
+
+    setState(() {
+      _actionBtn = 2;
+      _textBtn = 'SEND MESSAGE';
+    });
   }
 
   _sendMessage() {
