@@ -18,7 +18,6 @@ import '../UserProfile/PersonalWallScreen.dart';
 
 
 
-
 class CreateBoardScreen extends StatefulWidget {
 
   @override
@@ -298,8 +297,6 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
             SizedBox(height: 20.0),
           ],
         ),
-
-
       ],
     );
   }

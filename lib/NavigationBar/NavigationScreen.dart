@@ -77,7 +77,6 @@ class NavigationState extends State<NavigationScreen> {
 
   List<Widget> _buildScreens() {
     return [
-      PersonalWallScreen(),
       MainWallScreen(),
       MainNotificationsScreen(),
       MainChatScreen(),
@@ -91,12 +90,6 @@ class NavigationState extends State<NavigationScreen> {
         icon: Icon(Icons.home),
         title: "Home",
         activeColor: Colors.blue,
-        inactiveColor: Colors.grey,
-      ),
-      PersistentBottomNavBarItem(
-        icon: Icon(Icons.search),
-        title: ("Search"),
-        activeColor: Colors.teal,
         inactiveColor: Colors.grey,
       ),
       PersistentBottomNavBarItem(
