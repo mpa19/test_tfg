@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_app/Chat/Chat.dart';
+import 'package:flutter_app/NavigationBar/HamburgerMenu.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -61,7 +62,9 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
 
     _randomChildren = new List<Widget>();
 
+    setState(() {
     _searchList = _bcList;
+    });
 
     _searchController.addListener(() {
       if (_searchController.text.isEmpty) {
@@ -140,8 +143,11 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
       for(var row in dataUser) {
         var _image;
         if(row['board_image'] == "") _image = "https://www.martabatalla.com/flutter/wenect/146651.jpg";
-        else _image = "https://www.martabatalla.com/flutter/wenect/users/"+await storage.read(key: "id")+"/"+row['board_image'];
-        _bcList.add(new BoardClass(row['board_id'], row['board_name'], _image));
+        else _image = "https://www.martabatalla.com/flutter/wenect/boardsImages/"+row['board_image'];
+
+        setState(() {
+          _bcList.add(new BoardClass(row['board_id'], row['board_name'], _image));
+        });
       }
     }
   }
@@ -395,6 +401,7 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
     _randomChildren.add(_buildMsgFriendBtn());
 
     return Scaffold(
+      endDrawer: HamburgerScreen(),
       body: Stack(
             children: <Widget>[
               Container(
@@ -423,14 +430,6 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
                       Navigator.of(context).pop();
                     }
                 ),
-                actions: [
-                  IconButton(
-                      icon: Icon(Icons.menu, size: 35,),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      }
-                  ),
-                ],
               ),
               Container(
                 padding: const EdgeInsets.all(40),

@@ -400,11 +400,10 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
 
   _uploadImage(String _name) async {
     await http.post(
-        "https://www.martabatalla.com/flutter/wenect/uploadBoardImage.php",
+        "https://www.martabatalla.com/flutter/wenect/boardsImages/uploadImage.php",
         body: {
           "image": base64Encode(_image.readAsBytesSync()),
-          "name": _name,
-          "id": await storage.read(key: "id")
+          "name": await storage.read(key: "id")+_name,
         });
   }
 
@@ -419,7 +418,7 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
         body: {
           "id": await storage.read(key: "id"),
           "name": _nameController.text,
-          "photo": _nameImage.toLowerCase(),
+          "photo": await storage.read(key: "id")+_nameImage.toLowerCase(),
           "private": _isPrivate.toString()
     });
 

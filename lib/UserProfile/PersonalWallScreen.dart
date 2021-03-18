@@ -84,12 +84,17 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
       for(var row in dataUser) {
         var _image;
         if(row['board_image'] == "") _image = "https://www.martabatalla.com/flutter/wenect/146651.jpg";
-        else _image = "https://www.martabatalla.com/flutter/wenect/users/"+await storage.read(key: "id")+"/"+row['board_image'];
-        _bcList.add(new BoardClass(row['board_id'], row['board_name'], _image));
+        else _image = "https://www.martabatalla.com/flutter/wenect/boardsImages/"+row['board_image'];
+
+        setState(() {
+          _bcList.add(new BoardClass(row['board_id'], row['board_name'], _image));
+        });
       }
     }
 
-    _userName = await storage.read(key: "name");
+      _userName = await storage.read(key: "name");
+    setState(() {
+    });
   }
 
 
@@ -118,13 +123,6 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
     );
   }
 
-  _closeSession() async {
-    await storage.write(key: "login", value: "false");
-    Navigator.push(context, MaterialPageRoute(
-        builder: (context) => MyApp()
-    ),
-    );
-  }
 
 
   Widget _buildContactsBtn() {
@@ -269,7 +267,6 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
       element.title.toLowerCase().contains(_searchText.toLowerCase()) ||
           element.title.toLowerCase().contains(_searchText.toLowerCase()))
           .toList();
-      print('${_searchList.length}');
       return _searchList;
     }
   }
