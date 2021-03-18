@@ -117,7 +117,7 @@ class EditBoardState extends State<EditBoardScreen> with SingleTickerProviderSta
 
   Widget _buildProfileImage(){
     return Container(
-        padding: EdgeInsets.symmetric(vertical: 25.0),
+        padding: EdgeInsets.symmetric(vertical: 0.0),
         child: Column(
             children: <Widget>[
               CircleAvatar(
@@ -395,19 +395,6 @@ class EditBoardState extends State<EditBoardScreen> with SingleTickerProviderSta
   }
 
 
-  Widget _buildTop() {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(40, 40, 40, 0),
-      child: Column(
-        children: [
-          //_buildBoardTitle(),
-          _buildProfileImage(),
-
-        ],
-      ),
-    );
-  }
-
   _uploadImage(String _name) async {
     await http.post(
         "https://www.martabatalla.com/flutter/wenect/uploadBoardImage.php",
@@ -502,7 +489,7 @@ class EditBoardState extends State<EditBoardScreen> with SingleTickerProviderSta
   Widget build(BuildContext context) {
     _randomChildren = new List<Widget>();
     //_randomChildren.add(_buildAppBar());
-    _randomChildren.add(_buildTop());
+    _randomChildren.add(_buildProfileImage());
 
     return Scaffold(
       resizeToAvoidBottomPadding: false,
@@ -530,13 +517,14 @@ class EditBoardState extends State<EditBoardScreen> with SingleTickerProviderSta
             elevation: 0.0,
             leading: IconButton(
                 color: Colors.red[800],
-                icon: Icon(Icons.close, size: 45,),
+                icon: Icon(Icons.close, size: 35,),
                 onPressed: () {
                   Navigator.of(context).pop();
                 }
             ),
           ),
           Container(
+              padding: const EdgeInsets.all(40),
               child: DefaultTabController(
                 length: 2,
                 child: NestedScrollView(

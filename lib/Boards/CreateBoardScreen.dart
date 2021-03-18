@@ -109,7 +109,7 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
 
   Widget _buildProfileImage(){
     return Container(
-        padding: EdgeInsets.symmetric(vertical: 25.0),
+        padding: EdgeInsets.symmetric(vertical: 0),
         child: Column(
             children: <Widget>[
               CircleAvatar(
@@ -385,19 +385,6 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
   }
 
 
-  Widget _buildTop() {
-    return Container(
-        padding: const EdgeInsets.fromLTRB(40, 40, 40, 0),
-        child: Column(
-          children: [
-             //_buildBoardTitle(),
-            _buildProfileImage(),
-
-        ],
-      ),
-    );
-  }
-
   _uploadImage(String _name) async {
     await http.post(
         "https://www.martabatalla.com/flutter/wenect/boardsImages/uploadImage.php",
@@ -491,7 +478,7 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
   Widget build(BuildContext context) {
     _randomChildren = new List<Widget>();
     //_randomChildren.add(_buildAppBar());
-    _randomChildren.add(_buildTop());
+    _randomChildren.add(_buildProfileImage());
 
     return Scaffold(
       resizeToAvoidBottomPadding: false,
@@ -526,6 +513,7 @@ class CreateBoardState extends State<CreateBoardScreen> with SingleTickerProvide
               ),
             ),
             Container(
+                padding: const EdgeInsets.all(40),
                 child: DefaultTabController(
                   length: 2,
                   child: NestedScrollView(
