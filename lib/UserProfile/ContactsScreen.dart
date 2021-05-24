@@ -129,7 +129,7 @@ class ContactState extends State<ContactScreen> with SingleTickerProviderStateMi
 
         Column(
           children: <Widget>[
-            SizedBox(height: 50.0),
+            SizedBox(height: 60.0),
             Row(
               children: [
               ],

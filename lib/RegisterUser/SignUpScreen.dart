@@ -378,8 +378,19 @@ class SignUpState extends State<SignUpScreen> {
                   ),
                 ),
               ),
+              AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0.0,
+                leading: IconButton(
+                    color: Colors.red[800],
+                    icon: Icon(Icons.close, size: 35,),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    }
+                ),
+              ),
               Container(
-                  height: double.infinity,
+                padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
                   child: SingleChildScrollView(
                       physics: AlwaysScrollableScrollPhysics(),
                       child: Column(
@@ -387,7 +398,7 @@ class SignUpState extends State<SignUpScreen> {
                           SizedBox(height: 80.0),
                           if(_emailInUse) _emailUsed(),
                           Container(
-                            padding: const EdgeInsets.all(40),
+                            padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[

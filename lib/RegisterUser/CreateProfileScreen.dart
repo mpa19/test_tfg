@@ -355,8 +355,19 @@ class CreateProfileState extends State<CreateProfileScreen> {
                   ),
                 ),
               ),
+              AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0.0,
+                leading: IconButton(
+                    color: Colors.red[800],
+                    icon: Icon(Icons.arrow_back, size: 35,),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    }
+                ),
+              ),
               Container(
-                height: double.infinity,
+                padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
                 child: SingleChildScrollView(
                     physics: AlwaysScrollableScrollPhysics(),
                     child: Column(

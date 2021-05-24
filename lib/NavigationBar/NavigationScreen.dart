@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/Boards/CreateBoardScreen.dart';
 import 'package:flutter_app/Chat/MainChatScreen.dart';
 import 'package:flutter_app/UserProfile/PersonalWallScreen.dart';
 import 'package:flutter_app/notifications/MainNotificationsScreen.dart';
@@ -97,7 +96,6 @@ class NavigationState extends State<NavigationScreen> {
         title: ("Notifications"),
         activeColor: Colors.blueAccent,
         inactiveColor: Colors.grey,
-        activeContentColor: Colors.white,
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.message),

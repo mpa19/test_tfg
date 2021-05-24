@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter_app/NavigationBar/HamburgerMenu.dart';
-import 'package:flutter_app/RegisterUser/CreateProfileScreen.dart';
 import 'package:flutter_app/UserProfile/ContactWallScreen.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -24,11 +23,9 @@ class MainWallScreen extends StatefulWidget {
 
 class MainWallState extends State<MainWallScreen> with SingleTickerProviderStateMixin {
 
-  bool _gotImage = false;
 
   var dataGet;
   final storage = new FlutterSecureStorage();
-  String _userName;
 
   List<Widget>_randomChildren;
 
@@ -183,7 +180,7 @@ class MainWallState extends State<MainWallScreen> with SingleTickerProviderState
   @override
   Widget build(BuildContext context) {
     _randomChildren = new List<Widget>();
-    _randomChildren.add(_buildSearchPeopleTF());
+    //_randomChildren.add(_buildSearchPeopleTF());
 
     return Scaffold(
       endDrawer: HamburgerScreen(),
@@ -231,6 +228,7 @@ class MainWallState extends State<MainWallScreen> with SingleTickerProviderState
                   // You tab view goes here
                   body: Column(
                     children: <Widget>[
+                      _buildSearchPeopleTF(),
                       Expanded(child:_buildFriends()),
                     ],
                   ),
