@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'NavigationBar/NavigationScreen.dart';
-import 'file:///C:/Users/Marc/.AndroidStudio1.3/flutter_app/lib/UserProfile/PersonalWallScreen.dart';
 import 'file:///C:/Users/Marc/.AndroidStudio1.3/flutter_app/lib/RegisterUser/SignUpScreen.dart';
 
 import 'package:flutter_app/utilities/constants.dart';
@@ -29,7 +28,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      localizationsDelegates: [
+        debugShowCheckedModeBanner: false,
+
+        localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
@@ -316,7 +317,7 @@ class LogInState extends State<LogInScreen> {
       await storage.write(key: "login", value: "true");
 
       Navigator.push(context, MaterialPageRoute(
-          builder: (context) => PersonalWallScreen()
+          builder: (context) => NavigationScreen()
       ),
       );
     } else {

@@ -102,7 +102,7 @@ class _SelectImageState extends State<SelectImageScreen> {
                           child: gotImage == true
                               ? Image.network("https://www.martabatalla.com/flutter/wenect/profileImages/" + dataGet)
                               : _image == null
-                                ? Image.asset('assets/images/defaultuser.png',
+                                ? Image.asset('assets/images/defaultuser.jpg',
                                     fit: BoxFit.fill
                                   )
                                 : Image.file(_image)

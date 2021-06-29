@@ -169,7 +169,7 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
                         height: 105,
                         child: _gotImage == true
                                   ? Image.network("https://www.martabatalla.com/flutter/wenect/profileImages/" + dataGet, fit: BoxFit.fill)
-                                  : Image.network("https://www.martabatalla.com/flutter/wenect/defaultuser.png", fit: BoxFit.fill),
+                                  : Image.network("https://www.martabatalla.com/flutter/wenect/defaultuser.jpg", fit: BoxFit.fill),
                      )
                   ),
               )
@@ -314,17 +314,6 @@ class ContactWallState extends State<ContactWallScreen> with SingleTickerProvide
                             ),
                           ),
 
-                          Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text(
-                              'Subtext', // Subtext on the image
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15.0,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
                         ],
                       ),
                     )

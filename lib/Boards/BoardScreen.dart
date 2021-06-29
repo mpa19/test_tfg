@@ -30,7 +30,6 @@ class BoardScreen extends StatefulWidget {
 
 class BoardState extends State<BoardScreen> with SingleTickerProviderStateMixin {
 
-  bool _gotImage = false;
 
   var dataGet;
   final storage = new FlutterSecureStorage();
@@ -90,7 +89,7 @@ class BoardState extends State<BoardScreen> with SingleTickerProviderStateMixin 
     if(dataUser.length>0) {
       for(var row in dataUser) {
         var _image;
-        if(row['user_image'] == "") _image = "https://www.martabatalla.com/flutter/wenect/defaultuser.png";
+        if(row['user_image'] == "") _image = "https://www.martabatalla.com/flutter/wenect/defaultuser.jpg";
         else _image = "https://www.martabatalla.com/flutter/wenect/profileImages/"+row['user_image'];
         setState(() {
           _bcList.add(new FriendClass(row['user_id'], row['user_name']+" "+row['user_second'], _image));

@@ -79,7 +79,7 @@ class MainWallState extends State<MainWallScreen> with SingleTickerProviderState
     if(dataUser.length>0) {
       for(var row in dataUser) {
         var _image;
-        if(row['user_image'] == "") _image = "https://www.martabatalla.com/flutter/wenect/defaultuser.png";
+        if(row['user_image'] == "") _image = "https://www.martabatalla.com/flutter/wenect/defaultuser.jpg";
         else _image = "https://www.martabatalla.com/flutter/wenect/profileImages/"+row['user_image'];
         setState(() {
           _bcList.add(new FriendClass(row['user_id'], row['user_name']+" "+row['user_second'], _image));
@@ -186,7 +186,10 @@ class MainWallState extends State<MainWallScreen> with SingleTickerProviderState
       endDrawer: HamburgerScreen(),
       appBar: AppBar(
         centerTitle: true,
-        title: Text("APPNAME"),
+        title: Text(
+            "FTMP",
+          style: TextStyle(fontSize: 35),
+        ),
         backgroundColor: Color(0xFF73AEF5),
         elevation: 0.0,
         leading: new Container(),
@@ -229,6 +232,7 @@ class MainWallState extends State<MainWallScreen> with SingleTickerProviderState
                   body: Column(
                     children: <Widget>[
                       _buildSearchPeopleTF(),
+                      SizedBox(height: 10.0),
                       Expanded(child:_buildFriends()),
                     ],
                   ),

@@ -13,7 +13,6 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 import '../Boards/BoardScreen.dart';
 import 'ContactsScreen.dart';
-import '../main.dart';
 
 
 class PersonalWallScreen extends StatefulWidget {
@@ -114,7 +113,7 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
                         height: 105,
                         child: _gotImage == true
                                   ? Image.network("https://www.martabatalla.com/flutter/wenect/profileImages/" + dataGet, fit: BoxFit.fill)
-                                  : Image.network("https://www.martabatalla.com/flutter/wenect/defaultuser.png", fit: BoxFit.fill),
+                                  : Image.network("https://www.martabatalla.com/flutter/wenect/defaultuser.jpg", fit: BoxFit.fill),
                      )
                   ),
               )
@@ -217,18 +216,6 @@ class PersonalWallState extends State<PersonalWallScreen> with SingleTickerProvi
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 14.0,
-                            ),
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text(
-                              'Subtext', // Subtext on the image
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15.0,
-                              ),
-                              textAlign: TextAlign.center,
                             ),
                           ),
                         ],

@@ -72,7 +72,7 @@ class ContactState extends State<ContactScreen> with SingleTickerProviderStateMi
     if(dataUser.length>0) {
       for(var row in dataUser) {
         var _image;
-        if(row['user_image'] == "") _image = "https://www.martabatalla.com/flutter/wenect/defaultuser.png";
+        if(row['user_image'] == "") _image = "https://www.martabatalla.com/flutter/wenect/defaultuser.jpg";
         else _image = "https://www.martabatalla.com/flutter/wenect/profileImages/"+row['user_image'];
         setState(() {
           _bcList.add(new FriendClass(row['user_id'], row['user_name']+" "+row['user_second'], _image));

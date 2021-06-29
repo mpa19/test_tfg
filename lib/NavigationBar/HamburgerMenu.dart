@@ -35,10 +35,39 @@ class HamburgerMenuState extends State<HamburgerScreen> {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: Text('Drawer Header'),
-            decoration: BoxDecoration(
-              color: Colors.blue,
+            child: Image.asset(
+              'assets/images/logo.png',
+              width: 200.0,
+              height: 200.0,
+              fit: BoxFit.cover,
             ),
+          ),
+          ListTile(
+            title: Text('Configuration'),
+            onTap: () {
+              // Update the state of the app
+              // ...
+              // Then close the drawer
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            title: Text('Privacity and security'),
+            onTap: () {
+              // Update the state of the app
+              // ...
+              // Then close the drawer
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            title: Text('Vote APP'),
+            onTap: () {
+              // Update the state of the app
+              // ...
+              // Then close the drawer
+              Navigator.pop(context);
+            },
           ),
           ListTile(
             title: Text('Send request'),
